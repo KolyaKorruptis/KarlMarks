@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Startpage</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    :root {--bg:#333;--tc:#eee;--bd:#444;--bb:#1a65d5;--ab:#eee}
+    @media (prefers-color-scheme: light) {:root{--bg:#eee;--tc:#333;--bd:#d4d4d4;}}
+    html, body {height:100%;font-size:clamp(12px,3vw, 18px)}
+    body {font-family:system-ui;background:var(--bg);color:var(--tc);display:flex;justify-content:center;align-items:center}
+    input:focus { outline:none}
+    [hidden] {display:none}
+    #c {margin:20px 0;width:clamp(320px, 600px, 100vw);margin:0 auto}
+    .d {border:none;background:none;color:var(--tc);cursor:pointer;font-size:1rem;display:none}
+    #mt:checked ~ #l :is(.m,.d) {display:inline-block}
+    .d:hover,#l a:hover,.m:hover,#t:hover,#n button:hover {filter:brightness(1.2) contrast(200%)}
+    .g {display:inline-block;max-width:1.5rem;line-height:1rem;transition:max-width .2s linear}
+    .g:focus-within {max-width:200px}
+    #mt:checked ~ #l .g {display:none}
+    .s {border:none;padding:.2rem .25rem;width:100%;box-sizing:border-box}
+    .s {-webkit-text-fill-color:var(--tc);-webkit-box-shadow:0 0 0px 1000px var(--bg) inset}
+    .g:focus-within .s {-webkit-text-fill-color:inherit;-webkit-box-shadow:inherit}
+    input.s::placeholder {text-align:right}
+    .m {display:none;width:18px;height:18px;cursor:grab;background-image:radial-gradient(gray 30%, transparent 40%);background-size:3px 3px;background-position:0 100%;border-radius:30%;margin-right:.5rem}
+    .m:active {cursor:grabbing}
+    .f {height:1.2rem;margin-right:.3rem;}
+    [draggable] {user-select:none;-khtml-user-drag:element;-webkit-user-drag:element}
+    [draggable] input {user-select:auto}
+    #l {padding:0;margin:0;list-style:none}
+    #l li {margin:0;border-top:2px solid transparent;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;white-space:nowrap;align-items: center;}
+    #l li.over {border-top:2px solid #3c81e7}
+    #l li:last-child {border-bottom:none}
+    #l li * {vertical-align: middle;}
+    #l a {color:var(--tc);text-decoration:none;line-height:1.9rem;display: inline-block;}
+    #n {box-sizing:border-box;background:var(--bd);color:var(--tc);overflow:hidden;transition:height .2s linear;height:0}
+    #mt:checked ~ #n {height:9rem;}
+    #n_ {padding:1rem}
+    #n input {padding:7px;outline:none;border:none;width:80%;margin:0 auto .5rem;display:block}
+    #t, #n button {margin:10px 0;background:var(--bb);border:none;color:var(--ab);padding:5px 15px;width:100%;height:35px;cursor:pointer;display:block;text-align:center;box-sizing:border-box;font-size:.9rem}
+    #title {transform: scale(.85)}
+
+  </style>
+</head>
+<body>
+  <div id=c>
+    <input type=checkbox id=mt hidden>
+    <ul id=l>
+      <li draggable=true>
+        <a class=link href="https://www.systemshock.org/">
+          <i class=m title="Drag This Link To Another Position"></i>
+          <img class=f src="https://www.google.com/s2/favicons?sz=32&domain_url=www.systemshock.org">
+          <span class=title>Systemshock.org</span>
+        </a>
+        <div>
+          <form class=g action="https://google.com/search?" method=get>
+            <input type=submit hidden>
+            <input class=s type=text name=q placeholder="🔎" title="Search in Systemshock.org" draggable=true>
+            <input type=hidden name=sitesearch value="systemshock.org">
+          </form>
+          <button class=d title="Delete This Link">×</button>
+        </div>
+      </li>
+      <li draggable=true>
+        <a class=link href="https://old.reddit.com/hot/">
+          <i class=m title="Drag This Link To Another Position"></i>
+          <img class=f src="https://www.google.com/s2/favicons?sz=32&domain_url=old.reddit.com">
+          <span class=title>Reddit</span>
+        </a>
+        <div>
+          <form class=g action="https://google.com/search?" method=get>
+            <input type=submit hidden>
+            <input class=s type=text name=q placeholder="🔎" title="Search in Reddit" draggable=true>
+            <input type=hidden name=sitesearch value="reddit.com">
+          </form>
+          <button class=d title="Delete This Link">×</button>
+        </div>
+      </li>
+      <li draggable=true>
+        <a class=link href="https://bandcamp.com/">
+          <i class=m title="Drag This Link To Another Position"></i>
+          <img class=f src="https://www.google.com/s2/favicons?sz=32&domain_url=bandcamp.com">
+          <span class=title>Bandcamp</span>
+        </a>
+        <div>
+          <form class=g action="https://google.com/search?" method=get>
+            <input type=submit hidden>
+            <input class=s type=text name=q placeholder="🔎" title="Search in Bandcamp" draggable=true>
+            <input type=hidden name=sitesearch value="bandcamp.com">
+          </form>
+          <button class=d title="Delete This Link">×</button>
+        </div>
+      </li>
+    </ul>
+    <label for=mt id=t>Manage Links</label>
+    <div id=n>
+      <div id=n_>
+        <input id=url type=text placeholder="https://" />
+        <input id=title type=text placeholder="Title (optional)"/>
+        <button id=add>Save New Link</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    //--------------------Drag & Drop------------------------------
+    let dragSrcEl
+
+    function handleDragStart(e) {
+      dragSrcEl = this
+      e.dataTransfer.effectAllowed = 'move'
+      e.dataTransfer.setData('text/html', this.outerHTML)
+    }
+
+    const dragOver = (e) =>{
+      if (e.preventDefault) e.preventDefault()
+      e.dataTransfer.dropEffect = 'move'
+      return false
+    }
+
+    let dragEnterTarget;
+
+    const dragEnter = (e) => {
+      const target = e.target.closest('LI')
+      if (target) {
+        target.classList.add('over')
+        dragEnterTarget = target
+      } else {
+        //dragged outside dropzone, cancel all meetings
+        l.querySelectorAll('LI').forEach((el) => {
+          el.classList.remove('over')
+        })
+      }
+    }
+
+    const dragLeave = (e) => {
+      l.querySelectorAll('LI').forEach((el) => {
+        if (el !== dragEnterTarget) el.classList.remove('over')
+      })
+    }
+
+    function drop(e) {
+      if (e.stopPropagation) e.stopPropagation()
+      if (dragSrcEl != this) {
+        this.parentNode.removeChild(dragSrcEl)
+        var dropHTML = e.dataTransfer.getData('text/html')
+        this.insertAdjacentHTML('beforebegin',dropHTML)
+        var dropElem = this.previousSibling
+        addDnDHandlers(dropElem)
+      }
+      this.classList.remove('over')
+      save()
+      if (dropElem) itemDeleteHandler(dropElem.querySelector('.d'))
+      return false
+    }
+
+    const addDnDHandlers = (el) => {
+      el.addEventListener('dragstart', handleDragStart)
+      el.addEventListener('dragenter', dragEnter)
+      el.addEventListener('dragover', dragOver)
+      el.addEventListener('dragleave', dragLeave)
+      el.addEventListener('drop', drop)
+    }
+    l.querySelectorAll('LI').forEach((el) => {
+      addDnDHandlers(el)
+    })
+    //dragged outside dropzone
+    window.addEventListener('dragenter', dragEnter)
+
+    const removeDrag = (el) => {
+      el.addEventListener('dragstart', (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      })
+    }
+    l.querySelectorAll('INPUT[type="text"]').forEach((el) => {
+      removeDrag(el)
+    })
+
+    //----------------------Link Handling-----------------------
+
+    //data to be saved
+    const getLinksFromHtml = () => {
+      const arr = []
+      l.querySelectorAll('LI').forEach((el) => {
+        arr.push ( {"link":el.querySelector('.link').href,"title":el.querySelector('.title').innerHTML} );
+      })
+      return JSON.stringify(arr.reverse())
+    }
+
+    const save = () => localStorage.setItem('sp-links', getLinksFromHtml())
+    const fragmentFromString = (strHTML) => document.createRange().createContextualFragment(strHTML);
+    const noWWW = (str) => str.replace("www.", "")
+
+    //add new item from json or form
+    const addNewItem = (loadUrl,loadTitle) => {
+      const realUrl = loadUrl ? new URL(loadUrl) : new URL(url.value)
+      const realTitle = loadTitle || title.value || noWWW(realUrl.hostname)
+      const searchPattern = 'https://google.com/search?'
+      const frag = fragmentFromString(`
+      <li draggable=true>
+        <div>
+          <i class=m title="Drag This Link To Another Position"></i>
+            <a class=link href="${realUrl}">
+            <img class=f src="https://www.google.com/s2/favicons?sz=32&domain_url=${realUrl.host}">
+            <span class=title>${realTitle}</span>
+          </a>
+        </div>
+        <div>
+          <form class=g action="${searchPattern}" method=get><input type=submit hidden>
+            <input class=s type=text name=q placeholder="🔎" title="Search in ${realTitle.value||noWWW(realUrl.hostname)}" draggable=true>
+            <input type=hidden name=sitesearch value="${noWWW(realUrl.hostname)}">
+          </form>
+          <button class=d title="Delete This Link">×</button>
+        </div>
+      </li>`)
+      //add the new item at the top of the linklist and attach link handlers to it
+      l.prepend(frag)
+      itemDeleteHandler(l.querySelector('LI:first-of-type .d'))
+      addDnDHandlers(l.querySelector('LI:first-of-type'))
+      removeDrag(l.querySelector('LI:first-of-type INPUT[type="text"]'))
+      //are we adding an item from the new link form?
+      if(!loadUrl) {
+        save()
+        //reset form
+        title.value = ''
+        url.value =''
+      }
+    }
+    add.addEventListener('click', ()=>addNewItem())
+
+    //deleting items
+    const itemDeleteHandler = (x) => {
+      x.addEventListener('click', (e) => {
+        e.currentTarget.parentElement.parentElement.remove()
+        save()
+      })
+    }
+    document.querySelectorAll('.d').forEach((x) => itemDeleteHandler(x))
+
+    //new link form
+    t.addEventListener('click', (e) => {
+      url.focus()
+      n.addEventListener('keydown', (e) => {
+        if (event.keyCode == 13) {
+          addNewItem()
+        }
+      })
+    })
+
+    //loading links from localstorage json
+    const loadLinks = () => {
+      const links = JSON.parse(localStorage.getItem('sp-links'))
+      if (links) {
+        l.innerHTML = ''
+        links.forEach((link) => {
+          addNewItem(link.link, link.title)
+        })
+      }
+    }
+    loadLinks()
+  </script>
+</body>
+</html>
