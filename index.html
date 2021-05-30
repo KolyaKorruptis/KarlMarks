@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang=en>
 <head>
   <title>Startpage</title>
   <meta charset="utf-8">
@@ -10,7 +10,7 @@
     html, body {height:100%;font-size:clamp(12px,3vw, 18px)}
     body {font-family:system-ui;background:var(--bg);color:var(--tc);display:flex;justify-content:center;align-items:center}
     input:focus { outline:none}
-    [hidden] {display:none}
+    [hidden] {display:none !important}
     #c {margin:20px 0;width:clamp(320px, 600px, 100vw);margin:0 auto}
     .d {border:none;background:none;color:var(--tc);cursor:pointer;font-size:1rem;display:none}
     #mt:checked ~ #l :is(.m,.d) {display:inline-block}
@@ -34,12 +34,13 @@
     #l li * {vertical-align: middle;}
     #l a {color:var(--tc);text-decoration:none;line-height:1.9rem;display: inline-block;}
     #n {box-sizing:border-box;background:var(--bd);color:var(--tc);overflow:hidden;transition:max-height .2s linear;max-height:0}
-    #mt:checked ~ #n {max-height:11rem;}
+    #mt:checked ~ #n {max-height:13rem;}
     #n_ {padding:1rem}
     #n input {padding:7px;outline:none;border:none;width:80%;margin:0 auto .5rem;display:block}
-    #t, #n button {margin:10px 0;background:var(--bb);border:none;color:var(--ab);padding:5px 15px;width:100%;height:35px;cursor:pointer;display:block;text-align:center;box-sizing:border-box;font-size:.9rem}
+    #t, #add {margin:10px 0;background:var(--bb);border:none;color:var(--ab);padding:5px 15px;width:100%;height:35px;cursor:pointer;display:block;text-align:center;box-sizing:border-box;font-size:.9rem}
     #title, #icon {transform: scale(.85)}
-
+    #file {display:flex;justify-content:space-between}
+    #dl, [for=up] {cursor:pointer;width:1.5rem;background:var(--bg);text-align:center;border: 1px solid var(--tc)}
   </style>
 </head>
 <body>
@@ -99,6 +100,10 @@
         <input id=title type=text placeholder="Title (optional)"/>
         <input id=icon type=text placeholder="Icon URL (optional)"/>
         <button id=add>Save New Link</button>
+        <aside id=file>
+          <span id=dl title="Download Link Collection">&#x21e9;</span>
+          <input type="file" id=up accept=".json" hidden><label for=up title="Upload Link Collection">&#x21e7;</label>
+        </aside>
       </div>
     </div>
   </div>
@@ -247,9 +252,9 @@
     })
     add.addEventListener('click', addNewItemFromLinkForm)
 
-    //loading links from localstorage json
-    const loadLinks = () => {
-      const links = JSON.parse(localStorage.getItem('sp-links'))
+    //loading links from localstorage json or file
+    const loadLinks = (str) => {
+      const links = str? JSON.parse(str) : JSON.parse(localStorage.getItem('sp-links'))
       if (links) {
         l.innerHTML = ''
         links.forEach((link) => {
@@ -258,6 +263,32 @@
       }
     }
     loadLinks()
+
+    //download
+    const download = () => {
+      const element = document.createElement('a');
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(localStorage.getItem('sp-links')))
+      element.setAttribute('download', 'StartPageLinks.json')
+      element.style.display = 'none'
+      document.body.appendChild(element)
+      element.click()
+      document.body.removeChild(element)
+    }
+    dl.addEventListener('click', download)
+
+    //upload
+    const sel = document.getElementById('up');
+    sel.addEventListener('change', (event) => {
+      let str = ''
+      const file = event.target.files[0];
+      const reader = new FileReader()
+      reader.addEventListener('load', event => {
+        str = event.target.result
+        loadLinks(str)
+        save()
+      })
+      reader.readAsText(file)
+    })
   </script>
 </body>
 </html>
