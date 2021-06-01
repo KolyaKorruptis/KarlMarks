@@ -5,42 +5,38 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
-    :root {--bg:#333;--tc:#eee;--bd:#444;--bb:#1a65d5;--ab:#eee}
-    @media (prefers-color-scheme: light) {:root{--bg:#eee;--tc:#333;--bd:#d4d4d4;}}
+    :root {--bg:#333;--tc:#eee;--bd:#444;--bb:#d51a7e;--ab:#eee;--hc:rgba(0,150,150,1)}
+    @media (prefers-color-scheme: light) {:root{--bg:#eee;--tc:#333;--bd:#d4d4d4;--bb:#1a65d5;--hc:transparent}}
     html, body {height:100%;font-size:clamp(12px,3vw, 18px)}
     body {font-family:system-ui;background:var(--bg);color:var(--tc);display:flex;justify-content:center;align-items:center}
     input:focus { outline:none}
     [hidden] {display:none !important}
-    #c {margin:20px 0;width:clamp(320px, 600px, 100vw);margin:0 auto}
-    .d {border:none;background:none;color:var(--tc);cursor:pointer;font-size:1rem;display:none}
-    #mt:checked ~ #l :is(.m,.d) {display:inline-block}
-    .d:hover,#l a:hover,.m:hover,#t:hover,#n button:hover {filter:brightness(1.2) contrast(200%)}
-    .g {display:inline-block;max-width:1.5rem;line-height:1rem;transition:max-width .2s linear}
-    .g:focus-within {max-width:200px}
-    #mt:checked ~ #l .g {display:none}
-    .s {border:none;padding:.2rem .25rem;width:100%;box-sizing:border-box}
-    .s {-webkit-text-fill-color:var(--tc);-webkit-box-shadow:0 0 0px 1000px var(--bg) inset}
-    .g:focus-within .s {-webkit-text-fill-color:inherit;-webkit-box-shadow:inherit}
-    input.s::placeholder {text-align:right}
-    .m {display:none;width:18px;height:18px;cursor:grab;background-image:radial-gradient(gray 30%, transparent 40%);background-size:3px 3px;background-position:0 100%;border-radius:30%;margin-right:.5rem}
+    #c {margin:20px 0;width:clamp(320px, 500px, 100vw);margin:0 auto}
+    .d{border:none;background:0 0;color:var(--tc);cursor:pointer;font-size:1rem;display:none;margin-right:.2rem}
+    #mt:checked ~ #l .d {display:inline-block}
+    .d:hover,#l a:hover,.m:hover,#t:hover,#n button:hover, #dl:hover, [for=up]:hover {opacity:1;filter:brightness(1.2) contrast(200%) drop-shadow(0 0 5px var(--hc))}
+    .m {display: inline-block;width:24px;height:24px;cursor:grab;background-image:radial-gradient(gray 30%, transparent 40%);background-size:3px 3px;background-position:0 100%;border-radius:30%}
     .m:active {cursor:grabbing}
     .f {margin-right:.3rem;height:1.2rem;width:1.2rem;object-fit:cover}
+    #mt:checked~#l .f{display:none}
     [draggable] {user-select:none;-khtml-user-drag:element;-webkit-user-drag:element}
     [draggable] input {user-select:auto}
     #l {padding:0;margin:0;list-style:none}
-    #l li {margin:0;border-top:2px solid transparent;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;white-space:nowrap;align-items: center;}
-    #l li.over {border-top:2px solid #3c81e7}
+    #l li {margin:0;border-top:1px solid transparent;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;white-space:nowrap;align-items: center;}
+    #l li.over {border-top:1px solid #3c81e7;filter:brightness(1.2)}
     #l li:last-child {border-bottom:none}
     #l li * {vertical-align: middle;}
     #l a {color:var(--tc);text-decoration:none;line-height:1.9rem;display: inline-block;}
     #n {box-sizing:border-box;background:var(--bd);color:var(--tc);overflow:hidden;transition:max-height .2s linear;max-height:0}
-    #mt:checked ~ #n {max-height:13rem;}
-    #n_ {padding:1rem}
-    #n input {padding:7px;outline:none;border:none;width:80%;margin:0 auto .5rem;display:block}
-    #t, #add {margin:10px 0;background:var(--bb);border:none;color:var(--ab);padding:5px 15px;width:100%;height:35px;cursor:pointer;display:block;text-align:center;box-sizing:border-box;font-size:.9rem}
-    #title, #icon {transform: scale(.85)}
+    #mt:checked ~ #n {max-height:15rem;}
+    #n_ {padding:1rem 1rem 0}
+    #n input{padding:7px;outline:0;border:none;width:100%;box-sizing:border-box;display:block;font-size:1rem}
+    #add,#dl,#t,[for=up]{opacity:.9;margin:10px 0;background:var(--bb);border:none;color:var(--ab);padding:5px 15px;width:100%;height:35px;cursor:pointer;display:block;text-align:center;box-sizing:border-box;font-size:.9rem}
+    #dl,[for=up]{background:transparent;color: var(--tc);}
+    #dl{margin-right:1px}
+    #title, #icon{transform: scale(.75);transform-origin: left bottom}
     #file {display:flex;justify-content:space-between}
-    #dl, [for=up] {cursor:pointer;width:1.5rem;background:var(--bg);text-align:center;border: 1px solid var(--tc)}
+    h2{font-size:1rem}
   </style>
 </head>
 <body>
@@ -49,60 +45,40 @@
     <ul id=l>
       <li draggable=true>
         <a class=link href="https://www.systemshock.org/">
-          <i class=m title="Drag This Link To Another Position"></i>
+          <button class=d title="Delete This Link">×</button>
           <img class=f src="https://www.google.com/s2/favicons?sz=32&domain_url=www.systemshock.org">
           <span class=title>Systemshock.org</span>
         </a>
-        <div>
-          <form class=g action="https://google.com/search?" method=get>
-            <input type=submit hidden>
-            <input class=s type=text name=q placeholder="🔎" title="Search in Systemshock.org" draggable=true>
-            <input type=hidden name=sitesearch value="systemshock.org">
-          </form>
-          <button class=d title="Delete This Link">×</button>
-        </div>
+        <i class=m title="Drag This Link To Another Position"></i>
       </li>
       <li draggable=true>
         <a class=link href="https://old.reddit.com/hot/">
-          <i class=m title="Drag This Link To Another Position"></i>
+          <button class=d title="Delete This Link">×</button>
           <img class=f src="https://www.google.com/s2/favicons?sz=32&domain_url=old.reddit.com">
           <span class=title>Reddit</span>
         </a>
-        <div>
-          <form class=g action="https://google.com/search?" method=get>
-            <input type=submit hidden>
-            <input class=s type=text name=q placeholder="🔎" title="Search in Reddit" draggable=true>
-            <input type=hidden name=sitesearch value="reddit.com">
-          </form>
-          <button class=d title="Delete This Link">×</button>
-        </div>
+        <i class=m title="Drag This Link To Another Position"></i>
       </li>
       <li draggable=true>
         <a class=link href="https://bandcamp.com/">
-          <i class=m title="Drag This Link To Another Position"></i>
+          <button class=d title="Delete This Link">×</button>
           <img class=f src="https://www.google.com/s2/favicons?sz=32&domain_url=bandcamp.com">
           <span class=title>Bandcamp</span>
         </a>
-        <div>
-          <form class=g action="https://google.com/search?" method=get>
-            <input type=submit hidden>
-            <input class=s type=text name=q placeholder="🔎" title="Search in Bandcamp" draggable=true>
-            <input type=hidden name=sitesearch value="bandcamp.com">
-          </form>
-          <button class=d title="Delete This Link">×</button>
-        </div>
+        <i class=m title="Drag This Link To Another Position"></i>
       </li>
     </ul>
     <label for=mt id=t>Manage Links</label>
     <div id=n>
       <div id=n_>
+        <h2>Add New Link</h2>
         <input id=url type=text placeholder="https://" />
         <input id=title type=text placeholder="Title (optional)"/>
         <input id=icon type=text placeholder="Icon URL (optional)"/>
         <button id=add>Save New Link</button>
         <aside id=file>
-          <span id=dl title="Download Link Collection">&#x21e9;</span>
-          <input type="file" id=up accept=".json" hidden><label for=up title="Upload Link Collection">&#x21e7;</label>
+          <span id=dl >&#x21e9; Download Links</span>
+          <input type="file" id=up accept=".json" hidden><label for=up>Upload Links &#x21e7;</label>
         </aside>
       </div>
     </div>
@@ -172,16 +148,6 @@
     //dragged outside dropzone
     window.addEventListener('dragenter', dragEnter)
 
-    const removeDrag = (el) => {
-      el.addEventListener('dragstart', (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-      })
-    }
-    l.querySelectorAll('INPUT[type="text"]').forEach((el) => {
-      removeDrag(el)
-    })
-
     //----------------------Link Handling-----------------------
 
     //data to be saved
@@ -206,25 +172,18 @@
       const frag = fragmentFromString(`
       <li draggable=true>
         <div>
-          <i class=m title="Drag This Link To Another Position"></i>
-            <a class=link href="${realUrl}">
+          <button class=d title="Delete This Link">×</button>
+          <a class=link href="${realUrl}">
             <img class=f src="${realIcon}">
             <span class=title>${realTitle}</span>
           </a>
         </div>
-        <div>
-          <form class=g action="${searchPattern}" method=get><input type=submit hidden>
-            <input class=s type=text name=q placeholder="🔎" title="Search in ${realTitle.value||noWWW(realUrl.hostname)}" draggable=true>
-            <input type=hidden name=sitesearch value="${noWWW(realUrl.hostname)}">
-          </form>
-          <button class=d title="Delete This Link">×</button>
-        </div>
+        <i class=m title="Drag This Link To Another Position"></i>
       </li>`)
       //add the new item at the top of the linklist and attach link handlers to it
       l.prepend(frag)
       itemDeleteHandler(l.querySelector('LI:first-of-type .d'))
       addDnDHandlers(l.querySelector('LI:first-of-type'))
-      removeDrag(l.querySelector('LI:first-of-type INPUT[type="text"]'))
     }
 
     //deleting items
