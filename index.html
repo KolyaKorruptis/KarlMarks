@@ -5,10 +5,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
-    :root {--bg:#333;--tc:#eee;--bd:#444;--bb:#d51a7e;--ab:#eee;--hc:rgba(0,150,150,1)}
-    @media (prefers-color-scheme: light) {:root{--bg:#eee;--tc:#333;--bd:#d4d4d4;--bb:#1a65d5;--hc:transparent}}
+    :root{--bg:#333;--tc:#eee;--bd:#444;--bda:rgba(68,68,68,.3);--bb:#d51a7e;--ab:#eee;--hc:#009696;--bdb:linear-gradient(to bottom,rgba(0,0,0,.5) 0,rgba(0,0,0,.1) 50%,rgba(0,0,0,.5)100%) repeat fixed 0 0,url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAVhJREFUeNpslNmOwjAMRdMNCvSlPLS/Oz/MG1XZWoZjdKpoNJZKYsfL9XVC0ff9T/pIWZYs6f1+p6Io0rqusSLLssQ5ujbk8XikkoCqqsKJPYHoOqLnyV+v17Zirz+yVWDd7XZpmqb0fD7D6Xg8RjL8EJKLOD6ChNk0TaxUBR6VSGY1dFGKriYjRhFQjQDFMxHkLUWC+/2+wSKYw8PhsPUJKuwiogjJCEavccCAA4no/XQ6BRcIK0VsIyeYuBojQaw4WnEcx9hfLpetlXzE6jWKo2vbNiDO8xzJDBC2HDmNmI4kenEk7e/8LeLIQRfkXq/XUPb7fTj+dxslmWB5ut1uX16Aanbn6zRMpLCnEAloM7iTg9xZgqzqzbMFbUyo5CfvzWDhKhbBDtn4Mvp6GIbY0I+vzXZ8Az40X2TXdfHFTQQBvci0j8RWck5sl4Tn8zl9/grSrwADAG23WlAleCEjAAAAAElFTkSuQmCC) repeat fixed 0 0 var(--bg)}
+    @media (prefers-color-scheme: light) {:root{--bg:#eee;--tc:#333;--bd:#d4d4d4;--bb:#1a65d5;--hc:transparent;--bdb:var(--bg)}}
     html, body {height:100%;font-size:clamp(12px,3vw, 18px)}
-    body {font-family:system-ui;background:var(--bg);color:var(--tc);display:flex;justify-content:center;align-items:center}
+    body {background:var(--bdb);font-family:system-ui;color:var(--tc);display:flex;justify-content:center;align-items:center}
     input:focus { outline:none}
     [hidden] {display:none !important}
     #c {margin:20px 0;width:clamp(320px, 500px, 100vw);margin:0 auto}
@@ -27,7 +27,7 @@
     #l li:last-child {border-bottom:none}
     #l li * {vertical-align: middle;}
     #l a {color:var(--tc);text-decoration:none;line-height:1.9rem;display: inline-block;}
-    #n {box-sizing:border-box;background:var(--bd);color:var(--tc);overflow:hidden;transition:max-height .2s linear;max-height:0}
+    #n {box-sizing:border-box;background:var(--bda);color:var(--tc);overflow:hidden;transition:max-height .2s linear;max-height:0}
     #mt:checked ~ #n {max-height:15rem;}
     #n_ {padding:1rem 1rem 0}
     #n input{padding:7px;outline:0;border:none;width:100%;box-sizing:border-box;display:block;font-size:1rem}
