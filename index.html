@@ -5,10 +5,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
-    :root{--bg:#262626;--bg2:#000;--bgg:linear-gradient(to bottom,rgba(0,0,0,.5) 0,rgba(0,0,0,.1) 50%,rgba(0,0,0,.5)100%) repeat fixed 0 0,;--tc:#eee;--bd:#444;--bda:rgba(68,68,68,.3);--bb:#d51a7e;--ab:#eee;--hc:#009696;}
-    @media (prefers-color-scheme: light) {:root{--bg:#c4c1bc;--bg2:#aba6a0;--bgg: ;--tc:#333;--bd:#d4d4d4;--bda:rgb(212,212,212,.4);--bb:#1a65d5;--hc:transparent;}}
+    :root{--bg:#262626;--bg2:#000;--tc:#eee;--bd:#444;--bda:rgba(68,68,68,.3);--bb:#d51a7e;--ab:#eee;--hc:#009696;}
+    @media (prefers-color-scheme: light) {:root{--bg:#c4c1bc;--bg2:#aba6a0;--tc:#333;--bd:#d4d4d4;--bda:rgb(212,212,212,.4);--bb:#1a65d5;--hc:transparent;}}
     html, body {height:100%;font-size:clamp(12px,3vw, 18px)}
-    body {background:var(--bgg)var(--bg) radial-gradient(var(--bg2) 1px, transparent 1px) 0 0/12px 12px repeat fixed;font-family:system-ui;color:var(--tc);display:flex;justify-content:center;align-items:center}
+    body{background:radial-gradient(var(--bg2) 15%,transparent 16%) 0 0,radial-gradient(var(--bg2) 15%,transparent 16%) 8px 8px,radial-gradient(rgba(255,255,255,.1) 15%,transparent 20%) 0 1px,radial-gradient(rgba(255,255,255,.1) 15%,transparent 20%) 8px 9px,var(--bg);background-size:16px 16px;background-attachment:fixed;font-family:system-ui;color:var(--tc);display:flex;justify-content:center;align-items:center}
     input:focus { outline:none}
     [hidden] {display:none !important}
     #c {margin:20px 0;width:clamp(320px, 500px, 100vw);margin:0 auto}
