@@ -5,6 +5,7 @@ This repo contains a custom browser startpage with a simple bookmark system. It 
   - bookmarks are stored in localstorage
   - bookmarks can be downloaded and uploaded for sharing between browsers and systems
   - bookmark icons are retrieved from google
+  - mobile and desktop supported
   - all in one file for optimized caching
 ## Live URL
 http://kolya.schwarzsilber.de/startpage
