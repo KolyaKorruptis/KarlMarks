@@ -210,13 +210,16 @@
 
     //also add new item via return key
     mt.addEventListener('change', (e) => {
-      if (mt.checked) {
+      if (e.currentTarget.checked) {
         url.focus()
         n.addEventListener('keydown', (e) => {
           if (event.keyCode == 13) addNewItemFromLinkForm()
         })
       }
     })
+
+    //disable autocomplete on mobile devices
+    if (window.innerWidth < 600) url.setAttribute( "autocomplete", "off" );
 
     //loading links from localstorage json or file
     const loadLinks = (str) => {
