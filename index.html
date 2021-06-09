@@ -143,6 +143,13 @@
       el.addEventListener('dragover', dragOver)
       el.addEventListener('dragleave', dragLeave)
       el.addEventListener('drop', drop)
+
+      el.addEventListener('touchstart', handleDragStart)
+      el.addEventListener('touchend', drop)
+      el.addEventListener('touchleave', dragLeave)
+      el.addEventListener('touchmove', dragOver)
+      el.addEventListener('touchcancel', drop)
+
     }
     l.querySelectorAll('LI').forEach((el) => {
       addDnDHandlers(el)
