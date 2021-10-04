@@ -8,7 +8,7 @@ This repo contains a custom browser startpage with a simple bookmark system. It 
   - mobile and desktop supported
   - all in one file for optimized caching
 ## Live URL
-http://kolya.schwarzsilber.de/startpage
+https://kolya.schwarzsilber.de/startpage
 
 ## Usage
 If you use the live url you will get automatic updates as development continues.
