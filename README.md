@@ -17,7 +17,8 @@ Or you can download the file in the repository and place it anywhere (including 
 You will probably want to use an extension to set this as your new-tab-page:
 
   - Firefox: [New Tab Override](https://addons.mozilla.org/en-US/firefox/addon/new-tab-override/)
-  - Chrome: [New Tab Redirect](https://chrome.google.com/webstore/detail/new-tab-redirect/icpgjfneehieebagbmdbhnlpiopdcmna)
+  - Chrome: [blank](https://chrome.google.com/webstore/detail/blank/blomfhkjjolopkkglifoclbjmbbambpg)
+  - Edge: [blank](https://microsoftedge.microsoft.com/addons/detail/blank/edoamabjjoiebpcmbkenbglenadopben)
 
 ## Notes
 This is a hobby project I wrote for my own amusement. A few coding standards have been knowingly broken:
