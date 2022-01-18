@@ -5,8 +5,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
-    :root{--bg:#262626;--bg2:#000;--tc:#eee;--bd:#444;--bda:rgba(68,68,68,.3);--bb:#d51a7e;--ab:#eee;--hc:#009696;}
-    @media (prefers-color-scheme: light) {:root{--bg:#c4c1bc;--bg2:#aba6a0;--tc:#333;--bd:#d4d4d4;--bda:rgb(212,212,212,.4);--bb:#1a65d5;--hc:transparent;}}
+    :root{--bg:#262626;--bg2:#000;--tc:#eee;--bd:#444;--bb:#d51a7e;--ab:#eee;--hc:#009696;}
+    @media (prefers-color-scheme: light) {:root{--bg:#c4c1bc;--bg2:#aba6a0;--tc:#333;--bd:#d4d4d4;--bb:#1a65d5;--hc:transparent;}}
     @media (max-width: 600px) { #c{margin-top:0} }
     html, body {height:100%;font-size:clamp(16px,4vw, 18px);margin:0;}
     body{background:radial-gradient(var(--bg2) 15%,transparent 16%) 0 0,radial-gradient(var(--bg2) 15%,transparent 16%) 8px 8px,radial-gradient(rgba(255,255,255,.1) 15%,transparent 20%) 0 1px,radial-gradient(rgba(255,255,255,.1) 15%,transparent 20%) 8px 9px,var(--bg);background-size:16px 16px;background-attachment:fixed;font-family:system-ui;color:var(--tc);display:flex}
@@ -28,7 +28,7 @@
     #l li:last-child {border-bottom:none}
     #l li * {vertical-align: middle;}
     #l a {color:var(--tc);text-decoration:none;line-height:1.9rem;display: inline-block;}
-    #n {box-sizing:border-box;background:var(--bda);color:var(--tc);overflow:hidden;transition:max-height .2s linear;max-height:0}
+    #n {box-sizing:border-box;color:var(--tc);overflow:hidden;transition:max-height .2s linear;max-height:0}
     #mt:checked ~ #n {max-height:15rem;}
     #n_ {padding:1rem 1rem 0}
     #n input{padding:7px;outline:0;border:none;width:100%;box-sizing:border-box;display:block;font-size:1rem}
