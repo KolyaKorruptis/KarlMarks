@@ -29,13 +29,12 @@
     #l li * {vertical-align: middle;}
     #l a {color:var(--tc);text-decoration:none;line-height:1.9rem;display: inline-block;}
     #n {box-sizing:border-box;color:var(--tc);overflow:hidden;transition:max-height .2s linear;max-height:0}
-    #mt:checked ~ #n {max-height:15rem;}
-    #n_ {padding:1rem 1rem 0}
-    #n input{padding:7px;outline:0;border:none;width:100%;box-sizing:border-box;display:block;font-size:1rem}
+    #mt:checked ~ #n {max-height:17rem;}
+    #n input,#n button{padding:7px;outline:0;border:none;width:100%;box-sizing:border-box;display:block;font-size:1rem}
     #add,#dl,#t,[for=up]{opacity:.9;margin:10px 0;background:var(--bb);border:none;color:var(--ab);padding:5px 15px;width:100%;height:35px;cursor:pointer;display:block;text-align:center;box-sizing:border-box;font-size:.9rem}
     #dl,[for=up]{background:transparent;color: var(--tc);}
     #dl{margin-right:1px}
-    #title, #icon{transform: scale(.75);transform-origin: left bottom}
+    #title,#icon,#fileSelect{transform: scale(.75);transform-origin: left bottom}
     #file {display:flex;justify-content:space-between}
     h2{font-size:1rem}
   </style>
@@ -47,7 +46,7 @@
       <li draggable=true>
         <a class=link href="https://www.systemshock.org/">
           <button class=d title="Delete This Link">×</button>
-          <img class=f src="https://www.google.com/s2/favicons?sz=32&domain_url=www.systemshock.org">
+          <img class=f src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAABLZJREFUSEuNVV1Mk1cYfs73tf0oLeO/FApYKc6fKo5B2BZxKy4jYwMTM11gZkoIQ5MRs0Uv3G4MN3ghV3i7ccGNS0w2E2RiVgRRHIi4gJtTmIXCOouUn1IotP2+c5bvoAhCiO/Vyfl53nPO+zzPS7BBlJRkS4sZsVtJKFIMIhySw0oOlamBACAaYUEjiYOg9BdFq/nNoJ9zXbv4T+hVGHXvmnBU5CURSalnlJY9G/Wn+Mb9JLQQgSJTvs+YoMfOwkwwyhgIJgSBXKVL4nedl/p9q4FWAxNHVW6eyNCqUGpyDz7DyB9P173HmKiH/YMt0EVpIWoEvi6IwiQUWnqjeaAPAFPnVoAdX+bmE5H9xCizMcrw39AUhu96+EGtVotIJMLHOp0OsiIjJlGPlKx4pGYn8HlC2BOFCF/cah64uwL84bGCRCqE/2aUJTPGMNzrwdPhadhsNpw7dw6BQACnTp2Coii4cOECn6+vr8f9+/dhssVhYXoRcWYjbPlpkywk7lK/haiFWkoxXmSMfcUUhuE+D3wjARw/fhyVlZW4c+cOWlpacPv2bahJCwoKUFxcjJKSEvT09PAEPp8PGp0Iu8OKREvMD5J3vpY4KvN2gCo3Bp2uVP0bWngeTcFiseD69es4ffo0nE4nv+mawhCCzMxMNDU1oaqqCm63my9LBi3e+2ynF4K2iDiO7a31jfkb/+wcXcOQ6OhoBIPBjdi4MkcI4a9YHbv2b2GmrbHfkqLKve0Pu8YOTLhmlrNKEkKhdbTcNEFGRgY8Hg8opTBZ42Avst4k7x/d7Rt0jibOTsxDr9ejq6sLZ8+eRXt7+6ZgLxZzcnL4txUWFsI9PorkzFi8+a5lhuz73L404HRJ89OLSE9PR19fHw4fPozu7u7XAjabzfyM+tcPRvqRnZ8GrSSG1gCrm1QKlZeX85u/TiQnJ6O/vx8nT57EgOsutr1jUcURIvuP7pl6OjSVEJgKYubfIKfQ+fPncfny5dfBhdVqRWtrK44cOYJIjB+W7UkQCKbV4nUwCkfQH8K9lsdITU2D1+tdR7HNsmg0GlBGkffpNhjiokBE0snpBqBRkSkZdLrgf7bwXKLrqfQq+GpKRsdKyP04G1pJwxhh3xBH5Z4doOINgKWqMn78+zgMBgOam5vR2NjIFbeRQFRZX7lyBSdOnFgpdKzJgLc/yfYynaZoWdJmYyNTWI1K9r9uuhGYWEJNTQ0qKirQ29uLtrY2dHR0IBwOw2634+DBgygtLUVnZycaGhowMzPDJb37gBXxZuOPURMLX3O1qSYEIfwwMLtkund1CFSmUFWlFubMmTNISkpCdXU1N6Pa2lqUlZWhrq6OF1oVhRqZe0yw5a0yoRf/ptomA700OuDN9jzyQQ6/9AfVNmVZ5vJVC8XAIOoEhIMRftO07YnIyjU/UUDW2uZzcG70hLJfZyfmkx91j2NxblnaUQYdEtJj+NgYr0ec2QA5QvHwphs79mUgPjVmUqas9NZGRr9y84q8JEFS6iljZb4xf8rkmJ9I0VpkvWUGBAF4aTrLrUkkLXRR/H6z1rTCJt5MU2K3CpA/ogSHILMcIhDj8w0LEMgDUPozb6aeOde1a+ub6f/coitEsn+YYAAAAABJRU5ErkJggg==">
           <span class=title>Systemshock.org</span>
         </a>
         <i class=m title="Drag This Link To Another Position"></i>
@@ -55,7 +54,7 @@
       <li draggable=true>
         <a class=link href="https://old.reddit.com/hot/">
           <button class=d title="Delete This Link">×</button>
-          <img class=f src="https://www.google.com/s2/favicons?sz=32&domain_url=old.reddit.com">
+          <img class=f src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAAA5BJREFUSEt91V2IVVUYBuBnnTPjb1OWBZmljeQ0pRZIRaSo42igCWVQFqIjkRlECoGgESalgtnNXPQLlSOG04U/F2rp5KDGKIhGlinoOIr9GWVmoujMnLNj7z3n6Bkdv6u911rfu971fu/6VnCdiJ7TyxmDZI0TPC1vvGBAsjRyDt+JbJKzS19/hK9d7g4Trh6ICCYYKmu2jBcxHNnrbY68SKtIIxrscCLE23ZFKXCN+5X5BI+jdw+A3YfbsU/klfCtIyXACdMaVcpsxn09AmYyKacoL06RzZLLJfrgpLyn7HAkZp4wjia4V7kGjOsRNM4dM52Bgzn3F1GOylEcaOLnlgJ4i5y60Ox4SAr1r0V484bHz5bx+oc0raVff6a8zJhnaF7HqjnkO2NOsSwrlVkeoolJsb5B9Q01vW0QU+bSuIJcZ8p25tusW8bxH65ObRU8GaLJZuGLG1Q/TRoxlsHD2b66cOwrHiixQOKWuTHwejxb3LJoGJSVU/lQqm3VI+lx921NdT3d1lW46/grsiVEk/wtGJhMhyyja3m4huYvWdjA8NHXKhRF/LiL91/isam0HeTw3rSgaZyNGXfE3JLfISOob6H/Len05Yuc/ZM7K0vB/zlNxa2Ud1n9wjkWjOXUocK6zlLgoSOp30O/itSrzY1squeFRakccbRsZEM9015lwvOETEpgwRjaikXsLJUittSMRcxeml6Ar97js8W8Vs/0+Snw2ndZvYS6pcx8KwWO161ZQmfstitSbEAXnUDtLOZ/QN+buPgfp09SOTIFiCO+aYf3cE81A+6go52P32DzR103MjHN1hDVqpPxOdLMwVUsWZ+CxX7dvy0tZp9+KXD7JQ7uTMd69ea3VpbPoPX7Atv4vs8LyXUus01QlcyEwKjxrNxOpoyj+1m3go64M8b9IZZrIQ88kfp52YxU96R/JNEmb3KIpuitw2LBYvQqlv/uaua8k9qtYmDKPo5sORfOcvIQa5ZyLGZaNH+7yCqdlqVNqNYwmaQJjS0Cxx99+hNvMKSam29PGZ8/w69H+eVIWoOrI7JXUBeaHEuB44xJqgVb0M20XZmF4l05cnfQU9pNs9uhYtssrIhqPSjjUzxaIkspRPe/+PgHtJsXdvupMHnt0zTRMFl1JE/TsKJbrgXPC07IaxQ0aNLa49NUZB4XNOcueTVJgwpiC1R0zZ+XarlRXrOc38NOl7rv+z8cHy+kOa9eQgAAAABJRU5ErkJggg==">
           <span class=title>Reddit</span>
         </a>
         <i class=m title="Drag This Link To Another Position"></i>
@@ -63,25 +62,25 @@
       <li draggable=true>
         <a class=link href="https://bandcamp.com/">
           <button class=d title="Delete This Link">×</button>
-          <img class=f src="https://www.google.com/s2/favicons?sz=32&domain_url=bandcamp.com">
+          <img class=f src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAAAexJREFUSEvFlD9oU1EUh79zX2piXUUpJjaDk9LBraKFilBsFwUhi/94u3TqUlCaoji5WHBOS+0SEHRppQ6KrVIXF9HVaIKguFobk3eP3BfbvtIM9xWKZ773u7/z3XOvsE8l+8TlP4BVO4dOT6c/fGrq3+ZuPhYXs/kfh66JSg+B8TdmrYBsdE+jKoW51bsgk6j6Q91KoQVyeze4Wg3yf/InpR2tgeRAU8QlAj6aQC/uBHe8SmHuzQPQcQSDel+wa01EzPjXzy8e7QKfWHh3rNluvQcOx415l1hUPwS0B2vh+aRjlWLlVTYymQVULqdU4NKuY/VKPRxaRiQxFWU1/cW3oxb7DHBe/dM6kLVLzeB36fv1kfVtsKocnV/uzUYHq2rMKJsz7KfBpbUGvfSlNrREWWxnOFy58aqsjGB4AtKbKi1iEX0a2PbVWjjcBInnMwYXKy9zEZk1RAb24PanSnC6cePMN6dgs0mhXDbHixduKTx02b3TCopiQWbqN89OxHuT4P751302kufAKSDw0xo3a0E3NBMMNg40PlEqucexVVKYXZ0AvYfS4w+N+xIs9+vhuTvJpFsqCrMrIWgOY/w/hciioq3GkV+PGRtrdgsk8Wjt8WuMgQmvO1Skaj/FYv/XlQK6/UBSbvJZ/hc2xLGLF2gJpwAAAABJRU5ErkJggg==">
           <span class=title>Bandcamp</span>
         </a>
         <i class=m title="Drag This Link To Another Position"></i>
       </li>
     </ul>
-    <label for=mt id=t>Manage Links</label>
+    <label for=mt id=t>Manage</label>
     <div id=n>
-      <div id=n_>
-        <h2>Add New Link</h2>
-        <input id=url type=text placeholder="https://" />
-        <input id=title type=text placeholder="Title (optional)"/>
-        <input id=icon type=text placeholder="Icon URL (optional)"/>
-        <button id=add>Save New Link</button>
-        <aside id=file>
-          <span id=dl >&#x21e9; Download Links</span>
-          <input type="file" id=up accept=".json" hidden><label for=up>Upload Links &#x21e7;</label>
-        </aside>
-      </div>
+      <h2>Add New Link</h2>
+      <input id=url type=text placeholder="https://" />
+      <input id=title type=text placeholder="Title (optional)"/>
+      <input id=icon type=text placeholder="Icon URL (optional)"/>
+      <input id=fileElem type=file multiple accept="image/*" style="display:none">
+      <button id=fileSelect>Select local image as icon (optional)</button>
+      <button id=add>Save</button>
+      <aside id=file>
+        <span id=dl >&#x21e9; Download Links</span>
+        <input type="file" id=up accept=".json" hidden><label for=up>Upload Links &#x21e7;</label>
+      </aside>
     </div>
   </div>
   <script>
@@ -155,7 +154,7 @@
     const getLinksFromHtml = () => {
       const arr = []
       l.querySelectorAll('LI').forEach((el) => {
-        arr.push ( {"link":el.querySelector('.link').href,"title":el.querySelector('.title').innerHTML,"icon":el.querySelector('.f').src} );
+        arr.push ( {"link":el.querySelector('.link').href,"title":el.querySelector('.title').innerHTML,"icon":el.querySelector('.f').src} )
       })
       return JSON.stringify(arr.reverse())
     }
@@ -164,45 +163,69 @@
     const fragmentFromString = (strHTML) => document.createRange().createContextualFragment(strHTML);
     const noWWW = (str) => str.replace("www.", "")
 
-    const addNewItem = (loadUrl,loadTitle,loadIcon) => {
+    //add new item from json or form
+    const addNewItem = (loadUrl,loadTitle,loadIconUrl,file) => {
       const realUrl = new URL(loadUrl)
       const realTitle = loadTitle || noWWW(realUrl.hostname)
-      const realIcon = loadIcon || `https://www.google.com/s2/favicons?sz=32&domain_url=${realUrl.host}`
-      const searchPattern = 'https://google.com/search?'
-      const frag = fragmentFromString(`
-      <li draggable=true>
-        <div>
-          <button class=d title="Delete This Link">×</button>
-          <a class=link href="${realUrl}">
-            <img class=f src="${realIcon}">
-            <span class=title>${realTitle}</span>
-          </a>
-        </div>
-        <i class=m title="Drag This Link To Another Position"></i>
-      </li>`)
-      //add the new item at the top of the linklist and attach link handlers to it
-      l.prepend(frag)
-      itemDeleteHandler(l.querySelector('LI:first-of-type .d'))
-      addDnDHandlers(l.querySelector('LI:first-of-type'))
+      let realIcon = loadIconUrl || `https://www.google.com/s2/favicons?sz=32&domain_url=${realUrl.host}`
+      const prependLink = () => {
+        const frag = fragmentFromString(`
+        <li draggable=true>
+          <div>
+            <button class=d title="Delete This Link">×</button>
+            <a class=link href="${realUrl}">
+              <img class=f src="${realIcon}">
+              <span class=title>${realTitle}</span>
+            </a>
+          </div>
+          <i class=m title="Drag This Link To Another Position"></i>
+        </li>`)
+        //add the new item at the top of the linklist and attach link handlers to it
+        l.prepend(frag)
+        itemDeleteHandler(l.querySelector('LI:first-of-type .d'))
+        addDnDHandlers(l.querySelector('LI:first-of-type'))
+      }
+      // user selected a local image as icon
+      if (file) {
+        const promise = getLocalImageAsDataUri()
+        promise.then(dataUri => realIcon = dataUri).catch().finally(() => {
+          prependLink()
+          save()
+          mt.checked = false
+        })
+      } else {
+        prependLink()
+        save()
+        mt.checked = false
+      }
     }
 
-    // takes an image url and gives back the image as encoded data string
-    const getImageDataUri = (url) => {
+
+    fileSelect.addEventListener('click', function (e) {
+      fileElem.click()
+      e.preventDefault()
+    })
+
+    const getLocalImageAsDataUri = () => {
       return new Promise(function(resolve) {
-        const image = new Image()
-        image.addEventListener('load',() => {
-          const canvas = document.createElement('canvas')
-          canvas.width = 22
-          canvas.height = 22
-          const ratio = image.naturalWidth / image.naturalHeight
-          const width = canvas.width
-          const height = width / ratio
-          canvas.getContext('2d').drawImage(image, 0, 0, width, height)
-          const result = canvas.toDataURL('image/png')
-          resolve(result)
+        const file = fileElem.files[0]
+        const reader = new FileReader()
+        reader.addEventListener('load', function () {
+          const image = new Image()
+          image.crossOrigin = ''
+          image.addEventListener('load',() => {
+            const canvas = document.createElement('canvas')
+            canvas.width = 22
+            canvas.height = 22
+            const ratio = image.naturalWidth / image.naturalHeight
+            const width = canvas.width
+            const height = width / ratio
+            canvas.getContext('2d').drawImage(image, 0, 0, width, height)
+            resolve(canvas.toDataURL('image/png'))
+          })
+          image.src = reader.result
         })
-        image.crossOrigin = 'Anonymous'
-        image.src = url
+        reader.readAsDataURL(file)
       })
     }
 
@@ -217,11 +240,11 @@
 
     //new link form
     const addNewItemFromLinkForm = () => {
-      addNewItem(url.value, title.value, icon.value)
-      save()
+      addNewItem(url.value, title.value, icon.value, fileElem.files[0])
       title.value = ''
       url.value   = ''
       icon.value  = ''
+      fileElem.value = ''
     }
     //add new item via save button
     add.addEventListener('click', addNewItemFromLinkForm)
