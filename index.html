@@ -164,34 +164,26 @@
     const fragmentFromString = (strHTML) => document.createRange().createContextualFragment(strHTML);
     const noWWW = (str) => str.replace("www.", "")
 
-    //add new item from json or form
     const addNewItem = (loadUrl,loadTitle,loadIcon) => {
       const realUrl = new URL(loadUrl)
       const realTitle = loadTitle || noWWW(realUrl.hostname)
-      let realIcon = loadIcon || `https://www.google.com/s2/favicons?sz=32&domain_url=${realUrl.host}`
-      const prependLink = () => {
-        const frag = fragmentFromString(`
-        <li draggable=true>
-          <div>
-            <button class=d title="Delete This Link">×</button>
-            <a class=link href="${realUrl}">
-              <img class=f src="${realIcon}">
-              <span class=title>${realTitle}</span>
-            </a>
-          </div>
-          <i class=m title="Drag This Link To Another Position"></i>
-        </li>`)
-        //add the new item at the top of the linklist and attach link handlers to it
-        l.prepend(frag)
-        itemDeleteHandler(l.querySelector('LI:first-of-type .d'))
-        addDnDHandlers(l.querySelector('LI:first-of-type'))
-      }
-      if (!loadIcon) {
-        const iconPromise = getImageDataUri(realIcon)
-        iconPromise.then(dataUri => {
-          realIcon = dataUri
-        }).catch().finally(() => { prependLink() })
-      } else prependLink()
+      const realIcon = loadIcon || `https://www.google.com/s2/favicons?sz=32&domain_url=${realUrl.host}`
+      const searchPattern = 'https://google.com/search?'
+      const frag = fragmentFromString(`
+      <li draggable=true>
+        <div>
+          <button class=d title="Delete This Link">×</button>
+          <a class=link href="${realUrl}">
+            <img class=f src="${realIcon}">
+            <span class=title>${realTitle}</span>
+          </a>
+        </div>
+        <i class=m title="Drag This Link To Another Position"></i>
+      </li>`)
+      //add the new item at the top of the linklist and attach link handlers to it
+      l.prepend(frag)
+      itemDeleteHandler(l.querySelector('LI:first-of-type .d'))
+      addDnDHandlers(l.querySelector('LI:first-of-type'))
     }
 
     // takes an image url and gives back the image as encoded data string

@@ -76,6 +76,7 @@
         <input id=url type=text placeholder="https://" />
         <input id=title type=text placeholder="Title (optional)"/>
         <input id=icon type=text placeholder="Icon URL (optional)"/>
+        <input id=dataUrl type=checkbox style="float:left;width:auto;margin-top:7px;"><label for="dataUrl">Try to turn icon into local resource</label>
         <button id=add>Save New Link</button>
         <aside id=file>
           <span id=dl >&#x21e9; Download Links</span>
@@ -165,7 +166,7 @@
     const noWWW = (str) => str.replace("www.", "")
 
     //add new item from json or form
-    const addNewItem = (loadUrl,loadTitle,loadIcon) => {
+    const addNewItem = (loadUrl,loadTitle,loadIcon,dataUrl) => {
       const realUrl = new URL(loadUrl)
       const realTitle = loadTitle || noWWW(realUrl.hostname)
       let realIcon = loadIcon || `https://www.google.com/s2/favicons?sz=32&domain_url=${realUrl.host}`
@@ -186,7 +187,8 @@
         itemDeleteHandler(l.querySelector('LI:first-of-type .d'))
         addDnDHandlers(l.querySelector('LI:first-of-type'))
       }
-      if (!loadIcon) {
+      if (dataUrl) {
+        console.log("IM TRYING!")
         const iconPromise = getImageDataUri(realIcon)
         iconPromise.then(dataUri => {
           realIcon = dataUri
@@ -230,6 +232,7 @@
       title.value = ''
       url.value   = ''
       icon.value  = ''
+      dataUrl.vbalue = false
     }
     //add new item via save button
     add.addEventListener('click', addNewItemFromLinkForm)
