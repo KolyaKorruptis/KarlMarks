@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <title>Startpage</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    :root{--bg:#262626;--bg2:#000;--tc:#eee;--bd:#444;--bb:#d51a7e;--ab:#eee;--hc:#009696;}
+    @media (prefers-color-scheme: light) {:root{--bg:#c4c1bc;--bg2:#aba6a0;--tc:#333;--bd:#d4d4d4;--bb:#1a65d5;--hc:transparent;}}
+    @media (max-width: 600px) { #c{margin-top:0} }
+    html, body {height:100%;font-size:clamp(16px,4vw, 18px);margin:0;}
+    body{background:radial-gradient(var(--bg2) 15%,transparent 16%) 0 0,radial-gradient(var(--bg2) 15%,transparent 16%) 8px 8px,radial-gradient(rgba(255,255,255,.1) 15%,transparent 20%) 0 1px,radial-gradient(rgba(255,255,255,.1) 15%,transparent 20%) 8px 9px,var(--bg);background-size:16px 16px;background-attachment:fixed;font-family:system-ui;color:var(--tc);display:flex}
+    input:focus { outline:none}
+    [hidden] {display:none !important}
+    #c {width:clamp(320px, 500px, 100vw);margin:auto;padding:1rem;background:var(--bg);border-radius:1rem;box-shadow: 0 0 0 1rem var(--bd);}
+    .d {border:none;background:0 0;color:var(--tc);cursor:pointer;font-size:1rem;display:none;margin-right:.2rem}
+    #mt:checked ~ #l .d {display:inline-block}
+    .d:hover,#l a:hover,.m:hover,#t:hover,#n button:hover, #dl:hover, [for=up]:hover {opacity:1;filter:brightness(1.2) contrast(200%) drop-shadow(0 0 5px var(--hc))}
+    .m {display: inline-block;width:24px;height:24px;cursor:grab;background-image:radial-gradient(gray 30%, transparent 40%);background-size:3px 3px;background-position:0 100%;border-radius:30%}
+    .m:active {cursor:grabbing}
+    .f {margin-right:.3rem;height:1.2rem;width:1.2rem;object-fit:cover}
+    [draggable] {user-select:none;-khtml-user-drag:element;-webkit-user-drag:element}
+    [draggable] input {user-select:auto}
+    #l {padding:0;margin:0;list-style:none}
+    #l li {margin:0;border-top:1px solid transparent;display:flex;justify-content:space-between;white-space:nowrap;align-items: center;}
+    #l li.over {border-top:1px solid #3c81e7;}
+    #l li.over * {filter:brightness(1.2)}
+    #l li:last-child {border-bottom:none}
+    #l li * {vertical-align: middle;}
+    #l a {color:var(--tc);text-decoration:none;line-height:1.9rem;display: inline-block;}
+    #n {box-sizing:border-box;color:var(--tc);overflow:hidden;transition:max-height .2s linear;max-height:0}
+    #mt:checked ~ #n {max-height:15rem;}
+    #n_ {padding:1rem 1rem 0}
+    #n input{padding:7px;outline:0;border:none;width:100%;box-sizing:border-box;display:block;font-size:1rem}
+    #add,#dl,#t,[for=up]{opacity:.9;margin:10px 0;background:var(--bb);border:none;color:var(--ab);padding:5px 15px;width:100%;height:35px;cursor:pointer;display:block;text-align:center;box-sizing:border-box;font-size:.9rem}
+    #dl,[for=up]{background:transparent;color: var(--tc);}
+    #dl{margin-right:1px}
+    #title, #icon{transform: scale(.75);transform-origin: left bottom}
+    #file {display:flex;justify-content:space-between}
+    h2{font-size:1rem}
+  </style>
+</head>
+<body>
+  <div id=c>
+    <input type=checkbox id=mt hidden>
+    <ul id=l>
+      <li draggable=true>
+        <a class=link href="https://www.systemshock.org/">
+          <button class=d title="Delete This Link">×</button>
+          <img class=f src="https://www.google.com/s2/favicons?sz=32&domain_url=www.systemshock.org">
+          <span class=title>Systemshock.org</span>
+        </a>
+        <i class=m title="Drag This Link To Another Position"></i>
+      </li>
+      <li draggable=true>
+        <a class=link href="https://old.reddit.com/hot/">
+          <button class=d title="Delete This Link">×</button>
+          <img class=f src="https://www.google.com/s2/favicons?sz=32&domain_url=old.reddit.com">
+          <span class=title>Reddit</span>
+        </a>
+        <i class=m title="Drag This Link To Another Position"></i>
+      </li>
+      <li draggable=true>
+        <a class=link href="https://bandcamp.com/">
+          <button class=d title="Delete This Link">×</button>
+          <img class=f src="https://www.google.com/s2/favicons?sz=32&domain_url=bandcamp.com">
+          <span class=title>Bandcamp</span>
+        </a>
+        <i class=m title="Drag This Link To Another Position"></i>
+      </li>
+    </ul>
+    <label for=mt id=t>Manage Links</label>
+    <div id=n>
+      <div id=n_>
+        <h2>Add New Link</h2>
+        <input id=url type=text placeholder="https://" />
+        <input id=title type=text placeholder="Title (optional)"/>
+        <input id=icon type=text placeholder="Icon URL (optional)"/>
+        <button id=add>Save New Link</button>
+        <aside id=file>
+          <span id=dl >&#x21e9; Download Links</span>
+          <input type="file" id=up accept=".json" hidden><label for=up>Upload Links &#x21e7;</label>
+        </aside>
+      </div>
+    </div>
+  </div>
+  <script>
+    //--------------------Drag & Drop------------------------------
+    let dragSrcEl
+
+    function handleDragStart(e) {
+      dragSrcEl = this
+      e.dataTransfer.effectAllowed = 'move'
+      e.dataTransfer.setData('text/html', this.outerHTML)
+    }
+
+    const dragOver = (e) =>{
+      if (e.preventDefault) e.preventDefault()
+      e.dataTransfer.dropEffect = 'move'
+      return false
+    }
+
+    let dragEnterTarget;
+
+    const dragEnter = (e) => {
+      const target = e.target.closest('LI')
+      if (target) {
+        target.classList.add('over')
+        dragEnterTarget = target
+      } else {
+        //dragged outside dropzone, cancel all meetings
+        l.querySelectorAll('LI').forEach((el) => {
+          el.classList.remove('over')
+        })
+      }
+    }
+
+    const dragLeave = (e) => {
+      l.querySelectorAll('LI').forEach((el) => {
+        if (el !== dragEnterTarget) el.classList.remove('over')
+      })
+    }
+
+    function drop(e) {
+      if (e.stopPropagation) e.stopPropagation()
+      if (dragSrcEl != this) {
+        this.parentNode.removeChild(dragSrcEl)
+        var dropHTML = e.dataTransfer.getData('text/html')
+        this.insertAdjacentHTML('beforebegin',dropHTML)
+        var dropElem = this.previousSibling
+        addDnDHandlers(dropElem)
+      }
+      this.classList.remove('over')
+      save()
+      if (dropElem) itemDeleteHandler(dropElem.querySelector('.d'))
+      return false
+    }
+
+    const addDnDHandlers = (el) => {
+      el.addEventListener('dragstart', handleDragStart)
+      el.addEventListener('dragenter', dragEnter)
+      el.addEventListener('dragover', dragOver)
+      el.addEventListener('dragleave', dragLeave)
+      el.addEventListener('drop', drop)
+    }
+    l.querySelectorAll('LI').forEach((el) => {
+      addDnDHandlers(el)
+    })
+    //dragged outside dropzone
+    window.addEventListener('dragenter', dragEnter)
+
+    //----------------------Link Handling-----------------------
+
+    //data to be saved
+    const getLinksFromHtml = () => {
+      const arr = []
+      l.querySelectorAll('LI').forEach((el) => {
+        arr.push ( {"link":el.querySelector('.link').href,"title":el.querySelector('.title').innerHTML,"icon":el.querySelector('.f').src} );
+      })
+      return JSON.stringify(arr.reverse())
+    }
+
+    const save = () => localStorage.setItem('sp-links', getLinksFromHtml())
+    const fragmentFromString = (strHTML) => document.createRange().createContextualFragment(strHTML);
+    const noWWW = (str) => str.replace("www.", "")
+
+    //add new item from json or form
+    const addNewItem = (loadUrl,loadTitle,loadIcon) => {
+      const realUrl = new URL(loadUrl)
+      const realTitle = loadTitle || noWWW(realUrl.hostname)
+      let realIcon = loadIcon || `https://www.google.com/s2/favicons?sz=32&domain_url=${realUrl.host}`
+      const prependLink = () => {
+        const frag = fragmentFromString(`
+        <li draggable=true>
+          <div>
+            <button class=d title="Delete This Link">×</button>
+            <a class=link href="${realUrl}">
+              <img class=f src="${realIcon}">
+              <span class=title>${realTitle}</span>
+            </a>
+          </div>
+          <i class=m title="Drag This Link To Another Position"></i>
+        </li>`)
+        //add the new item at the top of the linklist and attach link handlers to it
+        l.prepend(frag)
+        itemDeleteHandler(l.querySelector('LI:first-of-type .d'))
+        addDnDHandlers(l.querySelector('LI:first-of-type'))
+      }
+      if (!loadIcon) {
+        const iconPromise = getImageDataUri(realIcon)
+        iconPromise.then(dataUri => {
+          realIcon = dataUri
+        }).finally(() => { prependLink() })
+      } else prependLink()
+    }
+
+    // takes an image url and gives back the image as encoded data string
+    const getImageDataUri = (url) => {
+      return new Promise(function(resolve) {
+        const image = new Image()
+        image.addEventListener('load',() => {
+          const canvas = document.createElement('canvas')
+          canvas.width = 22
+          canvas.height = 22
+          const ratio = image.naturalWidth / image.naturalHeight
+          const width = canvas.width
+          const height = width / ratio
+          canvas.getContext('2d').drawImage(image, 0, 0, width, height)
+          const result = canvas.toDataURL('image/png')
+          resolve(result)
+        })
+        image.crossOrigin = 'Anonymous'
+        image.src = url
+      })
+    }
+
+    //deleting items
+    const itemDeleteHandler = (x) => {
+      x.addEventListener('click', (e) => {
+        e.currentTarget.parentElement.parentElement.remove()
+        save()
+      })
+    }
+    document.querySelectorAll('.d').forEach((x) => itemDeleteHandler(x))
+
+    //new link form
+    const addNewItemFromLinkForm = () => {
+      addNewItem(url.value, title.value, icon.value)
+      save()
+      title.value = ''
+      url.value   = ''
+      icon.value  = ''
+    }
+    //add new item via save button
+    add.addEventListener('click', addNewItemFromLinkForm)
+
+    //also add new item via return key
+    mt.addEventListener('change', (e) => {
+      if (e.currentTarget.checked) {
+        url.focus()
+        n.addEventListener('keydown', (e) => {
+          if (event.keyCode == 13) addNewItemFromLinkForm()
+        })
+      }
+    })
+
+    //disable autocomplete on mobile devices
+    if (window.innerWidth < 600) url.setAttribute( "autocomplete", "off" );
+
+    //loading links from localstorage json or file
+    const loadLinks = (str) => {
+      const links = str? JSON.parse(str) : JSON.parse(localStorage.getItem('sp-links'))
+      if (links) {
+        l.innerHTML = ''
+        links.forEach((link) => {
+          addNewItem(link.link, link.title, link.icon)
+        })
+      }
+    }
+    loadLinks()
+
+    //download
+    const download = () => {
+      const element = document.createElement('a');
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(localStorage.getItem('sp-links')))
+      element.setAttribute('download', 'StartPageLinks.json')
+      element.style.display = 'none'
+      document.body.appendChild(element)
+      element.click()
+      document.body.removeChild(element)
+    }
+    dl.addEventListener('click', download)
+
+    //upload
+    const sel = document.getElementById('up');
+    sel.addEventListener('change', (event) => {
+      let str = ''
+      const file = event.target.files[0];
+      const reader = new FileReader()
+      reader.addEventListener('load', event => {
+        str = event.target.result
+        loadLinks(str)
+        save()
+      })
+      reader.readAsText(file)
+    })
+
+
+    //---------------touch events translated to html5 drag / drop events--------------
+    // source: https://gist.github.com/theanam/bd1bba1e79882f87f11532384c80c2f9
+
+    var DragDropTouch;
+    (function (DragDropTouch_1) {
+        'use strict';
+
+        var DataTransfer = (function () {
+            function DataTransfer() {
+                this._dropEffect = 'move';
+                this._effectAllowed = 'all';
+                this._data = {};
+            }
+            Object.defineProperty(DataTransfer.prototype, "dropEffect", {
+                get: function () {
+                    return this._dropEffect;
+                },
+                set: function (value) {
+                    this._dropEffect = value;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(DataTransfer.prototype, "effectAllowed", {
+                get: function () {
+                    return this._effectAllowed;
+                },
+                set: function (value) {
+                    this._effectAllowed = value;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(DataTransfer.prototype, "types", {
+                get: function () {
+                    return Object.keys(this._data);
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            DataTransfer.prototype.clearData = function (type) {
+                if (type != null) {
+                    delete this._data[type];
+                }
+                else {
+                    this._data = null;
+                }
+            };
+
+            DataTransfer.prototype.getData = function (type) {
+                return this._data[type] || '';
+            };
+
+            DataTransfer.prototype.setData = function (type, value) {
+                this._data[type] = value;
+            };
+
+            DataTransfer.prototype.setDragImage = function (img, offsetX, offsetY) {
+                var ddt = DragDropTouch._instance;
+                ddt._imgCustom = img;
+                ddt._imgOffset = { x: offsetX, y: offsetY };
+            };
+            return DataTransfer;
+        })();
+        DragDropTouch_1.DataTransfer = DataTransfer;
+
+        var DragDropTouch = (function () {
+
+            function DragDropTouch() {
+                this._lastClick = 0;
+                // enforce singleton pattern
+                if (DragDropTouch._instance) {
+                    throw 'DragDropTouch instance already created.';
+                }
+                // listen to touch events
+                if ('ontouchstart' in document) {
+                    var d = document, ts = this._touchstart.bind(this), tm = this._touchmove.bind(this), te = this._touchend.bind(this);
+                    d.addEventListener('touchstart', ts);
+                    d.addEventListener('touchmove', tm);
+                    d.addEventListener('touchend', te);
+                    d.addEventListener('touchcancel', te);
+                }
+            }
+
+            DragDropTouch.getInstance = function () {
+                return DragDropTouch._instance;
+            };
+            // ** event handlers
+            DragDropTouch.prototype._touchstart = function (e) {
+                var _this = this;
+                if (this._shouldHandle(e)) {
+                    // raise double-click and prevent zooming
+                    if (Date.now() - this._lastClick < DragDropTouch._DBLCLICK) {
+                        if (this._dispatchEvent(e, 'dblclick', e.target)) {
+                            e.preventDefault();
+                            this._reset();
+                            return;
+                        }
+                    }
+                    // clear all variables
+                    this._reset();
+                    // get nearest draggable element
+                    var src = this._closestDraggable(e.target);
+                    if (src) {
+                        // give caller a chance to handle the hover/move events
+                        if (!this._dispatchEvent(e, 'mousemove', e.target) &&
+                            !this._dispatchEvent(e, 'mousedown', e.target)) {
+                            // get ready to start dragging
+                            this._dragSource = src;
+                            this._ptDown = this._getPoint(e);
+                            this._lastTouch = e;
+                            e.preventDefault();
+                            // show context menu if the user hasn't started dragging after a while
+                            setTimeout(function () {
+                                if (_this._dragSource == src && _this._img == null) {
+                                    if (_this._dispatchEvent(e, 'contextmenu', src)) {
+                                        _this._reset();
+                                    }
+                                }
+                            }, DragDropTouch._CTXMENU);
+                        }
+                    }
+                }
+            };
+            DragDropTouch.prototype._touchmove = function (e) {
+                if (this._shouldHandle(e)) {
+                    // see if target wants to handle move
+                    var target = this._getTarget(e);
+                    if (this._dispatchEvent(e, 'mousemove', target)) {
+                        this._lastTouch = e;
+                        e.preventDefault();
+                        return;
+                    }
+                    // start dragging
+                    if (this._dragSource && !this._img) {
+                        var delta = this._getDelta(e);
+                        if (delta > DragDropTouch._THRESHOLD) {
+                            this._dispatchEvent(e, 'dragstart', this._dragSource);
+                            this._createImage(e);
+                            this._dispatchEvent(e, 'dragenter', target);
+                        }
+                    }
+                    // continue dragging
+                    if (this._img) {
+                        this._lastTouch = e;
+                        e.preventDefault(); // prevent scrolling
+                        if (target != this._lastTarget) {
+                            this._dispatchEvent(this._lastTouch, 'dragleave', this._lastTarget);
+                            this._dispatchEvent(e, 'dragenter', target);
+                            this._lastTarget = target;
+                        }
+                        this._moveImage(e);
+                        this._dispatchEvent(e, 'dragover', target);
+                    }
+                }
+            };
+            DragDropTouch.prototype._touchend = function (e) {
+                if (this._shouldHandle(e)) {
+                    // see if target wants to handle up
+                    if (this._dispatchEvent(this._lastTouch, 'mouseup', e.target)) {
+                        e.preventDefault();
+                        return;
+                    }
+                    // user clicked the element but didn't drag, so clear the source and simulate a click
+                    if (!this._img) {
+                        this._dragSource = null;
+                        this._dispatchEvent(this._lastTouch, 'click', e.target);
+                        this._lastClick = Date.now();
+                    }
+                    // finish dragging
+                    this._destroyImage();
+                    if (this._dragSource) {
+                        if (e.type.indexOf('cancel') < 0) {
+                            this._dispatchEvent(this._lastTouch, 'drop', this._lastTarget);
+                        }
+                        this._dispatchEvent(this._lastTouch, 'dragend', this._dragSource);
+                        this._reset();
+                    }
+                }
+            };
+            // ** utilities
+            // ignore events that have been handled or that involve more than one touch
+            DragDropTouch.prototype._shouldHandle = function (e) {
+                return e &&
+                    !e.defaultPrevented &&
+                    e.touches && e.touches.length < 2;
+            };
+            // clear all members
+            DragDropTouch.prototype._reset = function () {
+                this._destroyImage();
+                this._dragSource = null;
+                this._lastTouch = null;
+                this._lastTarget = null;
+                this._ptDown = null;
+                this._dataTransfer = new DataTransfer();
+            };
+            // get point for a touch event
+            DragDropTouch.prototype._getPoint = function (e, page) {
+                if (e && e.touches) {
+                    e = e.touches[0];
+                }
+                return { x: page ? e.pageX : e.clientX, y: page ? e.pageY : e.clientY };
+            };
+            // get distance between the current touch event and the first one
+            DragDropTouch.prototype._getDelta = function (e) {
+                var p = this._getPoint(e);
+                return Math.abs(p.x - this._ptDown.x) + Math.abs(p.y - this._ptDown.y);
+            };
+            // get the element at a given touch event
+            DragDropTouch.prototype._getTarget = function (e) {
+                var pt = this._getPoint(e), el = document.elementFromPoint(pt.x, pt.y);
+                while (el && getComputedStyle(el).pointerEvents == 'none') {
+                    el = el.parentElement;
+                }
+                return el;
+            };
+            // create drag image from source element
+            DragDropTouch.prototype._createImage = function (e) {
+                // just in case...
+                if (this._img) {
+                    this._destroyImage();
+                }
+                // create drag image from custom element or drag source
+                var src = this._imgCustom || this._dragSource;
+                this._img = src.cloneNode(true);
+                this._copyStyle(src, this._img);
+                this._img.style.top = this._img.style.left = '-9999px';
+                // if creating from drag source, apply offset and opacity
+                if (!this._imgCustom) {
+                    var rc = src.getBoundingClientRect(), pt = this._getPoint(e);
+                    this._imgOffset = { x: pt.x - rc.left, y: pt.y - rc.top };
+                    this._img.style.opacity = DragDropTouch._OPACITY.toString();
+                }
+                // add image to document
+                this._moveImage(e);
+                document.body.appendChild(this._img);
+            };
+            // dispose of drag image element
+            DragDropTouch.prototype._destroyImage = function () {
+                if (this._img && this._img.parentElement) {
+                    this._img.parentElement.removeChild(this._img);
+                }
+                this._img = null;
+                this._imgCustom = null;
+            };
+            // move the drag image element
+            DragDropTouch.prototype._moveImage = function (e) {
+                var _this = this;
+                requestAnimationFrame(function () {
+                    var pt = _this._getPoint(e, true), s = _this._img.style;
+                    s.position = 'absolute';
+                    s.pointerEvents = 'none';
+                    s.zIndex = '999999';
+                    s.left = Math.round(pt.x - _this._imgOffset.x) + 'px';
+                    s.top = Math.round(pt.y - _this._imgOffset.y) + 'px';
+                });
+            };
+            // copy properties from an object to another
+            DragDropTouch.prototype._copyProps = function (dst, src, props) {
+                for (var i = 0; i < props.length; i++) {
+                    var p = props[i];
+                    dst[p] = src[p];
+                }
+            };
+            DragDropTouch.prototype._copyStyle = function (src, dst) {
+                // remove potentially troublesome attributes
+                DragDropTouch._rmvAtts.forEach(function (att) {
+                    dst.removeAttribute(att);
+                });
+                // copy canvas content
+                if (src instanceof HTMLCanvasElement) {
+                    var cSrc = src, cDst = dst;
+                    cDst.width = cSrc.width;
+                    cDst.height = cSrc.height;
+                    cDst.getContext('2d').drawImage(cSrc, 0, 0);
+                }
+                // copy style
+                var cs = getComputedStyle(src);
+                for (var i = 0; i < cs.length; i++) {
+                    var key = cs[i];
+                    dst.style[key] = cs[key];
+                }
+                dst.style.pointerEvents = 'none';
+                // and repeat for all children
+                for (var i = 0; i < src.children.length; i++) {
+                    this._copyStyle(src.children[i], dst.children[i]);
+                }
+            };
+            DragDropTouch.prototype._dispatchEvent = function (e, type, target) {
+                if (e && target) {
+                    var evt = document.createEvent('Event'), t = e.touches ? e.touches[0] : e;
+                    evt.initEvent(type, true, true);
+                    evt.button = 0;
+                    evt.which = evt.buttons = 1;
+                    this._copyProps(evt, e, DragDropTouch._kbdProps);
+                    this._copyProps(evt, t, DragDropTouch._ptProps);
+                    evt.dataTransfer = this._dataTransfer;
+                    target.dispatchEvent(evt);
+                    return evt.defaultPrevented;
+                }
+                return false;
+            };
+            // gets an element's closest draggable ancestor
+            DragDropTouch.prototype._closestDraggable = function (e) {
+                for (; e; e = e.parentElement) {
+                    if (e.hasAttribute('draggable')) {
+                        return e;
+                    }
+                }
+                return null;
+            };
+            /*private*/ DragDropTouch._instance = new DragDropTouch(); // singleton
+            // constants
+            DragDropTouch._THRESHOLD = 5; // pixels to move before drag starts
+            DragDropTouch._OPACITY = 0.5; // drag image opacity
+            DragDropTouch._DBLCLICK = 500; // max ms between clicks in a double click
+            DragDropTouch._CTXMENU = 900; // ms to hold before raising 'contextmenu' event
+            // copy styles/attributes from drag source to drag image element
+            DragDropTouch._rmvAtts = 'id,class,style,draggable'.split(',');
+            // synthesize and dispatch an event
+            // returns true if the event has been handled (e.preventDefault == true)
+            DragDropTouch._kbdProps = 'altKey,ctrlKey,metaKey,shiftKey'.split(',');
+            DragDropTouch._ptProps = 'pageX,pageY,clientX,clientY,screenX,screenY'.split(',');
+            return DragDropTouch;
+        })();
+        DragDropTouch_1.DragDropTouch = DragDropTouch;
+    })(DragDropTouch || (DragDropTouch = {}));
+  </script>
+</body>
+</html>
