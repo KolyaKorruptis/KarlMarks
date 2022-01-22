@@ -186,11 +186,12 @@
         itemDeleteHandler(l.querySelector('LI:first-of-type .d'))
         addDnDHandlers(l.querySelector('LI:first-of-type'))
       }
-
-      const iconPromise = getImageDataUri('https://api.allorigins.win/raw?url='+realIcon)
-      iconPromise.then(dataUri => {
-        realIcon = dataUri
-      }).finally(() => { prependLink() })
+      if (!loadIcon) {
+        const iconPromise = getImageDataUri('https://api.allorigins.win/raw?url='+realIcon)
+        iconPromise.then(dataUri => {
+          realIcon = dataUri
+        }).finally(() => { prependLink() })
+      } else prependLink()
     }
 
     // takes an image url and gives back the image as encoded data string
@@ -254,7 +255,6 @@
         links.forEach((link) => {
           addNewItem(link.link, link.title, link.icon)
         })
-        save()
       }
     }
     loadLinks()
