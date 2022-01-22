@@ -187,10 +187,10 @@
         addDnDHandlers(l.querySelector('LI:first-of-type'))
       }
       if (!loadIcon) {
-        const iconPromise = getImageDataUri('https://api.allorigins.win/raw?url='+realIcon)
+        const iconPromise = getImageDataUri(realIcon)
         iconPromise.then(dataUri => {
           realIcon = dataUri
-        }).finally(() => { prependLink() })
+        }).catch().finally(() => { prependLink() })
       } else prependLink()
     }
 
