@@ -15,19 +15,21 @@
     @media (max-width: 767px) { #c{margin-top:0} }
     .d {border:none;background:0 0;color:var(--tc);cursor:pointer;font-size:1rem;display:none;margin-right:.2rem}
     #mt:checked ~ #l .d {display:inline-block}
-    .d:hover,#l a:hover,.m:hover,#t:hover, #dl:hover, [for=up]:hover, #add:hover {opacity:1;filter:brightness(1.2) contrast(200%) drop-shadow(0 0 5px var(--hc))}
-    .m {display: inline-block;width:24px;height:24px;cursor:grab;background-image:radial-gradient(gray 30%, transparent 40%);background-size:3px 3px;background-position:0 100%;border-radius:30%}
+    .d:hover,.m:hover,#t:hover, #dl:hover, [for=up]:hover, #add:hover {opacity:1;filter:brightness(1.2) contrast(200%) drop-shadow(0 0 5px var(--hc))}
+    .m {display: inline-block;width:24px;height:24px;cursor:grab;background-image:radial-gradient(gray 30%, transparent 40%);background-size:3px 3px;background-position:0 100%;border-radius:30%;z-index: 1;}
     .m:active {cursor:grabbing}
-    .f {margin-right:.3rem;height:1.2rem;width:1.2rem;object-fit:cover}
+    .f {margin-right:.3rem;height: 22px;width: 22px;object-fit:cover;}
     [draggable] {user-select:none;-khtml-user-drag:element;-webkit-user-drag:element}
     [draggable] input {user-select:auto}
     #l {padding:0;margin:0;list-style:none}
-    #l li {margin:0;border-top:1px solid transparent;display:flex;justify-content:space-between;white-space:nowrap;align-items: center;}
+    #l li {margin:0;border-top:1px solid transparent;display:flex;justify-content:space-between;white-space:nowrap;align-items: center;position: relative;}
     #l li.over {border-top:1px solid #3c81e7;}
     #l li.over * {filter:brightness(1.2)}
     #l li:last-child {border-bottom:none}
     #l li * {vertical-align: middle;}
-    #l a {color:var(--tc);text-decoration:none;line-height:1.9rem;display: inline-block;}
+    #l li div {z-index: 1;pointer-events: none;line-height: 1.5rem;}
+    #l a {color:var(--tc);text-decoration:none;line-height:1.9rem;position: absolute;inset: 0;border-radius: 20px 0 0 20px;left: -8px;}
+    #l a:hover {background: linear-gradient(90deg, var(--bd) 0%, rgba(0,0,0,0) 100%);}
     #n {box-sizing:border-box;color:var(--tc);overflow:hidden;transition:max-height .2s linear;max-height:0}
     #mt:checked ~ #n {max-height: 18rem;}
     #n input{padding: 5px;outline:0;border:none;width:100%;box-sizing:border-box;display:block;font-size:1rem;margin-bottom: .5rem;height: 2rem;}
@@ -44,27 +46,30 @@
     <input type=checkbox id=mt hidden>
     <ul id=l>
       <li draggable=true>
-        <a class=link href="https://www.systemshock.org/">
+        <a class=link href="https://www.systemshock.org/"></a>
+        <div>
           <button class=d title="Delete This Link">×</button>
           <img class=f src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAABLZJREFUSEuNVV1Mk1cYfs73tf0oLeO/FApYKc6fKo5B2BZxKy4jYwMTM11gZkoIQ5MRs0Uv3G4MN3ghV3i7ccGNS0w2E2RiVgRRHIi4gJtTmIXCOouUn1IotP2+c5bvoAhCiO/Vyfl53nPO+zzPS7BBlJRkS4sZsVtJKFIMIhySw0oOlamBACAaYUEjiYOg9BdFq/nNoJ9zXbv4T+hVGHXvmnBU5CURSalnlJY9G/Wn+Mb9JLQQgSJTvs+YoMfOwkwwyhgIJgSBXKVL4nedl/p9q4FWAxNHVW6eyNCqUGpyDz7DyB9P173HmKiH/YMt0EVpIWoEvi6IwiQUWnqjeaAPAFPnVoAdX+bmE5H9xCizMcrw39AUhu96+EGtVotIJMLHOp0OsiIjJlGPlKx4pGYn8HlC2BOFCF/cah64uwL84bGCRCqE/2aUJTPGMNzrwdPhadhsNpw7dw6BQACnTp2Coii4cOECn6+vr8f9+/dhssVhYXoRcWYjbPlpkywk7lK/haiFWkoxXmSMfcUUhuE+D3wjARw/fhyVlZW4c+cOWlpacPv2bahJCwoKUFxcjJKSEvT09PAEPp8PGp0Iu8OKREvMD5J3vpY4KvN2gCo3Bp2uVP0bWngeTcFiseD69es4ffo0nE4nv+mawhCCzMxMNDU1oaqqCm63my9LBi3e+2ynF4K2iDiO7a31jfkb/+wcXcOQ6OhoBIPBjdi4MkcI4a9YHbv2b2GmrbHfkqLKve0Pu8YOTLhmlrNKEkKhdbTcNEFGRgY8Hg8opTBZ42Avst4k7x/d7Rt0jibOTsxDr9ejq6sLZ8+eRXt7+6ZgLxZzcnL4txUWFsI9PorkzFi8+a5lhuz73L404HRJ89OLSE9PR19fHw4fPozu7u7XAjabzfyM+tcPRvqRnZ8GrSSG1gCrm1QKlZeX85u/TiQnJ6O/vx8nT57EgOsutr1jUcURIvuP7pl6OjSVEJgKYubfIKfQ+fPncfny5dfBhdVqRWtrK44cOYJIjB+W7UkQCKbV4nUwCkfQH8K9lsdITU2D1+tdR7HNsmg0GlBGkffpNhjiokBE0snpBqBRkSkZdLrgf7bwXKLrqfQq+GpKRsdKyP04G1pJwxhh3xBH5Z4doOINgKWqMn78+zgMBgOam5vR2NjIFbeRQFRZX7lyBSdOnFgpdKzJgLc/yfYynaZoWdJmYyNTWI1K9r9uuhGYWEJNTQ0qKirQ29uLtrY2dHR0IBwOw2634+DBgygtLUVnZycaGhowMzPDJb37gBXxZuOPURMLX3O1qSYEIfwwMLtkund1CFSmUFWlFubMmTNISkpCdXU1N6Pa2lqUlZWhrq6OF1oVhRqZe0yw5a0yoRf/ptomA700OuDN9jzyQQ6/9AfVNmVZ5vJVC8XAIOoEhIMRftO07YnIyjU/UUDW2uZzcG70hLJfZyfmkx91j2NxblnaUQYdEtJj+NgYr0ec2QA5QvHwphs79mUgPjVmUqas9NZGRr9y84q8JEFS6iljZb4xf8rkmJ9I0VpkvWUGBAF4aTrLrUkkLXRR/H6z1rTCJt5MU2K3CpA/ogSHILMcIhDj8w0LEMgDUPozb6aeOde1a+ub6f/coitEsn+YYAAAAABJRU5ErkJggg==">
           <span class=title>Systemshock.org</span>
-        </a>
+        </div>
         <i class=m title="Drag This Link To Another Position"></i>
       </li>
       <li draggable=true>
-        <a class=link href="https://old.reddit.com/hot/">
+        <a class=link href="https://old.reddit.com/hot/"></a>
+        <div>
           <button class=d title="Delete This Link">×</button>
           <img class=f src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAAA5BJREFUSEt91V2IVVUYBuBnnTPjb1OWBZmljeQ0pRZIRaSo42igCWVQFqIjkRlECoGgESalgtnNXPQLlSOG04U/F2rp5KDGKIhGlinoOIr9GWVmoujMnLNj7z3n6Bkdv6u911rfu971fu/6VnCdiJ7TyxmDZI0TPC1vvGBAsjRyDt+JbJKzS19/hK9d7g4Trh6ICCYYKmu2jBcxHNnrbY68SKtIIxrscCLE23ZFKXCN+5X5BI+jdw+A3YfbsU/klfCtIyXACdMaVcpsxn09AmYyKacoL06RzZLLJfrgpLyn7HAkZp4wjia4V7kGjOsRNM4dM52Bgzn3F1GOylEcaOLnlgJ4i5y60Ox4SAr1r0V484bHz5bx+oc0raVff6a8zJhnaF7HqjnkO2NOsSwrlVkeoolJsb5B9Q01vW0QU+bSuIJcZ8p25tusW8bxH65ObRU8GaLJZuGLG1Q/TRoxlsHD2b66cOwrHiixQOKWuTHwejxb3LJoGJSVU/lQqm3VI+lx921NdT3d1lW46/grsiVEk/wtGJhMhyyja3m4huYvWdjA8NHXKhRF/LiL91/isam0HeTw3rSgaZyNGXfE3JLfISOob6H/Len05Yuc/ZM7K0vB/zlNxa2Ud1n9wjkWjOXUocK6zlLgoSOp30O/itSrzY1squeFRakccbRsZEM9015lwvOETEpgwRjaikXsLJUittSMRcxeml6Ar97js8W8Vs/0+Snw2ndZvYS6pcx8KwWO161ZQmfstitSbEAXnUDtLOZ/QN+buPgfp09SOTIFiCO+aYf3cE81A+6go52P32DzR103MjHN1hDVqpPxOdLMwVUsWZ+CxX7dvy0tZp9+KXD7JQ7uTMd69ea3VpbPoPX7Atv4vs8LyXUus01QlcyEwKjxrNxOpoyj+1m3go64M8b9IZZrIQ88kfp52YxU96R/JNEmb3KIpuitw2LBYvQqlv/uaua8k9qtYmDKPo5sORfOcvIQa5ZyLGZaNH+7yCqdlqVNqNYwmaQJjS0Cxx99+hNvMKSam29PGZ8/w69H+eVIWoOrI7JXUBeaHEuB44xJqgVb0M20XZmF4l05cnfQU9pNs9uhYtssrIhqPSjjUzxaIkspRPe/+PgHtJsXdvupMHnt0zTRMFl1JE/TsKJbrgXPC07IaxQ0aNLa49NUZB4XNOcueTVJgwpiC1R0zZ+XarlRXrOc38NOl7rv+z8cHy+kOa9eQgAAAABJRU5ErkJggg==">
           <span class=title>Reddit</span>
-        </a>
+        </div>
         <i class=m title="Drag This Link To Another Position"></i>
       </li>
       <li draggable=true>
-        <a class=link href="https://bandcamp.com/">
+        <a class=link href="https://bandcamp.com/"></a>
+        <div>
           <button class=d title="Delete This Link">×</button>
           <img class=f src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAAAexJREFUSEvFlD9oU1EUh79zX2piXUUpJjaDk9LBraKFilBsFwUhi/94u3TqUlCaoji5WHBOS+0SEHRppQ6KrVIXF9HVaIKguFobk3eP3BfbvtIM9xWKZ773u7/z3XOvsE8l+8TlP4BVO4dOT6c/fGrq3+ZuPhYXs/kfh66JSg+B8TdmrYBsdE+jKoW51bsgk6j6Q91KoQVyeze4Wg3yf/InpR2tgeRAU8QlAj6aQC/uBHe8SmHuzQPQcQSDel+wa01EzPjXzy8e7QKfWHh3rNluvQcOx415l1hUPwS0B2vh+aRjlWLlVTYymQVULqdU4NKuY/VKPRxaRiQxFWU1/cW3oxb7DHBe/dM6kLVLzeB36fv1kfVtsKocnV/uzUYHq2rMKJsz7KfBpbUGvfSlNrREWWxnOFy58aqsjGB4AtKbKi1iEX0a2PbVWjjcBInnMwYXKy9zEZk1RAb24PanSnC6cePMN6dgs0mhXDbHixduKTx02b3TCopiQWbqN89OxHuT4P751302kufAKSDw0xo3a0E3NBMMNg40PlEqucexVVKYXZ0AvYfS4w+N+xIs9+vhuTvJpFsqCrMrIWgOY/w/hciioq3GkV+PGRtrdgsk8Wjt8WuMgQmvO1Skaj/FYv/XlQK6/UBSbvJZ/hc2xLGLF2gJpwAAAABJRU5ErkJggg==">
           <span class=title>Bandcamp</span>
-        </a>
+        </div>
         <i class=m title="Drag This Link To Another Position"></i>
       </li>
     </ul>
@@ -172,12 +177,11 @@
       const prependLink = () => {
         const frag = fragmentFromString(`
         <li draggable=true>
+          <a class=link href="${realUrl}"></a>
           <div>
             <button class=d title="Delete This Link">×</button>
-            <a class=link href="${realUrl}">
               <img class=f src="${realIcon}">
               <span class=title>${realTitle}</span>
-            </a>
           </div>
           <i class=m title="Drag This Link To Another Position"></i>
         </li>`)
