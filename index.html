@@ -7,12 +7,12 @@
   <style>
     :root{--bg:#262626;--bg2:#000;--tc:#eee;--bd:#444;--bb:#d51a7e;--ab:#eee;--hc:#009696;}
     @media (prefers-color-scheme: light) {:root{--bg:#c4c1bc;--bg2:#aba6a0;--tc:#333;--bd:#d4d4d4;--bb:#1a65d5;--hc:transparent;}}
-    @media (max-width: 600px) { #c{margin-top:0} }
     html, body {height:100%;font-size:clamp(16px,4vw, 18px);margin:0;}
     body{background:radial-gradient(var(--bg2) 15%,transparent 16%) 0 0,radial-gradient(var(--bg2) 15%,transparent 16%) 8px 8px,radial-gradient(rgba(255,255,255,.1) 15%,transparent 20%) 0 1px,radial-gradient(rgba(255,255,255,.1) 15%,transparent 20%) 8px 9px,var(--bg);background-size:16px 16px;background-attachment:fixed;font-family:system-ui;color:var(--tc);display:flex}
     input:focus { outline:none}
     [hidden] {display:none !important}
-    #c {width:clamp(320px, 500px, 100vw);margin:auto;padding:1rem;background:var(--bg);border-radius:1rem;box-shadow: 0 0 0 1rem var(--bd);}
+    #c {width:clamp(320px, 500px, 100vw);margin:auto;padding:1rem;background:var(--bg);border-radius:1rem;box-shadow: 0 0 0 1rem var(--bd), 0 0 2rem var(--bg2);}
+    @media (max-width: 767px) { #c{margin-top:0} }
     .d {border:none;background:0 0;color:var(--tc);cursor:pointer;font-size:1rem;display:none;margin-right:.2rem}
     #mt:checked ~ #l .d {display:inline-block}
     .d:hover,#l a:hover,.m:hover,#t:hover,#n button:hover, #dl:hover, [for=up]:hover {opacity:1;filter:brightness(1.2) contrast(200%) drop-shadow(0 0 5px var(--hc))}
