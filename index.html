@@ -15,7 +15,7 @@
     @media (max-width: 767px) { #c{margin-top:0} }
     .d {border:none;background:0 0;color:var(--tc);cursor:pointer;font-size:1rem;display:none;margin-right:.2rem}
     #mt:checked ~ #l .d {display:inline-block}
-    .d:hover,#l a:hover,.m:hover,#t:hover,#n button:hover, #dl:hover, [for=up]:hover {opacity:1;filter:brightness(1.2) contrast(200%) drop-shadow(0 0 5px var(--hc))}
+    .d:hover,#l a:hover,.m:hover,#t:hover, #dl:hover, [for=up]:hover, #add:hover {opacity:1;filter:brightness(1.2) contrast(200%) drop-shadow(0 0 5px var(--hc))}
     .m {display: inline-block;width:24px;height:24px;cursor:grab;background-image:radial-gradient(gray 30%, transparent 40%);background-size:3px 3px;background-position:0 100%;border-radius:30%}
     .m:active {cursor:grabbing}
     .f {margin-right:.3rem;height:1.2rem;width:1.2rem;object-fit:cover}
@@ -29,13 +29,13 @@
     #l li * {vertical-align: middle;}
     #l a {color:var(--tc);text-decoration:none;line-height:1.9rem;display: inline-block;}
     #n {box-sizing:border-box;color:var(--tc);overflow:hidden;transition:max-height .2s linear;max-height:0}
-    #mt:checked ~ #n {max-height:17rem;}
-    #n input,#n button{padding:7px;outline:0;border:none;width:100%;box-sizing:border-box;display:block;font-size:1rem}
-    #add,#dl,#t,[for=up]{opacity:.9;margin:10px 0;background:var(--bb);border:none;color:var(--ab);padding:5px 15px;width:100%;height:35px;cursor:pointer;display:block;text-align:center;box-sizing:border-box;font-size:.9rem}
+    #mt:checked ~ #n {max-height: 18rem;}
+    #n input{padding: 5px;outline:0;border:none;width:100%;box-sizing:border-box;display:block;font-size:1rem;margin-bottom: .5rem;height: 2rem;}
+    #add,#dl,#t,[for=up]{opacity:.9;margin:10px 0;background:var(--bb);border:none;color:var(--ab);padding:5px 15px;width:100%;height:35px;cursor:pointer;display:block;text-align:center;box-sizing:border-box;text-transform: uppercase;}
     #dl,[for=up]{background:transparent;color: var(--tc);}
     #dl{margin-right:1px}
-    #title,#icon,#fileSelect{transform: scale(.75);transform-origin: left bottom}
-    #file {display:flex;justify-content:space-between}
+    .flex {display:flex;justify-content:space-between}
+    input#iconPick {cursor: pointer;}
     h2{font-size:1rem}
   </style>
 </head>
@@ -71,15 +71,16 @@
     <label for=mt id=t>Manage</label>
     <div id=n>
       <h2>Add New Link</h2>
-      <input id=url type=text placeholder="https://" />
-      <input id=title type=text placeholder="Title (optional)"/>
-      <input id=icon type=text placeholder="Icon URL (optional)"/>
-      <input id=fileElem type=file multiple accept="image/*" style="display:none">
-      <button id=fileSelect>Select local image as icon (optional)</button>
-      <button id=add>Save</button>
-      <aside id=file>
-        <span id=dl >&#x21e9; Download Links</span>
-        <input type="file" id=up accept=".json" hidden><label for=up>Upload Links &#x21e7;</label>
+      <input id=url type=text placeholder="Required: https://..." />
+      <input id=title type=text placeholder="Optional: Link Title"/>
+      <div class=flex>
+        <input id=icon type=text placeholder="Optional: Favicon URL" />
+        <input id=iconPick type=file accept=image/* title="Optional: Pick any image to be used as icon. Loads faster than external icons and prevents tracking.">
+      </div>
+      <label id=add>Save</label>
+      <aside class=flex>
+        <input type=file id=up accept=.json hidden><label for=up>&#x21e7; Import Links</label>
+        <span id=dl >&#x21e9; Backup Links</span>
       </aside>
     </div>
   </div>
@@ -200,15 +201,9 @@
       }
     }
 
-
-    fileSelect.addEventListener('click', function (e) {
-      fileElem.click()
-      e.preventDefault()
-    })
-
     const getLocalImageAsDataUri = () => {
       return new Promise(function(resolve) {
-        const file = fileElem.files[0]
+        const file = iconPick.files[0]
         const reader = new FileReader()
         reader.addEventListener('load', function () {
           const image = new Image()
@@ -240,11 +235,11 @@
 
     //new link form
     const addNewItemFromLinkForm = () => {
-      addNewItem(url.value, title.value, icon.value, fileElem.files[0])
+      addNewItem(url.value, title.value, icon.value, iconPick.files[0])
       title.value = ''
       url.value   = ''
       icon.value  = ''
-      fileElem.value = ''
+      iconPick.value = ''
     }
     //add new item via save button
     add.addEventListener('click', addNewItemFromLinkForm)
