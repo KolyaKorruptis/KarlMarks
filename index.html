@@ -179,10 +179,10 @@
         const frag = fragmentFromString(`
         <li draggable=true>
           <a class=link href="${realUrl}"></a>
-          <div style="pointer-events:all">
+          <div>
             <button class=d title="Delete This Link">×</button>
               <img class=f src="${realIcon}">
-              <span class="title edit" contenteditable=true title="Click to edit title">${realTitle}</span>
+              <span class="title">${realTitle}</span>
           </div>
           <i class=m title="Drag This Link To Another Position"></i>
         </li>`)
