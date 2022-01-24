@@ -13,22 +13,18 @@
     [hidden] {display:none !important}
     #c {width:clamp(320px, 500px, 100vw);margin:auto;padding:1rem;background:var(--bg);border-radius:1rem;box-shadow: 0 0 0 1rem var(--bd), 0 0 2rem var(--bg2);}
     @media (max-width: 767px) { #c{margin-top:0} }
-    .d {border:none;background:0 0;color:var(--tc);cursor:pointer;font-size:1rem;display:none;margin-right:.2rem}
+    .d {border:none;background:0 0;color:var(--tc);cursor:pointer;font-size:1rem;display:none;padding: 0;}
     #mt:checked ~ #l .d {display:inline-block;}
     .d:hover,.m:hover,#t:hover, #dl:hover, [for=up]:hover, #add:hover {opacity:1;filter:brightness(1.2) contrast(200%) drop-shadow(0 0 5px var(--hc))}
     .m {display: inline-block;width:24px;height:24px;cursor:grab;background-image:radial-gradient(gray 30%, transparent 40%);background-size:3px 3px;background-position:0 100%;border-radius:30%;z-index: 1;}
     .m:active {cursor:grabbing}
-    .f {margin-right:.3rem;height: 22px;width: 22px;object-fit:cover;}
-    [draggable] {user-select:none;-khtml-user-drag:element;-webkit-user-drag:element}
+    .f {height: 22px;width: 22px;object-fit:cover;ser-select:none;-khtml-user-drag:element;-webkit-user-drag:element}
     [draggable] input {user-select:auto}
-    #l {padding:0;margin:0;list-style:none}
-    #l li {margin:0;border-top:1px solid transparent;display:flex;justify-content:space-between;white-space:nowrap;align-items: center;position: relative;}
-    #l li.over {border-top:1px solid var(--tc)}
-    #l li.over * {filter:brightness(1.2)}
-    #l li:last-child {border-bottom:none}
-    #l li * {vertical-align: middle;}
-    .w {z-index: 1;pointer-events: none;line-height: 1.5rem;}
-    #l a {color:var(--tc);text-decoration:none;line-height:1.9rem;position: absolute;inset: 0;border-radius: 20px 0 0 20px;left: -8px;}
+    #l {padding:0;margin:0;list-style:none;display: flex;flex-direction: column;row-gap: .3rem;}
+    #l lpadding:0;margin:0;list-style:none;display: flex;flex-direction: column;row-gap: 3px;;white-space:nowrap;align-items: center;position: relative;}
+    #l li.omargin:0;border-top:1px solid transparent;display:flex;justify-content:space-between;white-space:nowrap;align-items: center;position: relative;al-align: middle;}
+    .w {z-index: 1;pointer-events: none;line-height: 1.5rem;display: flex;}
+    #l az-index: 1;pointer-events: none;line-height: 1.5rem;display: flex;align-items: center;column-gap: .5rem;olute;inset: 0;border-radius: 20px 0 0 20px;left: -8px;}
     #l a:hover {background: linear-gradient(90deg, var(--bd) 0%, rgba(0,0,0,0) 100%);}
     #n {box-sizing:border-box;color:var(--tc);overflow:hidden;transition:max-height .2s linear;max-height:0}
     #mt:checked ~ #n {max-height: 18rem;}
@@ -39,8 +35,8 @@
     .flex {display:flex;justify-content:space-between}
     input#iconPick {cursor: pointer;}
     h2{font-size:1rem}
-    #mt:checked ~ #l .title{pointer-events: all;padding-left: .3em;background: white;color: black;width: 10em;display: inline-block;}
-    #mt:checked ~ #l .w {pointer-events: all}
+    #mt:checked ~ #l .title{pointer-events: all;padding-left: .3em;background: white;color: black;width: 100%;display: inline-block;}
+    #mt:checked ~ #l .w {pointer-events: all;flex-basis: 90%;}
   </style>
 </head>
 <body>
