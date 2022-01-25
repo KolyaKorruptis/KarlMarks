@@ -18,14 +18,14 @@
     .d:hover,.m:hover,#t:hover, #dl:hover, [for=up]:hover, #add:hover {opacity:1;filter:brightness(1.2) contrast(200%) drop-shadow(0 0 5px var(--hc))}
     .m {display: inline-block;width:24px;height:24px;cursor:grab;background-image:radial-gradient(gray 30%, transparent 40%);background-size:3px 3px;background-position:0 100%;border-radius:30%;z-index: 1;}
     .m:active {cursor:grabbing}
-    .f {height: 22px;width: 22px;object-fit:cover;user-select:none;-khtml-user-drag:element;-webkit-user-drag:element}
+    .f {height: 22px;width:22px;object-fit:cover;user-select:none;-khtml-user-drag:element;-webkit-user-drag:element}
     [draggable] {user-select:none;-khtml-user-drag:element;-webkit-user-drag:element}
     [draggable] input {user-select:auto}
-    #l {padding:0;margin:0;list-style:none;display: flex;flex-direction: column;row-gap: .3rem;}
-    #l li {padding:0;margin:0;list-style:none;display: flex;row-gap: 3px;white-space:nowrap;align-items: center;position: relative;justify-content: space-between;border-top: 1px solid transparent;}
-    .w {z-index: 1;pointer-events: none;line-height: 1.5rem;display: flex;align-items: center;column-gap: .5rem;}
-    #l a {z-index: 1;display: flex;position: absolute;inset: 0;border-radius: 20px 0 0 20px;left: -8px;}
-    #l a:hover {background: linear-gradient(90deg, var(--bd) 0%, rgba(0,0,0,0) 100%);}
+    #l {padding:0;margin:0;list-style:none;display:flex;flex-direction:column;row-gap:.3rem;}
+    #l li {padding:0;margin:0;list-style:none;display:flex;row-gap: 3px;white-space:nowrap;align-items:center;position:relative;justify-content:space-between;border-top:1px solid transparent;}
+    .w {z-index: 1;pointer-events:none;line-height:1.5rem;display:flex;align-items:center;column-gap: .5rem;}
+    #l a {z-index: 1;display: flex;position: absolute;inset:0;border-radius:20px 0 0 20px;left:-8px;}
+    #l a:hover {background: linear-gradient(90deg,var(--bd) 0%,rgba(0,0,0,0) 100%);}
     #l li.over {border-top:1px solid var(--tc)}
     #l li.over * {filter:brightness(1.2)}
     #l li:last-child {border-bottom:none}
@@ -38,7 +38,7 @@
     .flex {display:flex;justify-content:space-between}
     input#iconPick {cursor: pointer;}
     h2{font-size:1rem}
-    #mt:checked ~ #l .title{pointer-events: all;padding-left: .3em;background: white;color: black;width: 100%;display: inline-block;}
+    #mt:checked ~ #l .title{pointer-events: all;padding-left: .3em;background: white;color: black;width: 100%;display: inline-block;user-select: text;}
     #mt:checked ~ #l .w {pointer-events: all;flex-basis: 90%;}
   </style>
 </head>
