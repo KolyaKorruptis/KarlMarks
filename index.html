@@ -94,10 +94,10 @@
     //--------------------Drag & Drop------------------------------
     let dragSrcEl
 
-    function handleDragStart(e) {
-      dragSrcEl = this
+    const handleDragStart = (e) => {
+      dragSrcEl = e.currentTarget
       e.dataTransfer.effectAllowed = 'move'
-      e.dataTransfer.setData('text/html', this.outerHTML)
+      e.dataTransfer.setData('text/html', e.currentTarget.outerHTML)
     }
 
     const dragOver = (e) =>{
@@ -127,16 +127,16 @@
       })
     }
 
-    function drop(e) {
+    const drop = (e) => {
       if (e.stopPropagation) e.stopPropagation()
-      if (dragSrcEl != this) {
-        this.parentNode.removeChild(dragSrcEl)
+      if (dragSrcEl != e.currentTarget) {
+        e.currentTarget.parentNode.removeChild(dragSrcEl)
         var dropHTML = e.dataTransfer.getData('text/html')
-        this.insertAdjacentHTML('beforebegin',dropHTML)
-        var dropElem = this.previousSibling
+        e.currentTarget.insertAdjacentHTML('beforebegin',dropHTML)
+        var dropElem = e.currentTarget.previousSibling
         addDnDHandlers(dropElem)
       }
-      this.classList.remove('over')
+      e.currentTarget.classList.remove('over')
       save()
       if (dropElem) itemDeleteHandler(dropElem.querySelector('.d'))
       return false
