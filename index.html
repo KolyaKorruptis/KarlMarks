@@ -1,49 +1,55 @@
 <!DOCTYPE html>
 <html lang=en>
 <head>
+  <!--
+    TODO
+    ! add button to download current icon in manage mode
+    ! when adding a new link replace any existing link that has the same URL
+    ! load a previously saved link back into the form for changes
+   -->
   <title>Startpage</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
-    :root{--bg:#262626;--bg2:#000;--tc:#eee;--bd:#444;--bb:#d51a7e;--ab:#eee;--hc:#009696;}
-    @media (prefers-color-scheme: light) {:root{--bg:#c4c1bc;--bg2:#aba6a0;--tc:#333;--bd:#d4d4d4;--bb:#1a65d5;--hc:transparent;}}
-    html, body {height:100%;font-size:clamp(16px,4vw, 18px);margin:0;}
-    body{background:radial-gradient(var(--bg2) 15%,transparent 16%) 0 0,radial-gradient(var(--bg2) 15%,transparent 16%) 8px 8px,radial-gradient(rgba(255,255,255,.1) 15%,transparent 20%) 0 1px,radial-gradient(rgba(255,255,255,.1) 15%,transparent 20%) 8px 9px,var(--bg);background-size:16px 16px;background-attachment:fixed;font-family:system-ui;color:var(--tc);display:flex}
+    :root{ --bg:#262626;--bg2:#000;--tc:#eee;--bd:#444;--bb:#d51a7e;--ab:#eee;--hc:#009696;}
+    @media (prefers-color-scheme: light) { :root{--bg:#c4c1bc;--bg2:#aba6a0;--tc:#333;--bd:#d4d4d4;--bb:#1a65d5;--hc:transparent;}}
+    html, body { height:100%;font-size:clamp(16px,4vw, 18px);margin:0;}
+    body { background:radial-gradient(var(--bg2) 15%,transparent 16%) 0 0,radial-gradient(var(--bg2) 15%,transparent 16%) 8px 8px,radial-gradient(rgba(255,255,255,.1) 15%,transparent 20%) 0 1px,radial-gradient(rgba(255,255,255,.1) 15%,transparent 20%) 8px 9px,var(--bg);background-size:16px 16px;background-attachment:fixed;font-family:system-ui;color:var(--tc);display:flex}
     input:focus { outline:none}
-    [hidden] {display:none !important}
-    #c {width:clamp(320px, 500px, 100vw);margin:auto;padding:1rem;background:var(--bg);border-radius:1rem;box-shadow: 0 0 0 1rem var(--bd), 0 0 2rem var(--bg2);}
-    @media (max-width: 767px) { #c{margin-top:0} }
-    .d {border:none;background:0 0;color:var(--tc);cursor:pointer;font-size:1rem;display:none;padding: 0;}
-    #mt:checked ~ #l .d {display:inline-block;}
-    .d:hover,.m:hover,#t:hover, #dl:hover, [for=up]:hover, #add:hover {opacity:1;filter:brightness(1.2) contrast(200%) drop-shadow(0 0 5px var(--hc))}
-    .m {display: inline-block;width:24px;height:24px;cursor:grab;background-image:radial-gradient(gray 30%, transparent 40%);background-size:3px 3px;background-position:0 100%;border-radius:30%;z-index: 1;}
-    .m:active {cursor:grabbing}
-    .f {height: 22px;width:22px;object-fit:cover;user-select:none;-khtml-user-drag:element;-webkit-user-drag:element}
+    [hidden] { display:none !important }
+    main { width:clamp(320px, 500px, 100vw);margin:auto;padding:1rem;background:var(--bg);border-radius:1rem;box-shadow: 0 0 0 1rem var(--bd), 0 0 2rem var(--bg2); }
+    @media (max-width: 767px) { main { margin-top:0} }
+    /* general flex class */ .flex, #l, #l li, .w { display:flex;justify-content:space-between }
+    /* general hover effect */ .d:hover,.m:hover,#t:hover, #dl:hover, [for=up]:hover, #add:hover { opacity:1;filter:brightness(1.2) contrast(200%) drop-shadow(0 0 5px var(--hc)) }
+    /* manage toggle */ #mt:checked ~ #l .d { display:inline-block; }
+    /* manage toggle */ #mt:checked ~ #n { max-height: 14rem; }
+    /* manage toggle */ #mt:checked ~ #l .title {pointer-events: all;padding-left: .3em;background: white;color: black;width: 100%;display: inline-block;user-select: text;}
+    /* manage toggle */ #mt:checked ~ #l .w { pointer-events: all;flex-basis: 90%;}
+    /* delete x */ .d {border:none;background:0 0;color:var(--tc);cursor:pointer;font-size:1rem;display:none;padding: 0;}
+    /* move handle */ .m {display: inline-block;width:24px;height:24px;cursor:grab;background-image:radial-gradient(gray 30%, transparent 40%);background-size:3px 3px;background-position:0 100%;border-radius:30%;z-index: 1;}
+    /* move handle */ .m:active {cursor:grabbing}
+    /* link icon */ .f {height: 22px;width:22px;object-fit:cover;user-select:none;-khtml-user-drag:element;-webkit-user-drag:element}
+    /* main list */ #l {padding:0;margin:0;list-style:none;flex-direction:column;row-gap:.3rem;}
+    /* list items */ #l li {padding:0;margin:0;list-style:none;row-gap: 3px;white-space:nowrap;align-items:center;position:relative;border-top:1px solid transparent;}
+    /* list item */ #l li:last-child {border-bottom:none}
+    /* wrapper */ .w {z-index: 1;pointer-events:none;line-height:1.5rem;align-items:center;column-gap: .5rem;}
+    /* list link */ #l a {z-index: 1;position: absolute;inset:0;border-radius:20px 0 0 20px;left:-8px;}
+    /* list link */ #l a:hover {background: linear-gradient(90deg,var(--bd) 0%,rgba(0,0,0,0) 100%);}
+    /* drag effect */ #l li.over {border-top:1px solid var(--tc)}
+    /* drag effect */ #l li.over * {filter:brightness(1.2)}
     [draggable] {user-select:none;-khtml-user-drag:element;-webkit-user-drag:element}
     [draggable] input {user-select:auto}
-    #l {padding:0;margin:0;list-style:none;display:flex;flex-direction:column;row-gap:.3rem;}
-    #l li {padding:0;margin:0;list-style:none;display:flex;row-gap: 3px;white-space:nowrap;align-items:center;position:relative;justify-content:space-between;border-top:1px solid transparent;}
-    .w {z-index: 1;pointer-events:none;line-height:1.5rem;display:flex;align-items:center;column-gap: .5rem;}
-    #l a {z-index: 1;display: flex;position: absolute;inset:0;border-radius:20px 0 0 20px;left:-8px;}
-    #l a:hover {background: linear-gradient(90deg,var(--bd) 0%,rgba(0,0,0,0) 100%);}
-    #l li.over {border-top:1px solid var(--tc)}
-    #l li.over * {filter:brightness(1.2)}
-    #l li:last-child {border-bottom:none}
-    #n {box-sizing:border-box;color:var(--tc);overflow:hidden;transition:max-height .2s linear;max-height:0}
-    #mt:checked ~ #n {max-height: 14rem;}
-    #n input{padding: 5px;outline:0;border:none;width:100%;box-sizing:border-box;display:block;font-size:1rem;margin-bottom: .5rem;height: 2rem;}
-    #add,#dl,#t,[for=up]{opacity:.9;margin:10px 0;background:var(--bb);border:none;color:var(--ab);padding:5px 15px;width:100%;height:35px;cursor:pointer;display:block;text-align:center;box-sizing:border-box;}
-    #dl,[for=up]{background:transparent;color: var(--tc);}
-    #dl{margin-right:1px}
-    .flex {display:flex;justify-content:space-between}
-    input#iconPick {cursor: pointer;}
+    /* new link box */ #n { box-sizing:border-box;color:var(--tc);overflow:hidden;transition:max-height .2s linear;max-height:0}
+    /* new link inputs */ #n input{ padding: 5px;outline:0;border:none;width:100%;box-sizing:border-box;display:block;font-size:1rem;margin-bottom: .5rem;height: 2rem;}
+    /* buttons: manage, save, backup, import */ #add,#dl,#t,[for=up]{opacity:.9;margin:10px 0;background:var(--bb);border:none;color:var(--ab);padding:5px 15px;width:100%;height:35px;cursor:pointer;display:block;text-align:center;box-sizing:border-box;}
+    /* buttons: backup, import */ #dl,[for=up] { background:transparent;color: var(--tc); }
+    /* button: backup */ #dl { margin-right:1px }
+    /* image upload */ input#iconPick { cursor:pointer }
     h2{font-size:1rem}
-    #mt:checked ~ #l .title{pointer-events: all;padding-left: .3em;background: white;color: black;width: 100%;display: inline-block;user-select: text;}
-    #mt:checked ~ #l .w {pointer-events: all;flex-basis: 90%;}
   </style>
 </head>
 <body>
-  <div id=c>
+  <main>
     <input type=checkbox id=mt hidden>
     <ul id=l>
       <li draggable=true>
@@ -89,7 +95,7 @@
         <span id=dl title="Backup your link list">&#x21e9; Backup</span>
       </aside>
     </div>
-  </div>
+  </main>
   <script>
     //--------------------Drag & Drop------------------------------
     let dragSrcEl
