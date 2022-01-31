@@ -40,11 +40,17 @@
     [draggable] {user-select:none;-khtml-user-drag:element;-webkit-user-drag:element}
     [draggable] input {user-select:auto}
     /* new link box */ #n { box-sizing:border-box;color:var(--tc);overflow:hidden;transition:max-height .2s linear;max-height:0}
-    /* new link inputs */ #n input{ padding: 5px;outline:0;border:none;width:100%;box-sizing:border-box;display:block;font-size:1rem;margin-bottom: .5rem;height: 2rem;}
+    /* new link inputs */ #n input{padding: 5px;outline:0;border:none;width: 100%;box-sizing:border-box;display:block;font-size:1rem;margin-bottom: .5rem;height: 2rem;}
     /* buttons: manage, save, backup, import */ #add,#dl,#t,[for=import]{opacity:.9;margin:10px 0;background:var(--bb);border:none;color:var(--ab);padding:5px 15px;width:100%;height:35px;cursor:pointer;display:block;text-align:center;box-sizing:border-box;}
     /* buttons: backup, import */ #dl,[for=import] { background:transparent;color: var(--tc); }
     /* button: backup */ #dl { margin-right:1px }
-    /* image upload */ input#iconPick { cursor:pointer }
+    #iconPick {cursor:pointer;}
+    #iconPick::-webkit-file-upload-button { display: none; }
+    #iconPick::before { content: 'Choose Icon';color: black;display: inline-block;background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);border: 1px solid #999;border-radius: 3px;padding: 5px 8px;outline: none;white-space: nowrap;-webkit-user-select: none;cursor: pointer;text-shadow: 1px 1px #fff;font-weight: bold;font-size: .7rem;margin-right: .5rem; }
+    #iconPick:hover::before { border-color: black; }
+    #iconPick:active { outline: 0; }
+    #iconPick:active::before { background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);}
+
     h2{font-size:1rem}
   </style>
 </head>
