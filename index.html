@@ -22,35 +22,38 @@
     /* general flex class */ .flex, #l, #l li, .w { display:flex;justify-content:space-between }
     /* general hover effect */ .d:hover,.m:hover,#t:hover, #dl:hover, [for=import]:hover, #add:hover { opacity:1;filter:brightness(1.2) contrast(200%) drop-shadow(0 0 5px var(--hc)) }
     /* manage toggle */ #mt:checked ~ #l .d { display:inline-block; }
-    /* manage toggle */ #mt:checked ~ #n { max-height: 14rem; }
-    /* manage toggle */ #mt:checked ~ #l .title {pointer-events: all;padding-left: .3em;background: white;color: black;width: 100%;display: inline-block;user-select: text;}
+    /* manage toggle */ #mt:checked ~ #n { max-height:20rem }
+    /* manage toggle */ #mt:checked ~ #l .title { pointer-events:all;padding-left:.3em;background:white;color:black;width:100%;display:inline-block;user-select:text }
     /* manage toggle */ #mt:checked ~ #l .w { pointer-events: all;flex-basis: 90%;}
-    /* delete x */ .d {border:none;background:0 0;color:var(--tc);cursor:pointer;font-size:1rem;display:none;padding: 0;}
-    /* move handle */ .m {display: inline-block;width:24px;height:24px;cursor:grab;background-image:radial-gradient(gray 30%, transparent 40%);background-size:3px 3px;background-position:0 100%;border-radius:30%;z-index: 1;}
-    /* move handle */ .m:active {cursor:grabbing}
-    /* link icon */ .f {height: 22px;width:22px;object-fit:cover;user-select:none;-khtml-user-drag:element;-webkit-user-drag:element}
-    /* main list */ #l {padding:0;margin:0;list-style:none;flex-direction:column;row-gap:.3rem;}
-    /* list items */ #l li {padding:0;margin:0;list-style:none;row-gap: 3px;white-space:nowrap;align-items:center;position:relative;border-top:1px solid transparent;}
-    /* list item */ #l li:last-child {border-bottom:none}
-    /* wrapper */ .w {z-index: 1;pointer-events:none;line-height:1.5rem;align-items:center;column-gap: .5rem;}
-    /* list link */ #l a {z-index: 1;position: absolute;inset:0;border-radius:20px 0 0 20px;left:-8px;}
-    /* list link */ #l a:hover {background: linear-gradient(90deg,var(--bd) 0%,rgba(0,0,0,0) 100%);}
-    /* drag effect */ #l li.over {border-top:1px solid var(--tc)}
-    /* drag effect */ #l li.over * {filter:brightness(1.2)}
-    [draggable] {user-select:none;-khtml-user-drag:element;-webkit-user-drag:element}
-    [draggable] input {user-select:auto}
-    /* new link box */ #n { box-sizing:border-box;color:var(--tc);overflow:hidden;transition:max-height .2s linear;max-height:0}
-    /* new link inputs */ #n input{padding: 5px;outline:0;border:none;width: 100%;box-sizing:border-box;display:block;font-size:1rem;margin-bottom: .5rem;height: 2rem;}
-    /* buttons: manage, save, backup, import */ #add,#dl,#t,[for=import]{opacity:.9;margin:10px 0;background:var(--bb);border:none;color:var(--ab);padding:5px 15px;width:100%;height:35px;cursor:pointer;display:block;text-align:center;box-sizing:border-box;}
-    /* buttons: backup, import */ #dl,[for=import] { background:transparent;color: var(--tc); }
+    /* delete x */ .d { border:none;background:0 0;color:var(--tc);cursor:pointer;font-size:1rem;display:none;padding:0 }
+    /* move handle */ .m { display:inline-block;width:24px;height:24px;cursor:grab;background-image:radial-gradient(gray 30%, transparent 40%);background-size:3px 3px;background-position:0 100%;border-radius:30%;z-index: 1 }
+    /* move handle */ .m:active { cursor:grabbing }
+    /* link icon */ .f {height: 22px;width:22px;object-fit:cover;user-select:none;-khtml-user-drag:element;-webkit-user-drag:element }
+    /* main list */ #l { padding:0;margin:0;list-style:none;flex-direction:column;row-gap:.3rem }
+    /* list items */ #l li { padding:0;margin:0;list-style:none;row-gap: 3px;white-space:nowrap;align-items:center;position:relative;border-top:1px solid transparent;}
+    /* list item */ #l li:last-child { border-bottom:none }
+    /* wrapper */ .w { z-index: 1;pointer-events:none;line-height:1.5rem;align-items:center;column-gap: .5rem }
+    /* list link */ #l a { z-index: 1;position: absolute;inset:0;border-radius:20px 0 0 20px;left:-8px }
+    /* list link */ #l a:hover { background: linear-gradient(90deg,var(--bd) 0%,rgba(0,0,0,0) 100%) }
+    /* drag effect */ #l li.over { border-top:1px solid var(--tc) }
+    /* drag effect */ #l li.over * { filter:brightness(1.2) }
+    [draggable] { user-select:none;-khtml-user-drag:element;-webkit-user-drag:element }
+    [draggable] input { user-select:auto }
+    /* new link box */ #n { box-sizing:border-box;color:var(--tc);overflow:hidden;transition:max-height .2s linear;max-height:0 }
+    /* new link inputs */ #n input { padding: 5px;outline:0;border:none;width: 100%;box-sizing:border-box;display:block;font-size:1rem;margin-bottom: .5rem;height: 2rem }
+    /* buttons: manage, save, backup, import */ #add,#dl,#t,[for=import] { opacity: .9;margin:10px 0;background:var(--bb);border:none;color:var(--ab);padding:5px 15px;width:100%;height:35px;cursor:pointer;display:block;text-align:center;box-sizing:border-box }
+    /* buttons: backup, import */ #dl,[for=import] { background:transparent;color: var(--tc) }
     /* button: backup */ #dl { margin-right:1px }
-    #iconPick {cursor:pointer;}
+    #iconPick { cursor:pointer;padding-left:0 !important }
     #iconPick::-webkit-file-upload-button { display: none; }
-    #iconPick::before { content: 'Choose Icon';color: black;display: inline-block;background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);border: 1px solid #999;border-radius: 3px;padding: 5px 8px;outline: none;white-space: nowrap;user-select: none;cursor: pointer;text-shadow: 1px 1px #fff;font-weight: bold;font-size: .7rem;margin-right: .5rem; }
+    #iconPick::before { content: 'Choose Icon';color: black;display: inline-block;background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);border: 1px solid #999;border-radius: 3px;padding: 5px 8px;outline: none;white-space: nowrap;user-select: none;cursor: pointer;text-shadow: 1px 1px #fff;font-weight: bold;font-size: .7rem;margin-right: .5rem;}
     #iconPick:hover::before { border-color: black; }
     #iconPick:active { outline: 0; }
-    #iconPick:active::before { background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);}
-    h2{font-size:1rem}
+    #iconPick:active::before { background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9) }
+    h2{ font-size:1rem }
+    /* options */ details { transition:height .2s linear;height:1.25rem;overflow:hidden }
+    /* options */ summary { user-select: none;cursor:pointer;margin-bottom:.5rem }
+    /* options */ details#options[open] { height:9em }
   </style>
 </head>
 <body>
@@ -89,11 +92,12 @@
     <div id=n>
       <h2>Add New Link</h2>
       <input id=url type=text placeholder="https://" />
-      <input id=title type=text placeholder="Optional: Title"/>
-      <div class=flex>
-        <input id=iconPick type=file accept=image/* title="Optional: Pick any image to use as icon. Loads faster than an icon URL and prevents tracking.">
-        <input id=icon type=text placeholder="Optional: Icon URL" />
-      </div>
+      <details id=options>
+        <summary id=optionsSummary>More Options</summary>
+        <input id=title type=text placeholder="Title"/>
+        <input id=icon type=text placeholder="Icon URL" title="For developers: Check if your server is up and accessible by entering its icon or logo URL here."/>
+        <input id=iconPick type=file accept=image/* title="Pick any image to use as icon. Loads faster than an icon URL and prevents tracking.">
+      </details>
       <label id=add>Save</label>
       <aside class=flex>
         <input type=file id=import accept=.json hidden><label for=import title="Import your link list">&#x21e7; Import</label>
