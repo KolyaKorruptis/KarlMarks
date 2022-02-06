@@ -46,7 +46,7 @@
     /* button: backup */ #dl { margin-right:1px }
     #iconPick {cursor:pointer;}
     #iconPick::-webkit-file-upload-button { display: none; }
-    #iconPick::before { content: 'Choose Icon';color: black;display: inline-block;background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);border: 1px solid #999;border-radius: 3px;padding: 5px 8px;outline: none;white-space: nowrap;-webkit-user-select: none;cursor: pointer;text-shadow: 1px 1px #fff;font-weight: bold;font-size: .7rem;margin-right: .5rem; }
+    #iconPick::before { content: 'Choose Icon';color: black;display: inline-block;background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);border: 1px solid #999;border-radius: 3px;padding: 5px 8px;outline: none;white-space: nowrap;user-select: none;cursor: pointer;text-shadow: 1px 1px #fff;font-weight: bold;font-size: .7rem;margin-right: .5rem; }
     #iconPick:hover::before { border-color: black; }
     #iconPick:active { outline: 0; }
     #iconPick:active::before { background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);}
@@ -89,10 +89,10 @@
     <div id=n>
       <h2>Add New Link</h2>
       <input id=url type=text placeholder="https://" />
-      <input id=title type=text placeholder="Optional: Link Title" style="display:none"/>
+      <input id=title type=text placeholder="Optional: Title"/>
       <div class=flex>
-        <input id=icon type=text placeholder="Optional: Favicon URL" />
-        <input id=iconPick type=file accept=image/* title="Optional: Pick any image to be used as icon. Loads faster than external icons and prevents tracking.">
+        <input id=iconPick type=file accept=image/* title="Optional: Pick any image to use as icon. Loads faster than an icon URL and prevents tracking.">
+        <input id=icon type=text placeholder="Optional: Icon URL" />
       </div>
       <label id=add>Save</label>
       <aside class=flex>
