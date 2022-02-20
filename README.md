@@ -2,14 +2,12 @@ A custom browser startpage with a simple bookmark system. It is intended to be u
 
  ## Features
   - bright and dark mode based on system setting
-  - bookmarks are stored in localstorage
-  - bookmarks can be downloaded and uploaded for sharing between browsers, systems and users
-  - icons are automatically retrieved from google
-  - or choose an icon URL or a local image file
   - mobile and desktop supported
-  - single file for optimized caching
-  - no dependencies
-  - runs from the local file system
+  - runs from the local file system or server
+  - no dependencies, everything in a single file for optimized caching
+  - bookmarks are stored in your browser's local storage and can be backed up or imported in JSON format
+  - editing or deleting of individual bookmarks
+  - icons can be automatically retrieved from google or choose an icon URL or any local image file
 ## Live URL
 https://kolya.schwarzsilber.de/startpage
 
@@ -22,8 +20,3 @@ You may want to use a browser extension to set this file as your new-tab-page:
   - Firefox: [New Tab Override](https://addons.mozilla.org/en-US/firefox/addon/new-tab-override/)
   - Chrome: [blank](https://chrome.google.com/webstore/detail/blank/blomfhkjjolopkkglifoclbjmbbambpg)
   - Edge: [blank](https://microsoftedge.microsoft.com/addons/detail/blank/edoamabjjoiebpcmbkenbglenadopben)
-
-## Notes
-This is a hobby project I wrote for my own amusement. A few coding standards have been knowingly broken:
-  - Extremely terse CSS names.
-  - Using DOM elements without selecting them in JS.
