@@ -6,12 +6,12 @@ A custom browser startpage with a simple bookmark system. It is intended to be u
   - runs from your local file system, your server or the live url
   - no dependencies, everything in a single HTML file for optimized caching
   - bookmarks are stored in your browser's local storage and can be backed up or imported
-  - editing or deleting of individual bookmarks
+  - sort and edit bookmarks via drag and drop easily
   - icons can be automatically retrieved from google or choose an icon URL or pick any local image file as icon
 ## Live URL
 https://kolya.schwarzsilber.de/startpage
 
-[![Screenshot Dark Mode](https://i.imgur.com/u2KoXFT.png)](https://kolya.schwarzsilber.de/startpage)
+[![Screenshot Dark Mode](https://i.imgur.com/1gb3ZGx.png)](https://kolya.schwarzsilber.de/startpage)
 
 ## Usage
 If you use the live url you will get automatic updates as development continues.
