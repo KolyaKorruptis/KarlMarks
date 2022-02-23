@@ -190,6 +190,7 @@
     const d2e_drop = (e) => {
       if (e.stopPropagation) e.stopPropagation()
       drop2Edit.classList.remove('over')
+      options.setAttribute('open','')
       const doc = new DOMParser().parseFromString(e.dataTransfer.getData('text/html'), "text/html")
       title.value = doc.querySelector('.title').innerHTML
       url.value   = doc.querySelector('.link').getAttribute('href')
