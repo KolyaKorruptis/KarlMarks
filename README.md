@@ -1,12 +1,12 @@
-A custom browser startpage with a simple bookmark system. It is intended to be used as a replacement for the new-tab-page provided by the browser.
+A fast startpage with a drag & drop bookmark system. It can be used as a new-tab-page in the browser.
 
  ## Features
   - bright and dark mode based on system setting
   - mobile and desktop supported
   - runs from your local file system, your server or the live url
   - no dependencies, everything in a single small HTML file that loads instantly
-  - bookmarks are stored in your browser's local storage and can be backed up or imported
-  - sort and edit bookmarks via drag and drop easily
+  - create, sort, edit, back up, import or delete your bookmarks
+
 ## Live URL
 https://kolya.schwarzsilber.de/startpage
 
