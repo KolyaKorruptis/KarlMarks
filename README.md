@@ -1,12 +1,12 @@
 ![Karl Marks logo](icons/128.png)
 
-Karl Marks is a fast startpage with a drag & drop bookmark system. It can be used as a new-tab-page in the browser. A chrome browser extension is upcoming that will make using it much easier..
+Karl Marks is a fast startpage with a drag & drop bookmark system. It can be used as a new-tab-page in the browser. A chrome browser extension is upcoming that will make using it much easier.
 
  ## Features
   - bright and dark mode based on system setting
   - mobile and desktop supported
   - runs from your local file system, your server or the live url
-  - no dependencies, everything in a single small HTML file that loads instantly
+  - no dependencies, no frameworks, loads instantly
   - create, sort, edit, back up, import or delete your bookmarks
 
 ## Live URL
