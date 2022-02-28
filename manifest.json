@@ -2,7 +2,7 @@
 	"manifest_version": 3,
 	"name": "Karl Marks",
 	"version": "0.0.1",
-	"description": "A custom browser startpage with a simple bookmark system. Fast and open source.",
+	"description": "A custom new-tab-page with drag & drop bookmarks that respects your privacy. Fast and open source.",
 	"author": "Kolya",
 	"chrome_url_overrides": {
 		"newtab": "index.html"
