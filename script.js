@@ -114,6 +114,9 @@ drop2Edit.addEventListener('dragenter', d2e_dragEnter)
 drop2Edit.addEventListener('dragleave', d2e_dragLeave)
 drop2Edit.addEventListener('drop', d2e_drop)
 
+//open Manage when dragging a link across
+t.addEventListener('dragenter', ()=> mt.checked = true)
+
 //----------------------Link Handling-----------------------
 
 //data to be saved
