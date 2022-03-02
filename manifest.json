@@ -1,8 +1,8 @@
 {
 	"manifest_version": 3,
 	"name": "Karl Marks",
-	"version": "0.0.1",
-	"description": "A custom new-tab-page with drag & drop bookmarks that respects your privacy. Fast and open source.",
+	"version": "0.0.2",
+	"description": "A custom new-tab-page that respects your privacy. Drag & drop bookmarks. Dark & light mode support. Desktop & mobile support. Fast and open source.",
 	"author": "Kolya",
 	"chrome_url_overrides": {
 		"newtab": "index.html"
