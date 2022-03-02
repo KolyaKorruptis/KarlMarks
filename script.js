@@ -239,7 +239,7 @@ loadLinks()
 popupLinkTargets()
 
 //backup
-const backup = () => {
+const getBackup = () => {
   const el = document.createElement('a');
   el.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(localStorage.getItem('sp-links')))
   el.setAttribute('download', 'StartPageLinks.json')
@@ -248,7 +248,7 @@ const backup = () => {
   el.click()
   document.body.removeChild(el)
 }
-dl.addEventListener('click', backup)
+backup.addEventListener('click', getBackup)
 
 //import
 const sel = document.getElementById('import');
