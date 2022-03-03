@@ -1,7 +1,7 @@
 //open links from the extension's action popup
 const popupLinkTargets = () => {
   if(location.hash == '#popup') {
-    const links = document.querySelectorAll('.link')
+    const links = document.querySelectorAll('.linklist__itemLink')
     links.forEach(el => {
       el.setAttribute('target','_blank')
     })
@@ -13,7 +13,7 @@ const popupLinkTargets = () => {
 let dragSrcEl
 
 const dragStart = (e) => {
-  if (e.target.classList.contains('m')) {
+  if (e.target.classList.contains('linklist__itemMoveHandle')) {
     dragSrcEl = e.currentTarget
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('text/html', e.currentTarget.outerHTML)
@@ -35,14 +35,14 @@ const dragEnter = (e) => {
     dragEnterTarget = target
   } else {
     //dragged outside dropzone, cancel all meetings
-    l.querySelectorAll('LI').forEach((el) => {
+    linklist.querySelectorAll('.linklist__item').forEach((el) => {
       el.classList.remove('over')
     })
   }
 }
 
 const dragLeave = (e) => {
-  l.querySelectorAll('LI').forEach((el) => {
+  linklist.querySelectorAll('.linklist__item').forEach((el) => {
     if (el !== dragEnterTarget) el.classList.remove('over')
   })
 }
@@ -59,7 +59,7 @@ const drop = (e) => {
   }
   e.currentTarget.classList.remove('over')
   save()
-  if (dropElem) itemDeleteHandler(dropElem.querySelector('.d'))
+  if (dropElem) itemDeleteHandler(dropElem.querySelector('.linklist__itemDeleteButton'))
   return false
 }
 
@@ -70,7 +70,7 @@ const addDnDHandlers = (el) => {
   el.addEventListener('dragleave', dragLeave)
   el.addEventListener('drop', drop)
 }
-l.querySelectorAll('LI').forEach((el) => {
+linklist.querySelectorAll('.linklist__item').forEach((el) => {
   addDnDHandlers(el)
 })
 //dragged outside dropzone
@@ -86,7 +86,7 @@ const _modifyItemFromLinkForm = (elToBeReplaced) => {
   url.value   = ''
   icon.value  = ''
   iconPick.value = ''
-  mt.checked = false
+  manageToggle.checked = false
   options.removeAttribute('open')
   add.removeEventListener('click', modifyItemFromLinkForm)
   add.addEventListener('click', addNewItemFromLinkForm)
@@ -100,9 +100,9 @@ const d2e_drop = (e) => {
   drop2Edit.classList.remove('over')
   options.setAttribute('open','')
   const doc = new DOMParser().parseFromString(e.dataTransfer.getData('text/html'), "text/html")
-  title.value = doc.querySelector('.title').innerHTML
-  url.value   = doc.querySelector('.link').getAttribute('href')
-  icon.value  = doc.querySelector('.f').getAttribute('src')
+  title.value = doc.querySelector('.linklist__itemTitle').innerHTML
+  url.value   = doc.querySelector('.linklist__itemLink').getAttribute('href')
+  icon.value  = doc.querySelector('.linklist__itemIcon').getAttribute('src')
   add.removeEventListener('click', addNewItemFromLinkForm)
   modifyItemFromLinkForm = () => _modifyItemFromLinkForm(dragSrcEl)
   add.addEventListener('click', modifyItemFromLinkForm)
@@ -115,15 +115,15 @@ drop2Edit.addEventListener('dragleave', d2e_dragLeave)
 drop2Edit.addEventListener('drop', d2e_drop)
 
 //open Manage when dragging a link across
-t.addEventListener('dragenter', ()=> mt.checked = true)
+manageToggle__label.addEventListener('dragenter', ()=> manageToggle.checked = true)
 
 //----------------------Link Handling-----------------------
 
 //data to be saved
 const getLinksFromHtml = () => {
   const arr = []
-  l.querySelectorAll('LI').forEach((el) => {
-    arr.push ( {"link":el.querySelector('.link').href,"title":el.querySelector('.title').innerHTML,"icon":el.querySelector('.f').src} )
+  linklist.querySelectorAll('.linklist__item').forEach((el) => {
+    arr.push ( {"link":el.querySelector('.linklist__itemLink').href,"title":el.querySelector('.linklist__itemTitle').innerHTML,"icon":el.querySelector('.linklist__itemIcon').src} )
   })
   return JSON.stringify(arr.reverse())
 }
@@ -142,18 +142,18 @@ const addNewItem = (loadUrl,loadTitle,loadIconUrl,file,elToBeReplaced=null) => {
   let realIcon = loadIconUrl || `https://www.google.com/s2/favicons?sz=32&domain_url=${realUrl.host}`
   const prependLink = () => {
     const frag = fragmentFromString(`
-    <li>
-      <button class=d title="Delete this entry">×</button>
-      <a class=link href="${realUrl}">
-        <img class=f src="${realIcon}">
-        <span class="title">${realTitle}</span>
+    <li class=linklist__item>
+      <button class=linklist__itemDeleteButton title="Delete this entry">×</button>
+      <a class=linklist__itemLink href="${realUrl}">
+        <img class=linklist__itemIcon src="${realIcon}">
+        <span class=linklist__itemTitle>${realTitle}</span>
       </a>
-      <i draggable=true class=m title="Drag this entry to another position"></i>
+      <i draggable=true class=linklist__itemMoveHandle title="Drag this entry to another position"></i>
     </li>`)
     addDnDHandlers(frag.querySelector('li'))
-    itemDeleteHandler(frag.querySelector('.d'))
+    itemDeleteHandler(frag.querySelector('.linklist__itemDeleteButton'))
     if(elToBeReplaced) elToBeReplaced.replaceWith(frag)
-    else l.prepend(frag)
+    else linklist.prepend(frag)
   }
   // user selected a local image as icon
   if (file) {
@@ -198,7 +198,7 @@ const itemDeleteHandler = (x) => {
     save()
   })
 }
-document.querySelectorAll('.d').forEach((x) => itemDeleteHandler(x))
+document.querySelectorAll('.linklist__itemDeleteButton').forEach((x) => itemDeleteHandler(x))
 
 //new link form
 const addNewItemFromLinkForm = () => {
@@ -207,13 +207,13 @@ const addNewItemFromLinkForm = () => {
   url.value   = ''
   icon.value  = ''
   iconPick.value = ''
-  mt.checked = false
+  manageToggle.checked = false
 }
 //add new item via save button
 add.addEventListener('click', addNewItemFromLinkForm)
 
 //also add new item via return key
-mt.addEventListener('change', (e) => {
+manageToggle.addEventListener('change', (e) => {
   if (e.currentTarget.checked) {
     url.focus()
     n.addEventListener('keydown', (e) => {
@@ -229,7 +229,7 @@ if (window.innerWidth < 600) url.setAttribute( "autocomplete", "off" );
 const loadLinks = (str) => {
   const links = str? JSON.parse(str) : JSON.parse(localStorage.getItem('sp-links'))
   if (links) {
-    l.innerHTML = ''
+    linklist.innerHTML = ''
     links.forEach((link) => {
       addNewItem(link.link, link.title, link.icon)
     })
