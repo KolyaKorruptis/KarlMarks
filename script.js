@@ -90,13 +90,13 @@ const _modifyItemFromLinkForm = (elToBeReplaced) => {
   options.removeAttribute('open')
   add.removeEventListener('click', modifyItemFromLinkForm)
   add.addEventListener('click', addNewItemFromLinkForm)
-  n.querySelector('h2').innerHTML='Add New link'
+  newLinkArea.querySelector('h2').innerHTML='Add New link'
   save()
 }
 
 const d2e_drop = (e) => {
   if (e.stopPropagation) e.stopPropagation()
-  n.querySelector('h2').innerHTML='Modify Link'
+  newLinkArea.querySelector('h2').innerHTML='Modify Link'
   drop2Edit.classList.remove('over')
   options.setAttribute('open','')
   const doc = new DOMParser().parseFromString(e.dataTransfer.getData('text/html'), "text/html")
@@ -216,7 +216,7 @@ add.addEventListener('click', addNewItemFromLinkForm)
 manageToggle.addEventListener('change', (e) => {
   if (e.currentTarget.checked) {
     url.focus()
-    n.addEventListener('keydown', (e) => {
+    newLinkArea.addEventListener('keydown', (e) => {
       if (event.keyCode == 13) addNewItemFromLinkForm()
     })
   } else save()

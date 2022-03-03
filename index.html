@@ -13,6 +13,7 @@
       potential CORS issues with DDG, see: https://stackoverflow.com/questions/64048533/how-to-use-duckduckgos-search-autocomplete-suggestions
     ! simple notepad
     ? use chrome.storeage to allow syncing of data https://developer.chrome.com/docs/extensions/reference/storage/
+    ! empty inputs when closing Manage and reset h2, options state and SAVE click event
    -->
   <title>Karl Marks</title>
   <meta charset="utf-8">
@@ -31,7 +32,7 @@
         </a>
         <i draggable=true class=linklist__itemMoveHandle title="Drag this entry to another position"></i>
       </li>
-      <li>
+      <li class=linklist__item>
         <button class=linklist__itemDeleteButton title="Delete this entry">×</button>
         <a class=linklist__itemLink href="http://kolya.schwarzsilber.de/tomato-editor/">
           <img class=linklist__itemIcon src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAAAl1JREFUSEvtlE9Ik3EYx7/P733d3m2mczLNVxeuRMMuVkZ0yggjDwmd1sGgW0HZqIMEHVpEUAmjP0SXsJCiICG6KqKXThkRyagxLZq2tjnDjZT2/nlikJYytwlBl37n7+/zPHyf5/sQNvoCrRagxkRgXC/0lTbEDe6zQS6/AphvcHb08cbBt7usENlynBlNrXzuP+SAha8C+Aj/yC0EOmQ4LC4IWJGpjCPwLPtnofwdBzvbIeMkDA7mxLtiWcy4pCMJu3QOoAEY/AiCvCD0AagH01H4hyeLgwEowc79huBBTdCW5jkNNt3E281W1GV01Hw38M0mxZN2MbSkSNdxeji61pZ1PU56WtQLB519g22b/AYRbJoJJoJvMoOedxl4FoyhqkXtont2OpzP67zgdP32ao303pce5dLNvZWw64y6jAFTALFyGWpaQ3d4ETuS2cvuJXGnYvb971n8qpIXnGxo6iBgLOGQsKAINKe0VU3FHRI+OWU0zeuoWjIOuGci40Wt+Fpb67DIjuOGEPdMAmSzyEIyzps/pPvuuQ+ZgsNLqt4WiaQnTNhZyo4zMEUC3dWfI6HCYM/WdsHiVSnQZY1J5h53dHriPxj/2IrcVgjpKQNtpQ6wpI65sVFJaZKPiB7+VXAOlkueAMZKARP4hmxK/RVfwnNFrxurqj0F+wkSuFsUTjjsikZGCFiV0XWv23zDti4GvQBQth48lzrZYJ8zNvW66K1YFkxgd5nXk+4B80BeMLMB0DHXbOQ5AUbJ4JyQARFTVUUR9l4Grq1EmPlUotL6oDUU0tdasKz5CWGH9Re9bJCJAAAAAElFTkSuQmCC">
@@ -39,7 +40,7 @@
         </a>
         <i draggable=true class=linklist__itemMoveHandle title="Drag this entry to another position"></i>
       </li>
-      <li>
+      <li class=linklist__item>
         <button class=linklist__itemDeleteButton title="Delete this entry">×</button>
         <a class=linklist__itemLink href="https://www.systemshock.org/">
           <img class=linklist__itemIcon src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAABLZJREFUSEuNVV1Mk1cYfs73tf0oLeO/FApYKc6fKo5B2BZxKy4jYwMTM11gZkoIQ5MRs0Uv3G4MN3ghV3i7ccGNS0w2E2RiVgRRHIi4gJtTmIXCOouUn1IotP2+c5bvoAhCiO/Vyfl53nPO+zzPS7BBlJRkS4sZsVtJKFIMIhySw0oOlamBACAaYUEjiYOg9BdFq/nNoJ9zXbv4T+hVGHXvmnBU5CURSalnlJY9G/Wn+Mb9JLQQgSJTvs+YoMfOwkwwyhgIJgSBXKVL4nedl/p9q4FWAxNHVW6eyNCqUGpyDz7DyB9P173HmKiH/YMt0EVpIWoEvi6IwiQUWnqjeaAPAFPnVoAdX+bmE5H9xCizMcrw39AUhu96+EGtVotIJMLHOp0OsiIjJlGPlKx4pGYn8HlC2BOFCF/cah64uwL84bGCRCqE/2aUJTPGMNzrwdPhadhsNpw7dw6BQACnTp2Coii4cOECn6+vr8f9+/dhssVhYXoRcWYjbPlpkywk7lK/haiFWkoxXmSMfcUUhuE+D3wjARw/fhyVlZW4c+cOWlpacPv2bahJCwoKUFxcjJKSEvT09PAEPp8PGp0Iu8OKREvMD5J3vpY4KvN2gCo3Bp2uVP0bWngeTcFiseD69es4ffo0nE4nv+mawhCCzMxMNDU1oaqqCm63my9LBi3e+2ynF4K2iDiO7a31jfkb/+wcXcOQ6OhoBIPBjdi4MkcI4a9YHbv2b2GmrbHfkqLKve0Pu8YOTLhmlrNKEkKhdbTcNEFGRgY8Hg8opTBZ42Avst4k7x/d7Rt0jibOTsxDr9ejq6sLZ8+eRXt7+6ZgLxZzcnL4txUWFsI9PorkzFi8+a5lhuz73L404HRJ89OLSE9PR19fHw4fPozu7u7XAjabzfyM+tcPRvqRnZ8GrSSG1gCrm1QKlZeX85u/TiQnJ6O/vx8nT57EgOsutr1jUcURIvuP7pl6OjSVEJgKYubfIKfQ+fPncfny5dfBhdVqRWtrK44cOYJIjB+W7UkQCKbV4nUwCkfQH8K9lsdITU2D1+tdR7HNsmg0GlBGkffpNhjiokBE0snpBqBRkSkZdLrgf7bwXKLrqfQq+GpKRsdKyP04G1pJwxhh3xBH5Z4doOINgKWqMn78+zgMBgOam5vR2NjIFbeRQFRZX7lyBSdOnFgpdKzJgLc/yfYynaZoWdJmYyNTWI1K9r9uuhGYWEJNTQ0qKirQ29uLtrY2dHR0IBwOw2634+DBgygtLUVnZycaGhowMzPDJb37gBXxZuOPURMLX3O1qSYEIfwwMLtkund1CFSmUFWlFubMmTNISkpCdXU1N6Pa2lqUlZWhrq6OF1oVhRqZe0yw5a0yoRf/ptomA700OuDN9jzyQQ6/9AfVNmVZ5vJVC8XAIOoEhIMRftO07YnIyjU/UUDW2uZzcG70hLJfZyfmkx91j2NxblnaUQYdEtJj+NgYr0ec2QA5QvHwphs79mUgPjVmUqas9NZGRr9y84q8JEFS6iljZb4xf8rkmJ9I0VpkvWUGBAF4aTrLrUkkLXRR/H6z1rTCJt5MU2K3CpA/ogSHILMcIhDj8w0LEMgDUPozb6aeOde1a+ub6f/coitEsn+YYAAAAABJRU5ErkJggg==">
@@ -51,7 +52,7 @@
     <label for=manageToggle id=manageToggle__label>Manage</label>
     <div id=newLinkArea>
       <div id=drop2Edit>drag & drop an entry here to edit it</div>
-      <h2>Add New Link</h2>
+      <h2 class=newLinkArea__title>Add New Link</h2>
       <input id=url type=text placeholder="https://" />
       <details id=options>
         <summary id=optionsSummary>Options</summary>

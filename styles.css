@@ -34,7 +34,7 @@ main {width:clamp(320px, 500px, 100vw);margin:auto;padding:1rem;background:var(-
 #iconPick:hover::before { border-color:black; }
 #iconPick:active { outline:0 }
 #iconPick:active::before { background:linear-gradient(90deg,#e3e3e3,#f9f9f9) }
-h2{ font-size:1rem }
+.newLinkArea__title { font-size:1rem }
 /* options */ details { transition:height .2s linear;height:1.25rem;overflow:hidden }
 /* options */ summary { user-select:none;cursor:pointer;margin-bottom:.5rem }
 /* options */ details#options[open] { height:9em }
