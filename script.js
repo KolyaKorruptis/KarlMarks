@@ -143,12 +143,12 @@ const addNewItem = (loadUrl,loadTitle,loadIconUrl,file,elToBeReplaced=null) => {
   const prependLink = () => {
     const frag = fragmentFromString(`
     <li>
-      <button class=d title="Delete This Link">×</button>
+      <button class=d title="Delete this entry">×</button>
       <a class=link href="${realUrl}">
         <img class=f src="${realIcon}">
         <span class="title">${realTitle}</span>
       </a>
-      <i draggable=true class=m title="Drag This Link To Another Position"></i>
+      <i draggable=true class=m title="Drag this entry to another position"></i>
     </li>`)
     addDnDHandlers(frag.querySelector('li'))
     itemDeleteHandler(frag.querySelector('.d'))
@@ -242,7 +242,7 @@ popupLinkTargets()
 const getBackup = () => {
   const el = document.createElement('a');
   el.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(localStorage.getItem('sp-links')))
-  el.setAttribute('download', 'StartPageLinks.json')
+  el.setAttribute('download', 'KarlMarks.json')
   el.style.display = 'none'
   document.body.appendChild(el)
   el.click()
