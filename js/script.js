@@ -76,38 +76,51 @@ linklist.querySelectorAll('.linklist__item').forEach((el) => {
 //dragged outside dropzone
 window.addEventListener('dragenter', dragEnter)
 
-// drop2edit
+//--------------------drag 2 edit------------------------------
 const d2e_dragEnter = (e) => e.target.classList.add('over')
 const d2e_dragLeave = (e) => e.target.classList.remove('over')
 let modifyItemFromLinkForm
 const _modifyItemFromLinkForm = (elToBeReplaced) => {
   addNewItem(newLink__url.value, newLink__title.value, newLink__icon.value, newLink__iconPick.files[0],elToBeReplaced)
-  newLink__title.value = ''
-  newLink__url.value   = ''
-  newLink__icon.value  = ''
-  newLink__iconPick.value = ''
-  manageToggle.checked = false
-  newLink__options.removeAttribute('open')
-  newLink__save.removeEventListener('click', modifyItemFromLinkForm)
-  newLink__save.addEventListener('click', addNewItemFromLinkForm)
-  linkAdm__title.innerHTML='Add New link'
-  drop2edit.style.display = 'block'
+  d2e_end()
   save()
 }
 
-const d2e_drop = (e) => {
-  if (e.stopPropagation) e.stopPropagation()
+// prepare the stage for modifying an entry
+const d2e_start = () => {
   linkAdm__title.innerHTML='Modify Link'
   drop2edit.style.display = 'none'
   drop2edit.classList.remove('over')
   newLink__options.setAttribute('open','')
+  manageToggle__label.addEventListener('click', d2e_end)
+  newLink__save.removeEventListener('click', addNewItemFromLinkForm)
+  modifyItemFromLinkForm = () => _modifyItemFromLinkForm(dragSrcEl)
+  newLink__save.addEventListener('click', modifyItemFromLinkForm)
+}
+
+// end modifying and clean up the stage
+const d2e_end = (e) => {
+  e.preventDefault()
+  newLink__title.value = ''
+  newLink__url.value   = ''
+  newLink__icon.value  = ''
+  newLink__iconPick.value = ''
+  newLink__options.removeAttribute('open')
+  newLink__save.removeEventListener('click', modifyItemFromLinkForm)
+  newLink__save.addEventListener('click', addNewItemFromLinkForm)
+  linkAdm__title.innerHTML='Add New link'
+  manageToggle__label.removeEventListener('click', d2e_end)
+  drop2edit.style.display = 'block'
+  manageToggle.checked = false
+}
+
+const d2e_drop = (e) => {
+  if (e.stopPropagation) e.stopPropagation()
+  d2e_start()
   const doc = new DOMParser().parseFromString(e.dataTransfer.getData('text/html'), "text/html")
   newLink__title.value = doc.querySelector('.linklist__itemTitle').innerHTML
   newLink__url.value   = doc.querySelector('.linklist__itemLink').getAttribute('href')
   newLink__icon.value  = doc.querySelector('.linklist__itemIcon').getAttribute('src')
-  newLink__save.removeEventListener('click', addNewItemFromLinkForm)
-  modifyItemFromLinkForm = () => _modifyItemFromLinkForm(dragSrcEl)
-  newLink__save.addEventListener('click', modifyItemFromLinkForm)
   return false
 }
 
