@@ -26,8 +26,6 @@ main {width:clamp(320px, 500px, 100vw);margin:auto;padding:1rem;background:var(-
 #linkAdm { box-sizing:border-box;color:var(--tc);overflow:hidden;transition:max-height .2s linear;max-height:0 }
 #linkAdm input { padding: 5px;outline:0;border:none;width: 100%;box-sizing:border-box;display:block;font-size:1rem;margin-bottom: .5rem;height: 2rem }
 #newLink__save,#manageToggle__label {opacity:.9;margin:10px 0;background:var(--bb);border:none;color:var(--ab);padding:5px 15px;width:100%;height:35px;cursor:pointer;display:block;text-align:center;box-sizing:border-box;font-weight: bold;user-select: none;}
-#backupButton,#importButton, #settingsButton {color: var(--tc);opacity: .5;border:none;cursor:pointer;font-weight: bold;user-select: none;}
-#backupButton { margin-right:1px }
 #newLink__iconPick { cursor:pointer;padding-left:0 !important }
 #newLink__iconPick::-webkit-file-upload-button { display:none }
 #newLink__iconPick::before {content: 'Choose Icon';color: black;display: inline-block;background:linear-gradient(90deg, #f9f9f9, #e3e3e3);border: 1px solid #999;border-radius: 3px;padding: 5px 8px;outline: none;white-space: nowrap;user-select: none;cursor: pointer;text-shadow: 1px 1px #fff;font-weight: bold;font-size: .7rem;margin-right: .5rem;}
@@ -40,4 +38,11 @@ main {width:clamp(320px, 500px, 100vw);margin:auto;padding:1rem;background:var(-
 #newLink__title { user-select:none;cursor:pointer;margin-bottom:.5rem }
 #drop2Edit {border:2px dashed var(--bd);border-radius:4px;margin-top:.3rem;text-align:center;font-weight:bold;color:var(--bd);font-size:1.2rem;padding: .5rem 0;line-height:1.1rem;}
 #drop2Edit.over { filter: contrast(0.5) brightness(1.5); }
-#settingsButton::before {content:'';width: 1.5em;height:1em;background: url(../icons/cog.svg) no-repeat left bottom / contain;display: inline-block;margin-bottom: -.2em;}
+#backupButton,#importButton, #settingsButton {color: var(--tc);opacity: .5;border:none;cursor:pointer;font-weight: bold;user-select: none;}
+#backupButton { margin-right:1px }
+#backupButton:before,#importButton:before, #settingsButton:before {content:'';width: 1.5em;height:1em;display: inline-block;margin-bottom: -.2em;background-color:var(--tc) }
+#settingsButton::before { -webkit-mask: url(/icons/cog.svg) no-repeat center center / contain;mask:  url(/icons/cog.svg) no-repeat center center / contain; }
+#backupButton::before { -webkit-mask: url(/icons/download.svg) no-repeat center center / contain;mask:  url(/icons/download.svg) no-repeat center center / contain; }
+#importButton::before { -webkit-mask: url(/icons/upload.svg) no-repeat center center / contain;mask:  url(/icons/upload.svg) no-repeat center center / contain; }
+
+
