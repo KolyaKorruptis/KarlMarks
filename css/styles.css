@@ -6,8 +6,8 @@ input:focus { outline:none}
 [hidden] { display:none !important }
 main {width:clamp(320px, 500px, 100vw);margin:auto;padding:1rem;background:var(--bg);border-radius:1rem;box-shadow: 0 0 0 1rem var(--bd), 0 0 2rem var(--bg2);}
 @media (max-width: 767px) { main { margin-top:0} }
-/* general flex class */ .flex, #linklist, .linklist__item { display:flex;justify-content:space-between }
-/* general hover effect */ .linklist__itemDeleteButton:hover,.linklist__itemMoveHandle:hover,#manageToggle__label:hover, #backupButton:hover, #importButton:hover, #newLink__save:hover { opacity:1;filter:brightness(1.2) contrast(200%) drop-shadow(0 0 5px var(--hc)) }
+/* general flex class */ .flex, #linklist, .linklist__item {display:flex;justify-content:space-between;}
+/* general hover effect */ .linklist__itemDeleteButton:hover,.linklist__itemMoveHandle:hover,#manageToggle__label:hover, #backupButton:hover, #importButton:hover, #settingsButton:hover, #newLink__save:hover { opacity:1;filter:brightness(1.2) contrast(200%) drop-shadow(0 0 5px var(--hc)) }
 #manageToggle:checked ~ #linklist .linklist__itemDeleteButton { display:inline-block; }
 #manageToggle:checked ~ #linkAdm {max-height: 24rem;}
 .linklist__itemDeleteButton {border:none;background:0 0;color:var(--tc);cursor:pointer;font-size:1rem;display:none;padding:0;}
@@ -25,8 +25,8 @@ main {width:clamp(320px, 500px, 100vw);margin:auto;padding:1rem;background:var(-
 [draggable] input { user-select:auto }
 #linkAdm { box-sizing:border-box;color:var(--tc);overflow:hidden;transition:max-height .2s linear;max-height:0 }
 #linkAdm input { padding: 5px;outline:0;border:none;width: 100%;box-sizing:border-box;display:block;font-size:1rem;margin-bottom: .5rem;height: 2rem }
-#newLink__save,#manageToggle__label { opacity:.9;margin:10px 0;background:var(--bb);border:none;color:var(--ab);padding:5px 15px;width:100%;height:35px;cursor:pointer;display:block;text-align:center;box-sizing:border-box;font-weight: bold; }
-#backupButton,#importButton {color: var(--tc);opacity: .5;border:none;cursor:pointer;font-weight: bold;}
+#newLink__save,#manageToggle__label {opacity:.9;margin:10px 0;background:var(--bb);border:none;color:var(--ab);padding:5px 15px;width:100%;height:35px;cursor:pointer;display:block;text-align:center;box-sizing:border-box;font-weight: bold;user-select: none;}
+#backupButton,#importButton, #settingsButton {color: var(--tc);opacity: .5;border:none;cursor:pointer;font-weight: bold;user-select: none;}
 #backupButton { margin-right:1px }
 #newLink__iconPick { cursor:pointer;padding-left:0 !important }
 #newLink__iconPick::-webkit-file-upload-button { display:none }
@@ -40,3 +40,4 @@ main {width:clamp(320px, 500px, 100vw);margin:auto;padding:1rem;background:var(-
 #newLink__title { user-select:none;cursor:pointer;margin-bottom:.5rem }
 #drop2Edit {border:2px dashed var(--bd);border-radius:4px;margin-top:.3rem;text-align:center;font-weight:bold;color:var(--bd);font-size:1.2rem;padding: .5rem 0;line-height:1.1rem;}
 #drop2Edit.over { filter: contrast(0.5) brightness(1.5); }
+#settingsButton::before {content:'';width: 1.5em;height:1em;background: url(../icons/cog.svg) no-repeat left bottom / contain;display: inline-block;margin-bottom: -.2em;}
