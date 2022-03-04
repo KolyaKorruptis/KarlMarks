@@ -91,12 +91,14 @@ const _modifyItemFromLinkForm = (elToBeReplaced) => {
   newLink__save.removeEventListener('click', modifyItemFromLinkForm)
   newLink__save.addEventListener('click', addNewItemFromLinkForm)
   linkAdm__title.innerHTML='Add New link'
+  drop2edit.style.display = 'block'
   save()
 }
 
 const d2e_drop = (e) => {
   if (e.stopPropagation) e.stopPropagation()
   linkAdm__title.innerHTML='Modify Link'
+  drop2edit.style.display = 'none'
   drop2edit.classList.remove('over')
   newLink__options.setAttribute('open','')
   const doc = new DOMParser().parseFromString(e.dataTransfer.getData('text/html'), "text/html")
