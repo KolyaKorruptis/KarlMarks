@@ -35,7 +35,7 @@ main {width:clamp(320px, 500px, 100vw);margin:auto;padding:1rem;background:var(-
 #linkAdm__title { font-size:1rem }
 #newLink__options { transition:height .2s linear;height:1.25rem;overflow:hidden }
 #newLink__options[open] { height:9em }
-#newLink__title { user-select:none;cursor:pointer;margin-bottom:.5rem }
+#newLink__summary { user-select:none;cursor:pointer;margin-bottom:.5rem }
 #drop2edit {border:2px dashed var(--tc);border-radius:4px;margin-top:.3rem;text-align:center;font-weight:bold;color: var(--tc);opacity: .3;font-size:1.2rem;padding: .5rem 0;line-height:1.1rem;}
 #drop2edit.over { opacity: 1 }
 #backupButton,#importButton, #settingsButton {color: var(--tc);opacity: .5;border:none;cursor:pointer;font-weight: bold;user-select: none;}
