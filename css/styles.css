@@ -10,6 +10,8 @@ main {width:clamp(320px, 500px, 100vw);margin:auto;padding:1rem;background:var(-
 /* general hover effect */ .linklist__itemDeleteButton:hover,.linklist__itemMoveHandle:hover,#manageToggle__label:hover, #backupButton:hover, #importButton:hover, #settingsButton:hover, #newLink__save:hover { opacity:1;filter:brightness(1.2) contrast(200%) drop-shadow(0 0 5px var(--hc)) }
 #manageToggle:checked ~ #linklist .linklist__itemDeleteButton { display:inline-block; }
 #manageToggle:checked ~ #linkAdm {max-height: 24rem;}
+#manageToggle:checked ~ #manageToggle__label:before {content: 'Cancel'}
+#manageToggle__label:before {content: 'Manage'}
 .linklist__itemDeleteButton {border:none;background:0 0;color:var(--tc);cursor:pointer;font-size:1rem;display:none;padding:0;}
 .linklist__itemMoveHandle {width:24px;height:24px;cursor:grab;background-image:radial-gradient(gray 30%, transparent 40%);background-size:3px 3px;}
 .linklist__itemMoveHandle:active { cursor:grabbing }
