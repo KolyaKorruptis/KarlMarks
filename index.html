@@ -50,20 +50,21 @@
       </li>
     </ul>
     <label for=manageToggle id=manageToggle__label>Manage</label>
-    <div id=newLinkArea>
+    <div id=linkAdm>
       <div id=drop2Edit>drag & drop an entry here to edit it</div>
-      <h2 class=newLinkArea__title>Add New Link</h2>
-      <input id=url type=text placeholder="https://" />
-      <details id=options>
-        <summary id=optionsSummary>Options</summary>
-        <input id=title type=text placeholder="Title"/>
-        <input id=icon type=text placeholder="Icon URL" title="For developers: Check if your server is up and accessible by entering its icon or logo URL here."/>
-        <input id=iconPick type=file accept=image/* title="Pick any image to use as icon. Loads faster than an icon URL and prevents tracking.">
+      <h2 class=linkAdm__title>Add New Link</h2>
+      <input id=newLink__url type=text placeholder="https://" />
+      <details id=newLink__options>
+        <summary id=newLink__title>Options</summary>
+        <input id=newLink__title type=text placeholder="Title"/>
+        <input id=newLink__icon type=text placeholder="Icon URL" title="For developers: Check if your server is up and accessible by entering its icon or logo URL here."/>
+        <input id=newLink__iconPick type=file accept=image/* title="Pick any image to use as icon. Loads faster than an icon URL and prevents tracking.">
       </details>
-      <label id=add>Save</label>
+      <label id=newLink__save>Save</label>
       <aside class=flex>
-        <input type=file id=import accept=.json hidden><label for=import title="Import your KarlMarks.json file">&#x21e7; Import</label>
-        <span id=backup title="Backup your data">&#x21e9; Backup</span>
+        <input type=file id=import accept=.json hidden>
+        <label id=importButton for=import title="Import your KarlMarks.json file">&#x21e7; Import</label>
+        <span id=backupButton title="Backup your data">&#x21e9; Backup</span>
       </aside>
     </div>
   </main>

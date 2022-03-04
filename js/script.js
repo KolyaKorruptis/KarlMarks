@@ -81,31 +81,31 @@ const d2e_dragEnter = (e) => e.target.classList.add('over')
 const d2e_dragLeave = (e) => e.target.classList.remove('over')
 let modifyItemFromLinkForm
 const _modifyItemFromLinkForm = (elToBeReplaced) => {
-  addNewItem(url.value, title.value, icon.value, iconPick.files[0],elToBeReplaced)
-  title.value = ''
-  url.value   = ''
-  icon.value  = ''
-  iconPick.value = ''
+  addNewItem(newLink__url.value, newLink__title.value, newLink__icon.value, newLink__iconPick.files[0],elToBeReplaced)
+  newLink__title.value = ''
+  newLink__url.value   = ''
+  newLink__icon.value  = ''
+  newLink__iconPick.value = ''
   manageToggle.checked = false
-  options.removeAttribute('open')
-  add.removeEventListener('click', modifyItemFromLinkForm)
-  add.addEventListener('click', addNewItemFromLinkForm)
-  newLinkArea.querySelector('h2').innerHTML='Add New link'
+  newLink__options.removeAttribute('open')
+  newLink__save.removeEventListener('click', modifyItemFromLinkForm)
+  newLink__save.addEventListener('click', addNewItemFromLinkForm)
+  linkAdm.querySelector('h2').innerHTML='Add New link'
   save()
 }
 
 const d2e_drop = (e) => {
   if (e.stopPropagation) e.stopPropagation()
-  newLinkArea.querySelector('h2').innerHTML='Modify Link'
+  linkAdm.querySelector('h2').innerHTML='Modify Link'
   drop2Edit.classList.remove('over')
-  options.setAttribute('open','')
+  newLink__options.setAttribute('open','')
   const doc = new DOMParser().parseFromString(e.dataTransfer.getData('text/html'), "text/html")
-  title.value = doc.querySelector('.linklist__itemTitle').innerHTML
-  url.value   = doc.querySelector('.linklist__itemLink').getAttribute('href')
-  icon.value  = doc.querySelector('.linklist__itemIcon').getAttribute('src')
-  add.removeEventListener('click', addNewItemFromLinkForm)
+  newLink__title.value = doc.querySelector('.linklist__itemTitle').innerHTML
+  newLink__url.value   = doc.querySelector('.linklist__itemLink').getAttribute('href')
+  newLink__icon.value  = doc.querySelector('.linklist__itemIcon').getAttribute('src')
+  newLink__save.removeEventListener('click', addNewItemFromLinkForm)
   modifyItemFromLinkForm = () => _modifyItemFromLinkForm(dragSrcEl)
-  add.addEventListener('click', modifyItemFromLinkForm)
+  newLink__save.addEventListener('click', modifyItemFromLinkForm)
   return false
 }
 
@@ -170,7 +170,7 @@ const addNewItem = (loadUrl,loadTitle,loadIconUrl,file,elToBeReplaced=null) => {
 
 const getLocalImageAsDataUri = () => {
   return new Promise(function(resolve) {
-    const file = iconPick.files[0]
+    const file = newLink__iconPick.files[0]
     const reader = new FileReader()
     reader.addEventListener('load', function () {
       const image = new Image()
@@ -202,28 +202,28 @@ document.querySelectorAll('.linklist__itemDeleteButton').forEach((x) => itemDele
 
 //new link form
 const addNewItemFromLinkForm = () => {
-  addNewItem(url.value, title.value, icon.value, iconPick.files[0])
-  title.value = ''
-  url.value   = ''
-  icon.value  = ''
-  iconPick.value = ''
+  addNewItem(newLink__url.value, newLink__title.value, newLink__icon.value, newLink__iconPick.files[0])
+  newLink__title.value = ''
+  newLink__url.value   = ''
+  newLink__icon.value  = ''
+  newLink__iconPick.value = ''
   manageToggle.checked = false
 }
 //add new item via save button
-add.addEventListener('click', addNewItemFromLinkForm)
+newLink__save.addEventListener('click', addNewItemFromLinkForm)
 
 //also add new item via return key
 manageToggle.addEventListener('change', (e) => {
   if (e.currentTarget.checked) {
-    url.focus()
-    newLinkArea.addEventListener('keydown', (e) => {
+    newLink__url.focus()
+    linkAdm.addEventListener('keydown', (e) => {
       if (event.keyCode == 13) addNewItemFromLinkForm()
     })
   } else save()
 })
 
 //disable autocomplete on mobile devices
-if (window.innerWidth < 600) url.setAttribute( "autocomplete", "off" );
+if (window.innerWidth < 600) newLink__url.setAttribute( "autocomplete", "off" );
 
 //loading links from localstorage json or file
 const loadLinks = (str) => {
@@ -248,7 +248,7 @@ const getBackup = () => {
   el.click()
   document.body.removeChild(el)
 }
-backup.addEventListener('click', getBackup)
+backupButton.addEventListener('click', getBackup)
 
 //import
 const sel = document.getElementById('import');
