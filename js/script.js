@@ -76,7 +76,7 @@ linklist.querySelectorAll('.linklist__item').forEach((el) => {
 //dragged outside dropzone
 window.addEventListener('dragenter', dragEnter)
 
-// drop2Edit
+// drop2edit
 const d2e_dragEnter = (e) => e.target.classList.add('over')
 const d2e_dragLeave = (e) => e.target.classList.remove('over')
 let modifyItemFromLinkForm
@@ -90,14 +90,14 @@ const _modifyItemFromLinkForm = (elToBeReplaced) => {
   newLink__options.removeAttribute('open')
   newLink__save.removeEventListener('click', modifyItemFromLinkForm)
   newLink__save.addEventListener('click', addNewItemFromLinkForm)
-  linkAdm.querySelector('h2').innerHTML='Add New link'
+  linkAdm__title.innerHTML='Add New link'
   save()
 }
 
 const d2e_drop = (e) => {
   if (e.stopPropagation) e.stopPropagation()
-  linkAdm.querySelector('h2').innerHTML='Modify Link'
-  drop2Edit.classList.remove('over')
+  linkAdm__title.innerHTML='Modify Link'
+  drop2edit.classList.remove('over')
   newLink__options.setAttribute('open','')
   const doc = new DOMParser().parseFromString(e.dataTransfer.getData('text/html'), "text/html")
   newLink__title.value = doc.querySelector('.linklist__itemTitle').innerHTML
@@ -109,10 +109,10 @@ const d2e_drop = (e) => {
   return false
 }
 
-drop2Edit.addEventListener('dragover', dragOver)
-drop2Edit.addEventListener('dragenter', d2e_dragEnter)
-drop2Edit.addEventListener('dragleave', d2e_dragLeave)
-drop2Edit.addEventListener('drop', d2e_drop)
+drop2edit.addEventListener('dragover', dragOver)
+drop2edit.addEventListener('dragenter', d2e_dragEnter)
+drop2edit.addEventListener('dragleave', d2e_dragLeave)
+drop2edit.addEventListener('drop', d2e_drop)
 
 //open Manage when dragging a link across
 manageToggle__label.addEventListener('dragenter', ()=> manageToggle.checked = true)
