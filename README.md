@@ -9,9 +9,9 @@ It has drag & drop bookmarks and dark/light mode support. And it works on deskto
   - no dependencies, no frameworks, loads instantly
   - create, sort, edit, back up, import or delete your bookmarks
 
-## <img src=icons/download.svg style="height:1em; background:#c9d1d9;padding:.2em;border-radius:100%;vertical-align:bottom"> [Install from Chrome Webstore](https://chrome.google.com/webstore/detail/karl-marks/odkohchphnbfhpnpidbfgcmfmomeaaeo)
+## [Install from Chrome Webstore](https://chrome.google.com/webstore/detail/karl-marks/odkohchphnbfhpnpidbfgcmfmomeaaeo)
 
-
+## Screenshot
 ![Screenshot Dark Mode](https://i.imgur.com/1gb3ZGx.png)
 
 
