@@ -88,7 +88,7 @@ const d2e_start = () => {
 
 // end modifying and clean up the stage
 const d2e_end = (e) => {
-  e.preventDefault()
+  if (e) e.preventDefault()
   newLink__title.value = ''
   newLink__url.value   = ''
   newLink__icon.value  = ''
