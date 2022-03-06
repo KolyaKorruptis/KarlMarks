@@ -19,9 +19,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" type="text/css" href="css/styles.css" />
+  <link id=lightSheet media="(prefers-color-scheme: light)" rel="stylesheet" type="text/css" href="css/lightMode.css">
 </head>
 <body>
-  <main>
+  <main id=main>
     <input type=checkbox id=manageToggle hidden>
     <ul id=linklist>
       <li class=linklist__item>
@@ -70,12 +71,12 @@
     </div>
     <dialog id=settings>
       <h4>Display Mode</h4>
-      <label class=darkmode for=dark>Dark:</label><input class=darkmode id=dark name=darkmode type=radio />
-      <label class=darkmode for=light>Light:</label><input class=darkmode id=light name=darkmode type=radio />
-      <label class=darkmode for=system>Match System:</label><input class=darkmode id=system name=darkmode type=radio checked=checked />
-
+      <label class=colorMode for=dark>Dark:</label><input class=colorMode id=dark value=dark name=colorMode type=radio />
+      <label class=colorMode for=light>Light:</label><input class=colorMode id=light value=light name=colorMode type=radio />
+      <label class=colorMode for=system>Match System:</label><input class=colorMode id=system value=system name=colorMode type=radio checked=checked />
     </dialog>
   </main>
+  <script src="js/general.js"></script>
   <script src="js/dragAndDrop.js"></script>
   <script src="js/extension.js"></script>
   <script src="js/linkHandling.js"></script>

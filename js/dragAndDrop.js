@@ -70,7 +70,7 @@ const d2e_dragLeave = (e) => e.target.classList.remove('over')
 let modifyItemFromLinkForm
 const _modifyItemFromLinkForm = (elToBeReplaced) => {
   addNewItem(newLink__url.value, newLink__title.value, newLink__icon.value, newLink__iconPick.files[0],elToBeReplaced)
-  d2e_end()
+  reset()
   save()
 }
 
@@ -80,26 +80,9 @@ const d2e_start = () => {
   drop2edit.style.display = 'none'
   drop2edit.classList.remove('over')
   newLink__options.setAttribute('open','')
-  manageToggle__label.addEventListener('click', d2e_end)
   newLink__save.removeEventListener('click', addNewItemFromLinkForm)
   modifyItemFromLinkForm = () => _modifyItemFromLinkForm(dragSrcEl)
   newLink__save.addEventListener('click', modifyItemFromLinkForm)
-}
-
-// end modifying and clean up the stage
-const d2e_end = (e) => {
-  if (e) e.preventDefault()
-  newLink__title.value = ''
-  newLink__url.value   = ''
-  newLink__icon.value  = ''
-  newLink__iconPick.value = ''
-  newLink__options.removeAttribute('open')
-  newLink__save.removeEventListener('click', modifyItemFromLinkForm)
-  newLink__save.addEventListener('click', addNewItemFromLinkForm)
-  linkAdm__title.innerHTML='Add New link'
-  manageToggle__label.removeEventListener('click', d2e_end)
-  drop2edit.style.display = 'block'
-  manageToggle.checked = false
 }
 
 const d2e_drop = (e) => {
