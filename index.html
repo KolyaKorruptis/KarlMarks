@@ -68,10 +68,18 @@
         <span id=settingsButton title="Open settings view">Settings</span>
       </aside>
     </div>
+    <dialog id=settings>
+      <h4>Display Mode</h4>
+      <label class=darkmode for=dark>Dark:</label><input class=darkmode id=dark name=darkmode type=radio />
+      <label class=darkmode for=light>Light:</label><input class=darkmode id=light name=darkmode type=radio />
+      <label class=darkmode for=system>Match System:</label><input class=darkmode id=system name=darkmode type=radio checked=checked />
+
+    </dialog>
   </main>
   <script src="js/dragAndDrop.js"></script>
   <script src="js/extension.js"></script>
   <script src="js/linkHandling.js"></script>
+  <script src="js/settings.js"></script>
   <script src="js/touch2html5.js"></script>
 </body>
 </html>
