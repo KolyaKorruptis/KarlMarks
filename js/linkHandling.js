@@ -139,6 +139,10 @@ sel.addEventListener('change', (event) => {
   const reader = new FileReader()
   reader.addEventListener('load', event => {
     str = event.target.result
+    //backward compatibility
+    const json = JSON.parse(str)
+    if (!json.links) str = `{"links":${JSON.stringify(json)},"settings":{}}`
+    //end backward compatibility
     loadLinks(str)
     save()
     loadAllSettings(str)
