@@ -1,14 +1,23 @@
 // open settings view
 settingsButton.addEventListener('click', () => settings.toggleAttribute('open'))
 
+const settingsLoaderFunctions = []
+
 // --------------------load and save settings----------------------
 const saveSetting = (key, value) => {
-  const settings = JSON.parse(localStorage.getItem('km-settings')) || {}
+  const settings = JSON.parse(localStorage.getItem('sp-settings')) || {}
   settings[key] = value
-  localStorage.setItem('km-settings', JSON.stringify(settings))
+  localStorage.setItem('sp-settings', JSON.stringify(settings))
 }
-const loadSetting = (key) => (JSON.parse(localStorage.getItem('km-settings')) || {})[key] || null
+const getSetting = (key) => (JSON.parse(localStorage.getItem('sp-settings')) || {})[key] || null
 
+
+const loadAllSettings = (str) => {
+  localStorage.setItem('sp-settings', JSON.stringify(JSON.parse(str).settings))
+  for (let i = 0; i < settingsLoaderFunctions.length; i++) {
+    settingsLoaderFunctions[i]()
+  }
+}
 
 
 // -----------------light/dark mode setting------------------------
@@ -17,7 +26,7 @@ const lightModeOff = () => lightSheet.setAttribute('href', '')
 const matchSystemColorOn = () => lightSheet.setAttribute('media', '(prefers-color-scheme: light)')
 const matchSystemColorOff = () => lightSheet.setAttribute('media', '')
 
-const changeColorMode = ({mode}) => {
+const changeColorMode = ({ mode }) => {
   let selectedColorMode = mode || document.querySelector('.colorMode[name="colorMode"]:checked').value
   if (selectedColorMode === 'system') {
     lightModeOn()
@@ -38,6 +47,10 @@ const radios = document.querySelectorAll('input.colorMode')
 radios.forEach(el => el.addEventListener('change', changeColorMode))
 
 // load initial color mode from setting
-const savedColorMode = loadSetting('colorMode')
-if (savedColorMode) changeColorMode({mode:savedColorMode})
-
+const loadColorMode = () => {
+  const savedColorMode = getSetting('colorMode')
+  if (savedColorMode) changeColorMode({ mode: savedColorMode })
+}
+loadColorMode()
+//add to array of all setting loaders
+settingsLoaderFunctions.push(loadColorMode)
