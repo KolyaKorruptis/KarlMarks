@@ -5,6 +5,7 @@ const popupLinkTargets = () => {
     links.forEach(el => {
       el.setAttribute('target','_blank')
     })
+    main.style.borderRadius = 0
   }
 }
 popupLinkTargets()
