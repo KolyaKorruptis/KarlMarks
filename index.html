@@ -70,10 +70,12 @@
     </div>
     <dialog id=settings>
       <h2 class=settings__title>Settings</h2>
-      <h4 class=settings__subtitle>Display Mode</h4>
-      <label class=settings__colorMode for=dark>Dark:</label><input class=settings__colorMode id=dark value=dark name=colorMode type=radio />
-      <label class=settings__colorMode for=light>Light:</label><input class=settings__colorMode id=light value=light name=colorMode type=radio />
-      <label class=settings__colorMode for=system>Match System:</label><input class=settings__colorMode id=system value=system name=colorMode type=radio checked=checked />
+      <h4 class=settings__subtitle>Theme</h4>
+      <label class=settings__colorMode>Dark: <input class=settings__colorMode id=dark value=dark name=colorMode type=radio /></label>
+      <label class=settings__colorMode>Light: <input class=settings__colorMode id=light value=light name=colorMode type=radio /></label>
+      <label class=settings__colorMode>Match System: <input class=settings__colorMode id=system value=system name=colorMode type=radio checked=checked /></label>
+      <h4 class=settings__subtitle>Syncing</h4>
+      <label class=settings__sync>Sync bookmarks and settings: <input id=syncToggle type=checkbox /></label>
     </dialog>
   </main>
   <script src="js/general.js"></script>
