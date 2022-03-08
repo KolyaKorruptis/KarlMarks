@@ -47,6 +47,7 @@ main{width:clamp(320px,500px,100vw);margin:auto;padding:1rem;background:var(--bg
 #backupButton::before{-webkit-mask:url(/icons/download.svg) no-repeat center center/contain;mask:url(/icons/download.svg) no-repeat center center/contain}
 #importButton::before{-webkit-mask:url(/icons/upload.svg) no-repeat center center/contain;mask:url(/icons/upload.svg) no-repeat center center/contain}
 #settings{border:0;color:var(--tc);inset: 0;padding: 1rem 2rem;background: var(--bg);border-radius: 1rem;box-shadow: 0 0 0 .5rem var(--bd),0 0 1.5rem var(--bg2);}
-h4{margin:0 0 .5em}
-.colorMode{cursor: pointer;}
-input.colorMode{margin-right: 1em;}
+.settings__title{margin:0 0 1rem}
+.settings__subtitle{margin:0 0 .5em}
+.settings__colorMode{cursor:pointer}
+input.settings__colorMode{margin-right:1em}

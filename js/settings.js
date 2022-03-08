@@ -27,7 +27,7 @@ const matchSystemColorOn = () => lightSheet.setAttribute('media', '(prefers-colo
 const matchSystemColorOff = () => lightSheet.setAttribute('media', '')
 
 const changeColorMode = ({ mode }) => {
-  let selectedColorMode = mode || document.querySelector('.colorMode[name="colorMode"]:checked').value
+  let selectedColorMode = mode || document.querySelector('.settings__colorMode[name="colorMode"]:checked').value
   if (selectedColorMode === 'system') {
     lightModeOn()
     matchSystemColorOn()
@@ -43,7 +43,7 @@ const changeColorMode = ({ mode }) => {
 }
 
 //listen to radio changes
-const radios = document.querySelectorAll('input.colorMode')
+const radios = document.querySelectorAll('input.settings__colorMode')
 radios.forEach(el => el.addEventListener('change', changeColorMode))
 
 // load initial color mode from setting
