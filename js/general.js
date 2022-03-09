@@ -18,3 +18,17 @@ document.addEventListener('click', (e)=>{
   if(!main.contains(e.target)) reset()
   if(e.target.matches('#manageToggle:checked~#manageToggle__label')) reset(null,true)
 })
+
+//abstracting away localStorage/chrome.storage differences
+// const depot = {
+//   set: (key,value) => {
+//     const syncDisabled = getSetting('syncDisabled')
+//     if(syncDisabled) return localStorage.setItem(key, JSON.stringify(value))
+//     else return chrome.storage.sync.set({key: value})
+//   },
+//   get: (key) => {
+//     const syncDisabled = getSetting('syncDisabled')
+//     if(syncDisabled) return JSON.parse(localStorage.getItem(key))
+//     else return chrome.storage.sync.get(['key'])
+//   }
+// }

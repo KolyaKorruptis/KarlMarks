@@ -9,8 +9,7 @@ const saveSetting = (key, value) => {
   settings[key] = value
   localStorage.setItem('sp-settings', JSON.stringify(settings))
 }
-const getSetting = (key) => (JSON.parse(localStorage.getItem('sp-settings')) || {})[key] || null
-
+const getSetting = (key) => (JSON.parse(localStorage.getItem('sp-settings')) || {})[key]
 
 const loadAllSettings = (str) => {
   localStorage.setItem('sp-settings', JSON.stringify(JSON.parse(str).settings))
@@ -20,13 +19,13 @@ const loadAllSettings = (str) => {
 }
 
 
-// -----------------light/dark mode setting------------------------
+// -----------------light/dark mode------------------------
 const lightModeOn = () => lightSheet.setAttribute('href', 'css/lightMode.css')
 const lightModeOff = () => lightSheet.setAttribute('href', '')
 const matchSystemColorOn = () => lightSheet.setAttribute('media', '(prefers-color-scheme: light)')
 const matchSystemColorOff = () => lightSheet.setAttribute('media', '')
 
-const changeColorMode = ({ mode }) => {
+const colorModeHandler = ({ mode }) => {
   let selectedColorMode = mode || document.querySelector('.settings__colorMode[name="colorMode"]:checked').value
   if (selectedColorMode === 'system') {
     lightModeOn()
@@ -44,13 +43,30 @@ const changeColorMode = ({ mode }) => {
 
 //listen to radio changes
 const radios = document.querySelectorAll('input.settings__colorMode')
-radios.forEach(el => el.addEventListener('change', changeColorMode))
+radios.forEach(el => el.addEventListener('change', colorModeHandler))
 
 // load initial color mode from setting
 const loadColorMode = () => {
   const savedColorMode = getSetting('colorMode')
-  if (savedColorMode) changeColorMode({ mode: savedColorMode })
+  if (savedColorMode) colorModeHandler({ mode: savedColorMode })
 }
 loadColorMode()
 //add to array of all setting loaders
 settingsLoaderFunctions.push(loadColorMode)
+
+
+// -----------------------sync-------------------------------
+const syncToggleHandler = () => {
+  const syncMode = syncToggle.checked ? 'yes':'no'
+  saveSetting('sync', syncMode)
+}
+
+syncToggle.addEventListener('change', syncToggleHandler)
+
+// load initial syncMode from setting
+const loadSyncMode = () => {
+  const savedSyncMode = getSetting('sync')
+  if (savedSyncMode) syncToggle.checked = savedSyncMode == 'yes' ? true:false
+  else saveSetting('sync', 'yes')
+}
+loadSyncMode()
