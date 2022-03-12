@@ -27,5 +27,5 @@
 		}
 	},
 	"offline_enabled": true,
-	"permissions": []
+	"permissions": ["storage"]
 }

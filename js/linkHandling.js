@@ -4,11 +4,11 @@ const getLinksFromHtml = () => {
   linklist.querySelectorAll('.linklist__item').forEach((el) => {
     arr.push ( {"link":el.querySelector('.linklist__itemLink').href,"title":el.querySelector('.linklist__itemTitle').innerHTML,"icon":el.querySelector('.linklist__itemIcon').src} )
   })
-  return JSON.stringify(arr.reverse())
+  return arr.reverse()
 }
 
 const save = () => {
-  localStorage.setItem('sp-links', getLinksFromHtml())
+  depot.set('sp-links', getLinksFromHtml())
   popupLinkTargets()
 }
 const fragmentFromString = (strHTML) => document.createRange().createContextualFragment(strHTML);
@@ -106,7 +106,7 @@ if (window.innerWidth < 600) newLink__url.setAttribute( "autocomplete", "off" );
 
 //loading links from localstorage json or file
 const loadLinks = (str) => {
-  const links = str? JSON.parse(str).links : JSON.parse(localStorage.getItem('sp-links'))
+  const links = str? JSON.parse(str).links : depot.get('sp-links')
   if (links) {
     linklist.innerHTML = ''
     links.forEach((link) => {
@@ -120,8 +120,8 @@ loadLinks()
 //backup
 const getBackup = () => {
   const el = document.createElement('a')
-  const links = localStorage.getItem('sp-links') || '[]'
-  const settings = localStorage.getItem('sp-settings') || '{}'
+  const links = JSON.stringify(depot.get('sp-links')) || '[]'
+  const settings = JSON.stringify(depot.get('sp-settings')) || '{}'
   el.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(`{"links":${links},"settings":${settings}}`))
   el.setAttribute('download', 'KarlMarks.json')
   el.style.display = 'none'
