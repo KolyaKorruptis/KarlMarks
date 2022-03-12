@@ -15,7 +15,7 @@ const fragmentFromString = (strHTML) => document.createRange().createContextualF
 const noWWW = (str) => str.replace("www.", "")
 
 //add new item from json or form
-const addNewItem = (loadUrl,loadTitle,loadIconUrl,file,elToBeReplaced=null) => {
+const addNewItem = ({loadUrl,loadTitle,loadIconUrl,file,elToBeReplaced=null,doNotSave}) => {
   const realUrl = new URL(loadUrl)
   const realTitle = loadTitle || noWWW(realUrl.hostname)
   let realIcon = loadIconUrl || `https://www.google.com/s2/favicons?sz=32&domain_url=${realUrl.host}`
@@ -39,11 +39,11 @@ const addNewItem = (loadUrl,loadTitle,loadIconUrl,file,elToBeReplaced=null) => {
     const promise = getLocalImageAsDataUri()
     promise.then(dataUri => realIcon = dataUri).catch().finally(() => {
       prependLink()
-      save()
+      if(!doNotSave) save()
     })
   } else {
     prependLink()
-    save()
+    if(!doNotSave) save()
   }
 }
 
@@ -81,7 +81,7 @@ document.querySelectorAll('.linklist__itemDeleteButton').forEach((x) => itemDele
 
 //new link form
 const addNewItemFromLinkForm = () => {
-  addNewItem(newLink__url.value, newLink__title.value, newLink__icon.value, newLink__iconPick.files[0])
+  addNewItem({loadUrl:newLink__url.value, loadTitle:newLink__title.value, loadIconUrl:newLink__icon.value, file:newLink__iconPick.files[0]})
   newLink__title.value = ''
   newLink__url.value   = ''
   newLink__icon.value  = ''
@@ -110,8 +110,9 @@ const loadLinks = (str) => {
   if (links) {
     linklist.innerHTML = ''
     links.forEach((link) => {
-      addNewItem(link.link, link.title, link.icon)
+      addNewItem({loadUrl:link.link, loadTitle:link.title, loadIconUrl:link.icon, doNotSave:true})
     })
+    save()
   }
 }
 loadLinks()
@@ -144,7 +145,6 @@ sel.addEventListener('change', (event) => {
     if (!json.links) str = `{"links":${JSON.stringify(json)},"settings":{}}`
     //end backward compatibility
     loadLinks(str)
-    save()
     loadAllSettings(str)
   })
   reader.readAsText(file)

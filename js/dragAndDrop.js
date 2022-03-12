@@ -69,7 +69,7 @@ const d2e_dragEnter = (e) => e.target.classList.add('over')
 const d2e_dragLeave = (e) => e.target.classList.remove('over')
 let modifyItemFromLinkForm
 const _modifyItemFromLinkForm = (elToBeReplaced) => {
-  addNewItem(newLink__url.value, newLink__title.value, newLink__icon.value, newLink__iconPick.files[0],elToBeReplaced)
+  addNewItem({loadUrl:newLink__url.value, loadTitle:newLink__title.value, loadIconUrl:newLink__icon.value, file:newLink__iconPick.files[0],elToBeReplaced:elToBeReplaced})
   reset()
   save()
 }
