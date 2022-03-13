@@ -4,15 +4,15 @@ settingsButton.addEventListener('click', () => settings.toggleAttribute('open'))
 const settingsLoaderFunctions = []
 
 // --------------------load and save settings----------------------
-const saveSetting = (key, value) => {
-  const settings = depot.get('sp-settings') || {}
+const saveSetting = async(key, value) => {
+  const settings = await depot.get('sp-settings') || {}
   settings[key] = value
-  depot.set('sp-settings', settings)
+  await depot.set('sp-settings', settings)
 }
-const getSetting = (key) => (depot.get('sp-settings') || {})[key]
+const getSetting = async(key) => (await depot.get('sp-settings') || {})[key]
 
-const loadAllSettings = (str) => {
-  depot.set('sp-settings', JSON.parse(str).settings)
+const loadAllSettings = async(str) => {
+  await depot.set('sp-settings', JSON.parse(str).settings)
   for (let i = 0; i < settingsLoaderFunctions.length; i++) {
     settingsLoaderFunctions[i]()
   }
@@ -46,8 +46,8 @@ const radios = document.querySelectorAll('input.settings__colorMode')
 radios.forEach(el => el.addEventListener('change', colorModeHandler))
 
 // load initial color mode from setting
-const loadColorMode = () => {
-  const savedColorMode = getSetting('colorMode')
+const loadColorMode = async() => {
+  const savedColorMode = await getSetting('colorMode')
   if (savedColorMode) colorModeHandler({ mode: savedColorMode })
 }
 loadColorMode()
@@ -58,15 +58,18 @@ settingsLoaderFunctions.push(loadColorMode)
 // -----------------------sync-------------------------------
 const syncToggleHandler = () => {
   const syncMode = syncToggle.checked ? 'yes':'no'
-  chrome.storage.local.set({ 'sp-sync': syncMode})
+  //chrome.storage.local.set({ 'sp-sync': syncMode})
+  localStorage.setItem('sp-sync', syncMode)
 }
 
 syncToggle.addEventListener('change', syncToggleHandler)
 
 // load initial syncMode from setting
 const loadSyncMode = () => {
-  const savedSyncMode = chrome.storage.local.get(['sp-sync'])
+  //const savedSyncMode = chrome.storage.local.get(['sp-sync'])
+  const savedSyncMode = localStorage.getItem('sp-sync')
   if (savedSyncMode) syncToggle.checked = savedSyncMode == 'yes' ? true:false
-  else chrome.storage.local.set({ 'sp-sync': 'yes'})
+  else localStorage.setItem('sp-sync', 'yes')
+  //else chrome.storage.local.set({ 'sp-sync': 'yes'})
 }
 loadSyncMode()

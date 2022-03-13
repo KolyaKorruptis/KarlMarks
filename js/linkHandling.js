@@ -7,8 +7,8 @@ const getLinksFromHtml = () => {
   return arr.reverse()
 }
 
-const save = () => {
-  depot.set('sp-links', getLinksFromHtml())
+const save = async() => {
+  await depot.set('sp-links', getLinksFromHtml())
   popupLinkTargets()
 }
 const fragmentFromString = (strHTML) => document.createRange().createContextualFragment(strHTML);
@@ -105,8 +105,8 @@ manageToggle.addEventListener('change', (e) => {
 if (window.innerWidth < 600) newLink__url.setAttribute( "autocomplete", "off" );
 
 //loading links from localstorage json or file
-const loadLinks = (str) => {
-  const links = str? JSON.parse(str).links : depot.get('sp-links')
+const loadLinks = async(str) => {
+  const links = str? JSON.parse(str).links : await depot.get('sp-links')
   if (links) {
     linklist.innerHTML = ''
     links.forEach((link) => {
@@ -119,10 +119,10 @@ loadLinks()
 
 
 //backup
-const getBackup = () => {
+const getBackup = async() => {
   const el = document.createElement('a')
-  const links = JSON.stringify(depot.get('sp-links')) || '[]'
-  const settings = JSON.stringify(depot.get('sp-settings')) || '{}'
+  const links = JSON.stringify(await depot.get('sp-links')) || '[]'
+  const settings = JSON.stringify(await depot.get('sp-settings')) || '{}'
   el.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(`{"links":${links},"settings":${settings}}`))
   el.setAttribute('download', 'KarlMarks.json')
   el.style.display = 'none'
