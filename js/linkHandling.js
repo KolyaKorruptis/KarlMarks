@@ -104,7 +104,7 @@ manageToggle.addEventListener('change', (e) => {
 //disable autocomplete on mobile devices
 if (window.innerWidth < 600) newLink__url.setAttribute( "autocomplete", "off" );
 
-//loading links from localstorage json or file
+//loading links from storage or file
 const loadLinks = async(str) => {
   const links = str? JSON.parse(str).links : await depot.get('sp-links')
   if (links) {

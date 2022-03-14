@@ -63,6 +63,40 @@ const clearAllData = () => {
 // }
 
 //--------depot = localStorage || chrome.storage.local-------
+// const depot = {
+//   set: async (key, value) => {
+//     const sync = localStorage.getItem('sp-sync')
+//     if (sync && sync == 'no') {
+//       return new Promise(function (resolve) {
+//         localStorage.setItem(key, JSON.stringify(value))
+//         resolve(value)
+//       })
+//     } else {
+//       return new Promise(function (resolve) {
+//         chrome.storage.local.set({ [key]: value }, function () {
+//           resolve(value)
+//         })
+//       })
+//     }
+//   },
+//   get: async (key) => {
+//     const sync = localStorage.getItem('sp-sync')
+//     if (sync && sync == 'no') {
+//       return new Promise(function (resolve) {
+//         resolve(JSON.parse(localStorage.getItem(key)))
+//       })
+//     } else {
+//       return new Promise(function (resolve, reject) {
+//         chrome.storage.local.get([key], function (result) {
+//           if (result[key] === undefined) reject()
+//           else resolve(result[key])
+//         })
+//       })
+//     }
+//   }
+// }
+
+
 const depot = {
   set: async (key, value) => {
     const sync = localStorage.getItem('sp-sync')
@@ -72,11 +106,7 @@ const depot = {
         resolve(value)
       })
     } else {
-      return new Promise(function (resolve) {
-        chrome.storage.local.set({ [key]: value }, function () {
-          resolve(value)
-        })
-      })
+      return chunkedWrite(key, value)
     }
   },
   get: async (key) => {
@@ -86,12 +116,7 @@ const depot = {
         resolve(JSON.parse(localStorage.getItem(key)))
       })
     } else {
-      return new Promise(function (resolve, reject) {
-        chrome.storage.local.get([key], function (result) {
-          if (result[key] === undefined) reject()
-          else resolve(result[key])
-        })
-      })
+      return chunkedRead(key)
     }
   }
 }
@@ -103,12 +128,11 @@ const depot = {
 // Thank Google for that 8192 bytes limit
 // The following is modified from https://stackoverflow.com/a/67429150
 
+
 function chunkedWrite(key, value) {
-  //console.log(new Error().stack)
   return new Promise(resolve => {
     if (typeof key !== 'string') key = `${key}`
-    const str = JSON.stringify(value) // consider using LZString's compressToUTF16
-
+    const str = btoa(JSON.stringify(value)) // consider using LZString's compressToUTF16
     const len = chrome.storage.sync.QUOTA_BYTES_PER_ITEM - key.length - 4
     const num = Math.ceil(str.length / len)
     const obj = {}
@@ -137,7 +161,7 @@ function chunkedRead(key) {
           chunks.push(data[key + i] || '')
         }
         const str = chunks.join('')
-        resolve(str ? JSON.parse(str) : undefined)
+        resolve(str ? JSON.parse(atob(str)) : undefined)
       })
     })
   })
