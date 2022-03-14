@@ -60,6 +60,7 @@ const syncToggleHandler = () => {
   const syncMode = syncToggle.checked ? 'yes':'no'
   //chrome.storage.local.set({ 'sp-sync': syncMode})
   localStorage.setItem('sp-sync', syncMode)
+  window.location.reload()
 }
 
 syncToggle.addEventListener('change', syncToggleHandler)

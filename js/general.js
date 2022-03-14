@@ -19,39 +19,78 @@ document.addEventListener('click', (e) => {
   if (e.target.matches('#manageToggle:checked~#manageToggle__label')) reset(null, true)
 })
 
-//abstracting away storage
+
+//-----------------depot = localStorage------------------------
 // const depot = {
-//   set: (key, value) => {
-//     localStorage.setItem(key, LZStringUnsafe.compress(JSON.stringify(value)))
+//   set: async (key, value) => {
+//     return new Promise(function (resolve) {
+//       localStorage.setItem(key, JSON.stringify(value))
+//       resolve(value)
+//     })
 //   },
-//   get: (key) => {
-//     return JSON.parse(LZStringUnsafe.decompress(localStorage.getItem(key)))
+//   get: async (key) => {
+//     return new Promise(function (resolve) {
+//       resolve(JSON.parse(localStorage.getItem(key)))
+//     })
 //   }
 // }
 
-// promisified chrome.storage
+//------------depot = promisified chrome.storage--------------
+// const depot = {
+//   set: async(key, value) => {
+//     return new Promise(function (resolve) {
+//       chrome.storage.local.set({ [key]: value }, function () {
+//         resolve(value)
+//       })
+//     })
+//   },
+//   get: async(key) => {
+//     return new Promise(function (resolve) {
+//       chrome.storage.local.get([key], function (result) {
+//         if (result[key] === undefined) reject()
+//         else resolve(result[key])
+//       })
+//     })
+//   }
+// }
+
+//------depot = localStorage || promisified chrome.storage----
 const depot = {
-  set: async(key, value) => {
-    return new Promise(function (resolve) {
-      chrome.storage.local.set({ [key]: value }, function () {
+  set: async (key, value) => {
+    const sync = localStorage.getItem('sp-sync')
+    if (sync && sync == 'no') {
+      return new Promise(function (resolve) {
+        localStorage.setItem(key, JSON.stringify(value))
         resolve(value)
       })
-    })
-  },
-  get: async(key) => {
-    return new Promise(function (resolve) {
-      chrome.storage.local.get([key], function (result) {
-        if (result[key] === undefined) reject()
-        else resolve(result[key])
+    } else {
+      return new Promise(function (resolve) {
+        chrome.storage.local.set({ [key]: value }, function () {
+          resolve(value)
+        })
       })
-    })
+    }
+  },
+  get: async (key) => {
+    const sync = localStorage.getItem('sp-sync')
+    if (sync && sync == 'no') {
+      return new Promise(function (resolve) {
+        resolve(JSON.parse(localStorage.getItem(key)))
+      })
+    } else {
+      return new Promise(function (resolve) {
+        chrome.storage.local.get([key], function (result) {
+          if (result[key] === undefined) reject()
+          else resolve(result[key])
+        })
+      })
+    }
   }
 }
 
 
 
-
-// Just trying to save to chrome.storage we'll get the error: QUOTA_BYTES_PER_ITEM quota exceeded
+// Just trying to save to chrome.storage.sync we'll get the error: QUOTA_BYTES_PER_ITEM quota exceeded
 // Hence the data must be partitioned, saved into multiple storage items, and sewn back together when retrieving it
 // Thank Google for that 8192 bytes limit
 // The following is modified from https://stackoverflow.com/a/67429150
