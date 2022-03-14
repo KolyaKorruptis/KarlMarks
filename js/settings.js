@@ -74,3 +74,6 @@ const loadSyncMode = () => {
   //else chrome.storage.local.set({ 'sp-sync': 'yes'})
 }
 loadSyncMode()
+
+//------------------delete all--------------------------------
+delAll.addEventListener('click',clearAllData)

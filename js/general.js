@@ -20,6 +20,14 @@ document.addEventListener('click', (e) => {
 })
 
 
+const clearAllData = () => {
+  localStorage.clear()
+  chrome.storage.local.clear()
+  chrome.storage.sync.clear()
+  window.location.reload()
+}
+
+
 //-----------------depot = localStorage------------------------
 // const depot = {
 //   set: async (key, value) => {
@@ -54,7 +62,7 @@ document.addEventListener('click', (e) => {
 //   }
 // }
 
-//------depot = localStorage || promisified chrome.storage----
+//--------depot = localStorage || chrome.storage.local-------
 const depot = {
   set: async (key, value) => {
     const sync = localStorage.getItem('sp-sync')
@@ -78,7 +86,7 @@ const depot = {
         resolve(JSON.parse(localStorage.getItem(key)))
       })
     } else {
-      return new Promise(function (resolve) {
+      return new Promise(function (resolve, reject) {
         chrome.storage.local.get([key], function (result) {
           if (result[key] === undefined) reject()
           else resolve(result[key])
