@@ -56,28 +56,29 @@
       <input id=newLink__url type=text placeholder="https://" />
       <details id=newLink__options>
         <summary id=newLink__summary>Options</summary>
-        <input id=newLink__title type=text placeholder="Title"/>
-        <input id=newLink__icon type=text placeholder="Icon URL" title="For developers: Check if your server is up and accessible by entering its icon or logo URL here."/>
+        <input id=newLink__title type=text placeholder="Title" />
+        <input id=newLink__icon type=text placeholder="Icon URL" title="For developers: Check if your server is up and accessible by entering its icon or logo URL here." />
         <input id=newLink__iconPick type=file accept=image/* title="Pick any image to use as icon. Loads faster than an icon URL and prevents tracking.">
       </details>
       <label id=newLink__save>Save</label>
-      <aside class=flex>
-        <input type=file id=import accept=.json hidden>
-        <label id=importButton for=import title="Import your KarlMarks.json file">Import</label>
-        <span id=backupButton title="Backup your data">Backup</span>
-        <span id=settingsButton title="Open settings view">Settings</span>
-      </aside>
+      <span id=settingsButton title="Open settings view">Settings</span>
     </div>
     <dialog id=settings>
       <h2 class=settings__title>Settings</h2>
+      <h4 class=settings__subtitle>Backup and Import</h4>
+      Backup from or import to the currently selected data store.
+      <span id=backupButton title="Backup your bookmarks and settings">Backup</span>
+      <input type=file id=import accept=.json hidden>
+      <label id=importButton for=import title="Import your KarlMarks.json file">Import</label>
       <h4 class=settings__subtitle>Theme</h4>
       <label class=settings__colorMode>Dark: <input class=settings__colorMode id=dark value=dark name=colorMode type=radio /></label>
       <label class=settings__colorMode>Light: <input class=settings__colorMode id=light value=light name=colorMode type=radio /></label>
-      <label class=settings__colorMode>Match System: <input class=settings__colorMode id=system value=system name=colorMode type=radio checked=checked /></label>
-      <h4 class=settings__subtitle>Syncing</h4>
-      <label class=settings__sync>Sync bookmarks and settings between browsers: <input id=syncToggle type=checkbox checked /></label>
-      <h4 class=settings__subtitle>Delete Data</h4>
-      Delete bookmarks and settings from all storages: <button id=delAll>Delete</button>
+      <label class=settings__colorMode title="Uses the preference you have set in your operating system (Windows, Android, iOS)">Match System: <input class=settings__colorMode id=system value=system name=colorMode type=radio checked=checked /></label>
+      <h4 class=settings__subtitle>Select Data Store</h4>
+      <label class=settings__sync title='Data stores are completely separate. "Sync" is the default and means your bookmarks and settings get synchronized between browsers. Selecting "Local" gives you a separate local link list and settings, which may be useful eg at work.'>Select between local or synchronized data store: <input id=syncToggle type=checkbox checked /></label>
+      <h4 class=settings__subtitle>Delete Data Stores</h4>
+      <button class=delButton id=delLocal title="Clears chrome.storage.local and localStorage (legacy data store)">Delete Local Data</button>
+      <button class=delButton id=delSync title="Clears chrome.storage.sync">Delete Synced Data</button>
     </dialog>
   </main>
   <script src="js/LZStringUnsafe.js"></script>

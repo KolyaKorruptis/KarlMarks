@@ -19,91 +19,14 @@ document.addEventListener('click', (e) => {
   if (e.target.matches('#manageToggle:checked~#manageToggle__label')) reset(null, true)
 })
 
-
-const clearAllData = () => {
-  localStorage.clear()
-  chrome.storage.local.clear()
-  chrome.storage.sync.clear()
-  window.location.reload()
-}
-
-
-//-----------------depot = localStorage------------------------
-// const depot = {
-//   set: async (key, value) => {
-//     return new Promise(function (resolve) {
-//       localStorage.setItem(key, JSON.stringify(value))
-//       resolve(value)
-//     })
-//   },
-//   get: async (key) => {
-//     return new Promise(function (resolve) {
-//       resolve(JSON.parse(localStorage.getItem(key)))
-//     })
-//   }
-// }
-
-//------------depot = promisified chrome.storage--------------
-// const depot = {
-//   set: async(key, value) => {
-//     return new Promise(function (resolve) {
-//       chrome.storage.local.set({ [key]: value }, function () {
-//         resolve(value)
-//       })
-//     })
-//   },
-//   get: async(key) => {
-//     return new Promise(function (resolve) {
-//       chrome.storage.local.get([key], function (result) {
-//         if (result[key] === undefined) reject()
-//         else resolve(result[key])
-//       })
-//     })
-//   }
-// }
-
-//--------depot = localStorage || chrome.storage.local-------
-// const depot = {
-//   set: async (key, value) => {
-//     const sync = localStorage.getItem('sp-sync')
-//     if (sync && sync == 'no') {
-//       return new Promise(function (resolve) {
-//         localStorage.setItem(key, JSON.stringify(value))
-//         resolve(value)
-//       })
-//     } else {
-//       return new Promise(function (resolve) {
-//         chrome.storage.local.set({ [key]: value }, function () {
-//           resolve(value)
-//         })
-//       })
-//     }
-//   },
-//   get: async (key) => {
-//     const sync = localStorage.getItem('sp-sync')
-//     if (sync && sync == 'no') {
-//       return new Promise(function (resolve) {
-//         resolve(JSON.parse(localStorage.getItem(key)))
-//       })
-//     } else {
-//       return new Promise(function (resolve, reject) {
-//         chrome.storage.local.get([key], function (result) {
-//           if (result[key] === undefined) reject()
-//           else resolve(result[key])
-//         })
-//       })
-//     }
-//   }
-// }
-
-
 const depot = {
   set: async (key, value) => {
     const sync = localStorage.getItem('sp-sync')
     if (sync && sync == 'no') {
       return new Promise(function (resolve) {
-        localStorage.setItem(key, JSON.stringify(value))
-        resolve(value)
+        chrome.storage.local.set({ [key]: value }, function () {
+          resolve(value)
+        })
       })
     } else {
       return chunkedWrite(key, value)
@@ -112,8 +35,11 @@ const depot = {
   get: async (key) => {
     const sync = localStorage.getItem('sp-sync')
     if (sync && sync == 'no') {
-      return new Promise(function (resolve) {
-        resolve(JSON.parse(localStorage.getItem(key)))
+      return new Promise(function (resolve, reject) {
+        chrome.storage.local.get([key], function (result) {
+          if (result[key] === undefined) reject()
+          else resolve(result[key])
+        })
       })
     } else {
       return chunkedRead(key)
@@ -121,18 +47,14 @@ const depot = {
   }
 }
 
-
-
-// Just trying to save to chrome.storage.sync we'll get the error: QUOTA_BYTES_PER_ITEM quota exceeded
+// Just trying to save to chrome.storage.sync we'll get: QUOTA_BYTES_PER_ITEM quota exceeded
 // Hence the data must be partitioned, saved into multiple storage items, and sewn back together when retrieving it
-// Thank Google for that 8192 bytes limit
 // The following is modified from https://stackoverflow.com/a/67429150
-
 
 function chunkedWrite(key, value) {
   return new Promise(resolve => {
     if (typeof key !== 'string') key = `${key}`
-    const str = btoa(JSON.stringify(value)) // consider using LZString's compressToUTF16
+    const str = btoa(JSON.stringify(value)) // consider using LZStringUnsafe.compress
     const len = chrome.storage.sync.QUOTA_BYTES_PER_ITEM - key.length - 4
     const num = Math.ceil(str.length / len)
     const obj = {}

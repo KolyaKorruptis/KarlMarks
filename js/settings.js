@@ -60,7 +60,7 @@ const syncToggleHandler = () => {
   const syncMode = syncToggle.checked ? 'yes':'no'
   //chrome.storage.local.set({ 'sp-sync': syncMode})
   localStorage.setItem('sp-sync', syncMode)
-  window.location.reload()
+  setTimeout(() => {window.location.reload()}, 500)
 }
 
 syncToggle.addEventListener('change', syncToggleHandler)
@@ -75,5 +75,17 @@ const loadSyncMode = () => {
 }
 loadSyncMode()
 
-//------------------delete all--------------------------------
-delAll.addEventListener('click',clearAllData)
+//------------------delete data--------------------------------
+const clearLocalData = () => {
+  localStorage.clear()
+  chrome.storage.local.clear()
+  window.location.reload()
+}
+
+const clearSyncData = () => {
+  chrome.storage.sync.clear()
+  window.location.reload()
+}
+
+delLocal.addEventListener('click',clearLocalData)
+delSync.addEventListener('click',clearSyncData)
