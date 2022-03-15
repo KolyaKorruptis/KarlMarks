@@ -57,34 +57,35 @@ settingsLoaderFunctions.push(loadColorMode)
 
 // -----------------------sync-------------------------------
 const syncToggleHandler = () => {
-  const syncMode = syncToggle.checked ? 'yes':'no'
-  //chrome.storage.local.set({ 'sp-sync': syncMode})
-  localStorage.setItem('sp-sync', syncMode)
-  setTimeout(() => {window.location.reload()}, 500)
+  const dataStore = syncToggle.checked ? 'sync':'local'
+  //chrome.storage.local.set({ 'sp-dataStore': syncMode})
+  localStorage.setItem('sp-dataStore', dataStore)
+  pageReload()
 }
 
 syncToggle.addEventListener('change', syncToggleHandler)
 
 // load initial syncMode from setting
 const loadSyncMode = () => {
-  //const savedSyncMode = chrome.storage.local.get(['sp-sync'])
-  const savedSyncMode = localStorage.getItem('sp-sync')
-  if (savedSyncMode) syncToggle.checked = savedSyncMode == 'yes' ? true:false
-  else localStorage.setItem('sp-sync', 'yes')
-  //else chrome.storage.local.set({ 'sp-sync': 'yes'})
+  //const dataStore = chrome.storage.local.get(['sp-dataStorec'])
+  const dataStore = localStorage.getItem('sp-dataStore')
+  if (dataStore) syncToggle.checked = dataStore == 'sync' ? true:false
+  else localStorage.setItem('sp-dataStore', 'sync')
+  //else chrome.storage.local.set({ 'sp-dataStore': 'yes'})
 }
 loadSyncMode()
+settingsLoaderFunctions.push(loadSyncMode)
 
 //------------------delete data--------------------------------
 const clearLocalData = () => {
   localStorage.clear()
   chrome.storage.local.clear()
-  window.location.reload()
+  pageReload()
 }
 
 const clearSyncData = () => {
   chrome.storage.sync.clear()
-  window.location.reload()
+  pageReload()
 }
 
 delLocal.addEventListener('click',clearLocalData)

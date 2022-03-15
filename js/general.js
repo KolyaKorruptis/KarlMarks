@@ -14,6 +14,8 @@ const reset = (e, m) => {
   if (!m) manageToggle.checked = false
 }
 
+const pageReload = (delay) => setTimeout(() => {window.location.reload()}, delay || 500)
+
 document.addEventListener('click', (e) => {
   if (document.contains(e.target) && !main.contains(e.target)) reset()
   if (e.target.matches('#manageToggle:checked~#manageToggle__label')) reset(null, true)
@@ -21,8 +23,8 @@ document.addEventListener('click', (e) => {
 
 const depot = {
   set: async (key, value) => {
-    const sync = localStorage.getItem('sp-sync')
-    if (sync && sync == 'no') {
+    const dataStore = localStorage.getItem('sp-dataStore')
+    if (dataStore && dataStore == 'local') {
       return new Promise(function (resolve) {
         chrome.storage.local.set({ [key]: value }, function () {
           resolve(value)
@@ -33,8 +35,8 @@ const depot = {
     }
   },
   get: async (key) => {
-    const sync = localStorage.getItem('sp-sync')
-    if (sync && sync == 'no') {
+    const dataStore = localStorage.getItem('sp-dataStore')
+    if (dataStore && dataStore == 'local') {
       return new Promise(function (resolve, reject) {
         chrome.storage.local.get([key], function (result) {
           if (result[key] === undefined) reject()
