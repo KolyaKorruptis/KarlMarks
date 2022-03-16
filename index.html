@@ -8,7 +8,6 @@
     ? make auto icon via google optional, store pref in localstorage/json
     ? get icon via favicongrabber, see https://github.com/victrme/Bonjourr/blob/c3c9bf7bb5d72ad9f7dce13987e02e20934ae578/src/scripts/script.js#L298
     ? simple notepad
-    ! issue with forced dark mode
    -->
   <title>Karl Marks</title>
   <meta charset="utf-8">
@@ -71,7 +70,7 @@
       <input type=file id=import accept=.json hidden>
       <label id=importButton for=import title="Import your KarlMarks.json file">Import</label>
       <h4 class=settings__subtitle>Select Data Store</h4>
-      <label class=settings__sync title='Data stores are completely separate. "Sync" is the default and means your bookmarks and settings get synchronized between browsers. Selecting "Local" gives you a separate local link list and settings, which may be useful eg at work.'>Select between local or synchronized data store: <input id=syncToggle type=checkbox checked /></label>
+      <label class=settings__sync title='Local and Synced data stores are separate. "Sync" is the default setting that synchronizes your bookmarks and settings between browsers. "Local" gives you a separate local link list and settings, which may be useful eg at work.'>Select between local or synchronized data store: <input id=syncToggle type=checkbox checked /></label>
       <h4 class=settings__subtitle>Clear Data Stores</h4>
       <button class=delButton id=delLocal>Delete Local Data</button>
       <button class=delButton id=delSync>Delete Synced Data</button>
