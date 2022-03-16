@@ -108,7 +108,10 @@ if (window.innerWidth < 600) newLink__url.setAttribute( "autocomplete", "off" );
 const loadLinks = async(str) => {
   let links = str? JSON.parse(str).links : await depot.get('sp-links')
   // backward compatibility
-  if (!links) links = JSON.parse(localStorage.getItem('sp-links'))
+  if (!links) {
+    links = JSON.parse(localStorage.getItem('sp-links'))
+    localStorage.clear()
+  }
   //end backward compatibility
   if (links) {
     linklist.innerHTML = ''

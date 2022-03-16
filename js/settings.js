@@ -75,7 +75,6 @@ settingsLoaderFunctions.push(loadSyncMode)
 
 //------------------delete data--------------------------------
 const clearLocalData = () => {
-  localStorage.clear()
   chrome.storage.local.clear()
   pageReload()
 }

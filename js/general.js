@@ -41,7 +41,7 @@ const depot = {
     if (dataStore && dataStore == 'local') {
       return new Promise(function (resolve) {
         chrome.storage.local.get([key], function (result) {
-          if (result[key] !== undefined) resolve(result[key])
+          resolve(result[key])
         })
       })
     } else {
