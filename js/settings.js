@@ -56,22 +56,19 @@ settingsLoaderFunctions.push(loadColorMode)
 
 
 // -----------------------sync-------------------------------
-const syncToggleHandler = () => {
+const syncToggleHandler = async() => {
   const dataStore = syncToggle.checked ? 'sync':'local'
-  //chrome.storage.local.set({ 'sp-dataStore': syncMode})
-  localStorage.setItem('sp-dataStore', dataStore)
+  await depot.set('sp-dataStore', dataStore, 'local')  //TODO Consider using an object argument to make this less confusing
   pageReload()
 }
 
 syncToggle.addEventListener('change', syncToggleHandler)
 
 // load initial syncMode from setting
-const loadSyncMode = () => {
-  //const dataStore = chrome.storage.local.get(['sp-dataStorec'])
-  const dataStore = localStorage.getItem('sp-dataStore')
+const loadSyncMode = async() => {
+  const dataStore = await depot.get('sp-dataStore','local')
   if (dataStore) syncToggle.checked = dataStore == 'sync' ? true:false
-  else localStorage.setItem('sp-dataStore', 'sync')
-  //else chrome.storage.local.set({ 'sp-dataStore': 'yes'})
+  else await depot.set('sp-dataStore', 'sync', 'local') // set 'sp-dataStore' in local store (forced) to 'sync'
 }
 loadSyncMode()
 settingsLoaderFunctions.push(loadSyncMode)

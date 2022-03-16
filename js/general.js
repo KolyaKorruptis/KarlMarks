@@ -1,3 +1,5 @@
+const pageReload = (delay) => setTimeout(() => {window.location.reload()}, delay || 500)
+
 // end modifying (and everything else) and clean up the stage
 const reset = (e, m) => {
   if (e) e.preventDefault()
@@ -14,16 +16,16 @@ const reset = (e, m) => {
   if (!m) manageToggle.checked = false
 }
 
-const pageReload = (delay) => setTimeout(() => {window.location.reload()}, delay || 500)
-
 document.addEventListener('click', (e) => {
   if (document.contains(e.target) && !main.contains(e.target)) reset()
   if (e.target.matches('#manageToggle:checked~#manageToggle__label')) reset(null, true)
 })
 
+
+// depot handles data storage
 const depot = {
-  set: async (key, value) => {
-    const dataStore = localStorage.getItem('sp-dataStore')
+  set: async(key, value, store) => {
+    const dataStore = store || await depot.get('sp-dataStore','local')
     if (dataStore && dataStore == 'local') {
       return new Promise(function (resolve) {
         chrome.storage.local.set({ [key]: value }, function () {
@@ -34,13 +36,12 @@ const depot = {
       return chunkedWrite(key, value)
     }
   },
-  get: async (key) => {
-    const dataStore = localStorage.getItem('sp-dataStore')
+  get: async(key, store) => {
+    const dataStore = store || await depot.get('sp-dataStore','local')
     if (dataStore && dataStore == 'local') {
-      return new Promise(function (resolve, reject) {
+      return new Promise(function (resolve) {
         chrome.storage.local.get([key], function (result) {
-          if (result[key] === undefined) reject()
-          else resolve(result[key])
+          if (result[key] !== undefined) resolve(result[key])
         })
       })
     } else {
@@ -49,9 +50,9 @@ const depot = {
   }
 }
 
-// Just trying to save to chrome.storage.sync we'll get: QUOTA_BYTES_PER_ITEM quota exceeded
-// Hence the data must be partitioned, saved into multiple storage items, and sewn back together when retrieving it
-// The following is modified from https://stackoverflow.com/a/67429150
+// Simply trying to save to chrome.storage.sync we'll get the error: QUOTA_BYTES_PER_ITEM quota exceeded
+// Hence the data must be partitioned into multiple storage items and sewn back together when retrieving it
+// The following functions are modified from https://stackoverflow.com/a/67429150
 
 function chunkedWrite(key, value) {
   return new Promise(resolve => {
