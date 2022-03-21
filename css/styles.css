@@ -25,7 +25,7 @@ main{width:clamp(320px,500px,100vw);margin:auto;padding: 1rem;background:var(--b
 .linklist__itemLink{border-radius:20px 0 0 20px;color:var(--tc);text-decoration:none;display:flex;align-items:center;column-gap:.5rem;width:100%}
 .linklist__itemLink:hover{background:linear-gradient(90deg,var(--bd) 0,rgba(0,0,0,0) 100%)}
 [draggable]{user-select:none}
-[draggable] input{user-select:auto}
+[draggable]input{user-select:auto}
 #linkAdm{box-sizing:border-box;color:var(--tc);overflow:hidden;transition:max-height .2s linear;max-height:0}
 #linkAdm input{padding:5px;outline:0;border:none;width:100%;box-sizing:border-box;display:block;font-size:1rem;margin-bottom:.5rem;height:2rem}
 #manageToggle__label,#newLink__save{opacity:.9;margin:10px 0;background:var(--bb);border:none;color:var(--ab);padding:5px 15px;width:100%;height:35px;cursor:pointer;display:block;text-align:center;box-sizing:border-box;font-weight:700;user-select:none}
@@ -48,8 +48,8 @@ main{width:clamp(320px,500px,100vw);margin:auto;padding: 1rem;background:var(--b
 #settingsButton::before{-webkit-mask:url(/icons/cog.svg) no-repeat center center/contain;mask:url(/icons/cog.svg) no-repeat center center/contain}
 #backupButton::before{-webkit-mask:url(/icons/download.svg) no-repeat center center/contain;mask:url(/icons/download.svg) no-repeat center center/contain}
 #importButton::before{-webkit-mask:url(/icons/upload.svg) no-repeat center center/contain;mask:url(/icons/upload.svg) no-repeat center center/contain}
-#settings{border:0;color:var(--tc);inset: 0;padding: 1rem 2rem;background: var(--bg);border-radius: 1rem;box-shadow: 0 0 1px var(--tc),0 0 0 .5rem var(--bd),0 0 1.2rem var(--bg2),0 0 5px #111 inset;width: clamp(320px,320px,100vw);font-size: .9rem;}
-.settings__title{margin:0 0 1rem}
+#settings{border:0;color:var(--tc);inset:0;padding:.5rem 2rem 1rem;background:var(--bg);border-radius:1rem;box-shadow:0 0 1px var(--tc),0 0 0 .5rem var(--bd),0 0 1.2rem var(--bg2),0 0 5px #111 inset;width:clamp(320px,320px,100vw);font-size:.9rem}
+.settings__title{margin:0}
 .settings__subtitle{margin-bottom:.5em}
 input.settings__colorMode{margin-right:1em;}
 #syncToggle{-webkit-appearance:none;-moz-appearance:none;appearance:none;width: 5.5em;height: 2.1em;display:inline-block;position:relative;border-radius: 2em;overflow:hidden;outline:0;border:none;cursor:pointer;background-color: var(--bd);transition:background-color ease .3s;vertical-align: middle;}
@@ -57,3 +57,4 @@ input.settings__colorMode{margin-right:1em;}
 #syncToggle:checked:before{left:4.4em}
 #syncToggle:checked{background:green}
 .delButton{background:#8b0000;color:#fff;border:none;padding:.2em .5em;cursor:pointer;display:inline-block}
+.githubLink:after{content:'';width:1.5em;height:1.5em;-webkit-mask:url(/icons/github.svg) no-repeat center center/contain;mask:url(/icons/github.svg) no-repeat center center/contain;display:block;background-color:var(--tc);opacity:.5;position:absolute;top:10px;right:10px}
