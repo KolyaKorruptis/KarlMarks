@@ -14,6 +14,6 @@ It has drag & drop bookmarks and dark/light mode support. And it works on deskto
 ## [Install from Chrome Webstore](https://chrome.google.com/webstore/detail/karl-marks/odkohchphnbfhpnpidbfgcmfmomeaaeo)
 
 ## Screenshot
-![Screenshot Dark Mode](https://i.imgur.com/1gb3ZGx.png)
+![Screenshot Dark Mode](https://i.imgur.com/2f4Nx9Q.png)
 
 
