@@ -58,4 +58,6 @@ input.settings__colorMode{margin-right:1em;cursor:pointer;}
 #syncToggle:checked:before{left:4.4em}
 #syncToggle:checked{background:green}
 .delButton{background:#8b0000;color:#fff;border:none;padding:.2em .5em;cursor:pointer;display:inline-block}
-.githubLink:after{content:'';width:1.5em;height:1.5em;-webkit-mask:url(/icons/github.svg) no-repeat center center/contain;mask:url(/icons/github.svg) no-repeat center center/contain;display:block;background-color:var(--tc);opacity:.5;position:absolute;top:10px;right:10px}
+.githubLink{position:absolute;right:1rem}
+.githubLink:after{content:'';width:1.4em;height:1.4em;-webkit-mask:url(/icons/github.svg) no-repeat center center/contain;mask:url(/icons/github.svg) no-repeat center center/contain;display: block;background-color:var(--tc);opacity:.5}
+.githubLink:hover:after{opacity:1}
