@@ -17,7 +17,6 @@ const reset = (e, m) => {
 }
 
 document.addEventListener('click', (e) => {
-  if (document.contains(e.target) && !main.contains(e.target)) reset()
   if (e.target.matches('#manageToggle:checked~#manageToggle__label')) reset(null, true)
 })
 

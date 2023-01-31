@@ -1,5 +1,5 @@
-// open settings view
-settingsButton.addEventListener('click', () => settings.toggleAttribute('open'))
+// open/close settings view
+[settingsButton, closeSettings].forEach(el=>{ el.addEventListener('click', () => settings.toggleAttribute('open')) })
 
 const settingsLoaderFunctions = []
 
