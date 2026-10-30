@@ -11,8 +11,8 @@ const saveSetting = async(key, value) => {
 }
 const getSetting = async(key) => (await depot.get('sp-settings') || {})[key]
 
-const loadAllSettings = async(str) => {
-  await depot.set('sp-settings', JSON.parse(str).settings)
+const loadAllSettings = async(settings) => {
+  await depot.set('sp-settings', settings || {})
   for (let i = 0; i < settingsLoaderFunctions.length; i++) {
     settingsLoaderFunctions[i]()
   }
@@ -20,36 +20,22 @@ const loadAllSettings = async(str) => {
 
 
 // -----------------light/dark mode------------------------
-const lightModeOn = () => lightSheet.setAttribute('href', 'css/lightMode.css')
-const lightModeOff = () => lightSheet.setAttribute('href', '')
-const matchSystemColorOn = () => lightSheet.setAttribute('media', '(prefers-color-scheme: light)')
-const matchSystemColorOff = () => lightSheet.setAttribute('media', '')
-
-const colorModeHandler = ({ mode }) => {
-  let selectedColorMode = mode || document.querySelector('.settings__colorMode[name="colorMode"]:checked').value
-  if (selectedColorMode === 'system') {
-    lightModeOn()
-    matchSystemColorOn()
-  } else if (selectedColorMode === 'light') {
-    lightModeOn()
-    matchSystemColorOff()
-  } else if (selectedColorMode === 'dark') {
-    lightModeOff()
-    matchSystemColorOff()
-  }
-  document.querySelector(`[value="${selectedColorMode}"]`).checked = true
-  saveSetting('colorMode', selectedColorMode)
+// theme.js already applied the mode mirrored in localStorage before the first paint
+const applyColorMode = (mode) => {
+  document.documentElement.dataset.theme = localStorage.colorMode = mode
+  document.querySelector(`[value="${mode}"]`).checked = true
 }
+applyColorMode(document.documentElement.dataset.theme)
 
 //listen to radio changes
 const radios = document.querySelectorAll('input.settings__colorMode')
-radios.forEach(el => el.addEventListener('change', colorModeHandler))
+radios.forEach(el => el.addEventListener('change', (e) => {
+  applyColorMode(e.currentTarget.value)
+  saveSetting('colorMode', e.currentTarget.value)
+}))
 
-// load initial color mode from setting
-const loadColorMode = async() => {
-  const savedColorMode = await getSetting('colorMode')
-  if (savedColorMode) colorModeHandler({ mode: savedColorMode })
-}
+// catch up with the data store, the mode may have been changed on another device
+const loadColorMode = async() => applyColorMode(await getSetting('colorMode') || 'system')
 loadColorMode()
 //add to array of all setting loaders
 settingsLoaderFunctions.push(loadColorMode)
@@ -65,24 +51,16 @@ const syncToggleHandler = async() => {
 syncToggle.addEventListener('change', syncToggleHandler)
 
 // load initial syncMode from setting
-const loadSyncMode = async() => {
-  const dataStore = await depot.get('sp-dataStore','local')
-  if (dataStore) syncToggle.checked = dataStore == 'sync' ? true:false
-  else await depot.set('sp-dataStore', 'sync', 'local') // set 'sp-dataStore' in local store (forced) to 'sync'
-}
+const loadSyncMode = async() => syncToggle.checked = await getDataStore() == 'sync'
 loadSyncMode()
 settingsLoaderFunctions.push(loadSyncMode)
 
 //------------------delete data--------------------------------
-const clearLocalData = () => {
-  chrome.storage.local.clear()
+const clearData = async(area) => {
+  await chrome.storage[area].clear()
+  localStorage.clear()
   pageReload()
 }
 
-const clearSyncData = () => {
-  chrome.storage.sync.clear()
-  pageReload()
-}
-
-delLocal.addEventListener('click',clearLocalData)
-delSync.addEventListener('click',clearSyncData)
+delLocal.addEventListener('click', () => clearData('local'))
+delSync.addEventListener('click', () => clearData('sync'))

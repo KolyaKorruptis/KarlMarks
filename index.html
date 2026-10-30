@@ -1,60 +1,21 @@
 <!DOCTYPE html>
 <html lang=en>
 <head>
-  <!--
-    TODO
-    ? move grab handle to the left, to allow for multi column list
-    ? add button to download current icon in manage mode
-    ? make auto icon via google optional, store pref in localstorage/json
-    ? get icon via favicongrabber, see https://github.com/victrme/Bonjourr/blob/c3c9bf7bb5d72ad9f7dce13987e02e20934ae578/src/scripts/script.js#L298
-    ? simple notepad
-   -->
   <title>Karl Marks</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" type="text/css" href="css/styles.css" />
-  <link id=lightSheet media="(prefers-color-scheme: light)" rel="stylesheet" type="text/css" href="css/lightMode.css">
+  <script src="js/theme.js"></script>
 </head>
 <body>
   <main id=main>
     <input type=checkbox id=manageToggle hidden>
-    <ul id=linklist>
-      <li class=linklist__item>
-        <button class=linklist__itemDeleteButton title="Delete this entry">×</button>
-        <a class=linklist__itemLink href="https://www.google.com/">
-          <img class=linklist__itemIcon src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAABA1JREFUSEutVV1sFGUUPffO7Mx2d7s1GmxoS1uspJY/QZtaNBKiBKIhlNSmagT1VUNsgiQqTf0BhGADiS+a8Ca+tZqoaDARxESTAtKklcRSG9uCbRGR4nZ3u7/zXfPNTpd22+KL8zS5351zzz1z7/kICzwiYqZSqSrTNDcYhtEkIvUiUualTjDzRQBfAOgBcJWIsoUwVBgQkaBSaj8RNRNRJQBeqDgABeCKUupzZn6HiKZn5+WBRUS/PyAiJ4moxk0SgUzHIYlpSCbjhsj0gYoCoGAAoFxNpdQQM28HMEhE4ubNVBGROhHpIqLVbvJUBMkvu5HuPQ9n7CpUdMotxMVhGOXLYNU3wr+jFRwu8TjIJSJqJaLLeWARCYlI3wzTzOCviLzxGiQ2tYgKubAGLTn6Mczl989mvk7LQvpHKaWOMPMefapBowfb4Vwbz4MaZeUwKrTc5LJ3JsbcM3PlGoT3dsCorM7nKqU6mXkfJZPJGsuyThNRtW5/clczJB7N6RkIIvTqHthPbAGxkWtZOUid+RapH88i/F4nyOeb05WIjBDRZs14J4BPAMWZnqOIfvgpnL/9INtGuP19WBseB6hgeER0BcArVqCXnpZdGrgbQAuyETh9TXAmLmD6VCWsjW8i8NxL80HvqHruUCnVRUopTb0aqXFkLzQA6RsQKYVv4wBghebA/DToLAp7VxCoKzNgsAs8TI7jpJjZksQInJ6VgDigkkYYD30HsD0H6MlD8UWBV1UYOPSsjZBNGjj1vwHXLmUced6PYv9t4BFm9qR4BEj/haSvHP5HL8E07yzF+C2F49+n3S7WVxvY32IjYLnAw3N+XrZ/B25O9uJw7EGsrW3Dy3XPgAsnwhNDD8bxs2l0ncut+ta1Jl5/2p7RuEsDvwDghB63gaGP8Hb/SYw6xbANCwca27CpogF0e/PzGveOOOjoTiLl+dpb221sXm26QwFgpwa+D8BpAMun0jE0f7MbkXTMBSgy/Whb9yK2VW+C4RmOIwo//zmIzq+ziN1c4W7jvWHCiVeK4DPceR8G4C6IXunDzLxXRwcmf8e+nmMYi13Ps1saXIKq4jKX+bX4DYxGx0EqCOufLViGrTjYfDdqSvNO9wEzt7slPA/uY2bXTS7fGsbuHw4gks6t9mKPzX4ce6wDDWW1uXUX0ba5nogSs21Te7G2zTU6aSodR/fQKZy/3o8r0QlEUloeQbEVQnmoFA8vWYXWFU+hNHDPDOgvnm0O6kCh0dcqpb5iZi2eZoB4NoHpbBIZldG48LHpah/0FYE93T2mTQB+m2f0M+2KSEAp9S4RtRBR1X9cTaNKqc+YWecnZks2787zmOq50QbcqJTSTOoBlHsfaqO+yMz6Mj0H4I+FLtN/ARdM3ti5ww29AAAAAElFTkSuQmCC">
-          <span class=linklist__itemTitle>Google</span>
-        </a>
-        <i draggable=true class=linklist__itemMoveHandle title="Drag this entry to another position"></i>
-      </li>
-      <li class=linklist__item>
-        <button class=linklist__itemDeleteButton title="Delete this entry">×</button>
-        <a class=linklist__itemLink href="https://www.bing.com/images/">
-          <img class=linklist__itemIcon src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAAAglJREFUSEvd1D1oU1EUwPH/uU3SRZsP8APpoEIFdxGRVvNSFLGbYqcqVlwU8rSIi4J2EJQiaF9AJxez2Q4udrFJLEVUBEGwS0snwVil6UtwUJO8I08UbJPWGJrFM97L+d3DOYcrtCikRS7/Ezw8EwoXPp4BbEF2ozovhvGqKY+U7hxZAnStNtZtRdR+2q203QS6a5N1Frjl5hcfMtZfXQ2vhYdnQpHCQuYXmhdjLpUDwUyw8q0Lj2sKh0ELnpq+Usp62TAcvTA5oGrSwKwgx5cc693v5PC56aiEymmUPiDtOolTDcORZPY1wh4V018cjY+tTOxI5vYZ0RdA3nUS2xqH7ezPoWg5GCve7/GHtDySc+0Ref/VP3SdxKrrWnMRtbN5ha0ocTeVmFrphocmd0rVzKN8clOJLQ1XHLYzNwS5ivJWK0FrWdX+Ci4uXBfhigoTxdGE3+u6UVNxLJnr9ET9rdgFOu6JjpQ+9L7p6Hy2Q6o6JHAStB046zq9/pAbgwGJ2JnTwG2QWJ09/g4SAslhOObetdx6cv3mn3jUtnFzbG8gYAZVOQRsB4qg0+rpYxEzgBBH5LmnZrDkHJxbiTf1CUUu5iJ4+gTYDzIdrHD08z3ry594U7APdNhTXQbvAWiPj7uOdWBdYB/ZdD63oRxgQuDVkmNdXjf4n3+3tRIavWu6x397oGXwDxURtBcn66qfAAAAAElFTkSuQmCC">
-          <span class=linklist__itemTitle>Bing Images</span>
-        </a>
-        <i draggable=true class=linklist__itemMoveHandle title="Drag this entry to another position"></i>
-      </li>
-      <li class=linklist__item>
-        <button class=linklist__itemDeleteButton title="Delete this entry">×</button>
-        <a class=linklist__itemLink href="https://github.com/KolyaKorruptis/KarlMarks">
-          <img class=linklist__itemIcon src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAAAmFJREFUSEuVlUuojVEYhp/XpcTANYlEHNFJBpKiRJkolzBBEaYyQLml5EjKJczMMDRhZ25wioEiKZHYSselpBMScv307ta/Lcs++5z9Tfb+1+VZ33rX+t4lWkREjABmAEuBDcAiYGoa+ga4B9wAbgF9kn6WGJUNETEWOApsBKYDw1stntpeANeB45I+5uOa4Ijw/y6gN8uuDfOfLu9iBVCXFO7JwXOAq8DCodKKcfeBzZKeNcFp+49Tpr+TdhOAecBIwFm4vZozDPgBONMHwJokmb+7LYvSQZ0C9qWJX4EFkuoRsRZYngDv0wLjkva3JdUiYgrwHBid5p8DDho8G7gJzEwdX4Bpkj7429pXulVbz9siwgu9zsA+0JUGbweuZHq9A5ZIchaDRkRMBh4C/nX8AnYaXAPWZ4TdwEVJlaZt4ek2+a5fywbWDO5Lmrn9OzBekuXoKCLC0rkGHC8NdtVURdAvaVJHxDQ4InzNXAcNOUqwq2eiJOvUUUTE21znUgrDfHB3OqFGRDfwKJvTkKI8PJf0KknfhgKPiFHAJWBLeXjbgMuZzpbhLHBkMEkiwmdzDDhcmNWOvEB8ooeAvcBc4BXQY/eS5KprRrKAdcABYH6xs2aB2Htd0nuSR2z1PQZWJ5M6I8mAHHwa2D+AVOe9YMPdChM6CVywFAlsr+0vwHbCpy3Af02o6oyIyja9tV3AXcB33B7rwskztr/UC/D/tpmyzo3eRfIpWeViSdatHXhgo88yt+YngE3J8bpKQ4qIWcCT5Gq+rj0DPk1FRtVjaqPvlfS56B8DLEs6t3xM/wAoPP8TT7FwvgAAAABJRU5ErkJggg==">
-          <span class=linklist__itemTitle>Karl Marks on Github</span>
-        </a>
-        <i draggable=true class=linklist__itemMoveHandle title="Drag this entry to another position"></i>
-      </li>
-    </ul>
+    <ul id=linklist></ul>
     <label for=manageToggle id=manageToggle__label></label>
     <div id=linkAdm>
-      <div id=drop2edit>drag an entry from the list here to edit it</div>
       <h2 id=linkAdm__title>Add New Link</h2>
       <input id=newLink__url type=text placeholder="https://" />
-      <details id=newLink__options>
-        <summary id=newLink__summary>Link Options</summary>
-        <input id=newLink__title type=text placeholder="Title" />
-        <input id=newLink__icon type=text placeholder="Icon URL" title="For developers: Check if your server is up and accessible by entering its icon or logo URL here." />
-        <input id=newLink__iconPick type=file accept=image/* title="Pick any image to use as icon. Loads faster than an icon URL and prevents tracking.">
-      </details>
+      <input id=newLink__title type=text placeholder="Optional title" />
       <label id=newLink__save>Save</label>
       <span id=settingsButton title="Open settings view">Settings</span>
     </div>
@@ -62,9 +23,11 @@
       <button class=closeSettings id=closeSettings title="Close settings view">✕</button>
       <h2 class=settings__title>Settings</h2>
       <h4 class=settings__subtitle>Theme</h4>
+      <div class=flex>
       <label class=settings__colorMode>Dark: <input class=settings__colorMode id=dark value=dark name=colorMode type=radio /></label>
       <label class=settings__colorMode>Light: <input class=settings__colorMode id=light value=light name=colorMode type=radio /></label>
       <label class=settings__colorMode title="Uses the preference you have set in your operating system (Windows, Android, iOS)">Match System: <input class=settings__colorMode id=system value=system name=colorMode type=radio checked=checked /></label>
+      </div>
       <h4 class=settings__subtitle>Select Data Store</h4>
       <label class=settings__sync title='Local and Synced data stores are separate. "Sync" is the default setting that synchronizes your bookmarks and settings between browsers. "Local" gives you a separate local link list and settings, which may be useful eg at work.'>Select between local or synchronized data store: <input id=syncToggle type=checkbox checked /></label>
       <h4 class=settings__subtitle>Backup Your Data</h4>
@@ -85,6 +48,5 @@
   <script src="js/settings.js"></script>
   <script src="js/linkHandling.js"></script>
   <script src="js/importExport.js"></script>
-  <script src="js/touch2html5.js"></script>
 </body>
 </html>

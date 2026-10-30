@@ -1,128 +1,184 @@
-//data to be saved
-const getLinksFromHtml = () => {
-  const arr = []
-  linklist.querySelectorAll('.linklist__item').forEach((el) => {
-    arr.push ( {"link":el.querySelector('.linklist__itemLink').href,"title":el.querySelector('.linklist__itemTitle').innerHTML,"icon":el.querySelector('.linklist__itemIcon').src} )
-  })
-  return arr.reverse()
-}
+// links are stored bottom to top as {link, title}, titles as HTML (escaped text)
+// groups are stored as {title, open, links}, their links bottom to top as well
+// older data and backups may also carry an icon per link, it is ignored and dropped on the next save
+const defaultLinks = [
+  {"link":"https://github.com/KolyaKorruptis/KarlMarks","title":"Karl Marks on Github"},
+  {"link":"https://www.bing.com/images/","title":"Bing Images"},
+  {"link":"https://www.google.com/","title":"Google"}
+]
 
-const save = async() => {
-  await depot.set('sp-links', getLinksFromHtml())
-  popupLinkTargets()
-}
-const fragmentFromString = (strHTML) => document.createRange().createContextualFragment(strHTML);
+const escText = (str) => str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+const escAttr = (str) => str.replace(/&/g, '&amp;').replace(/"/g, '&quot;')
 const noWWW = (str) => str.replace("www.", "")
 
-//add new item from json or form
-const addNewItem = ({loadUrl,loadTitle,loadIconUrl,file,elToBeReplaced=null,doNotSave}) => {
-  const realUrl = new URL(loadUrl)
-  const realTitle = loadTitle || noWWW(realUrl.hostname)
-  let realIcon = loadIconUrl || `https://www.google.com/s2/favicons?sz=32&domain_url=${realUrl.host}`
-  const prependLink = () => {
-    const frag = fragmentFromString(`
-    <li class=linklist__item>
-      <button class=linklist__itemDeleteButton title="Delete this entry">×</button>
-      <a class=linklist__itemLink href="${realUrl}">
-        <img class=linklist__itemIcon src="${realIcon}">
-        <span class=linklist__itemTitle>${realTitle}</span>
-      </a>
-      <i draggable=true class=linklist__itemMoveHandle title="Drag this entry to another position"></i>
-    </li>`)
-    addDnDHandlers(frag.querySelector('li'))
-    itemDeleteHandler(frag.querySelector('.linklist__itemDeleteButton'))
-    if(elToBeReplaced) elToBeReplaced.replaceWith(frag)
-    else linklist.prepend(frag)
-  }
-  // user selected a local image as icon
-  if (file) {
-    const promise = getLocalImageAsDataUri()
-    promise.then(dataUri => realIcon = dataUri).catch().finally(() => {
-      prependLink()
-      if(!doNotSave) save()
-    })
-  } else {
-    prependLink()
-    if(!doNotSave) save()
-  }
-}
+// icons come from the browser's own favicon cache
+const favicon = (url) => `/_favicon/?pageUrl=${encodeURIComponent(url)}&size=32`
 
-const getLocalImageAsDataUri = () => {
-  return new Promise(function(resolve) {
-    const file = newLink__iconPick.files[0]
-    const reader = new FileReader()
-    reader.addEventListener('load', function () {
-      const image = new Image()
-      image.crossOrigin = ''
-      image.addEventListener('load',() => {
-        const canvas = document.createElement('canvas')
-        canvas.width = 22
-        canvas.height = 22
-        const ratio = image.naturalWidth / image.naturalHeight
-        const width = canvas.width
-        const height = width / ratio
-        canvas.getContext('2d').drawImage(image, 0, 0, width, height)
-        resolve(canvas.toDataURL('image/png'))
-      })
-      image.src = reader.result
-    })
-    reader.readAsDataURL(file)
-  })
-}
+const itemHtml = ({link, title, open, links}) => links ? `
+  <li class="linklist__item linklist__group${open ? ' open' : ''}">
+    <button class=linklist__itemEditButton title="Rename">✎</button>
+    <span class=linklist__itemLink draggable=true>
+      <i class=linklist__groupArrow></i>
+      <span class=linklist__itemTitle>${title}</span>
+    </span>
+    <i draggable=true class=linklist__itemMoveHandle title="Reorder"></i>
+    <button class=linklist__itemDeleteButton title="Ungroup">×</button>
+    <ul class=linklist__groupList>${listHtml(links)}</ul>
+  </li>` : `
+  <li class=linklist__item>
+    <button class=linklist__itemEditButton title="Edit">✎</button>
+    <a class=linklist__itemLink href="${escAttr(link)}">
+      <img class=linklist__itemIcon src="${escAttr(favicon(link))}">
+      <span class=linklist__itemTitle>${title}</span>
+    </a>
+    <i draggable=true class=linklist__itemMoveHandle title="Reorder"></i>
+    <button class=linklist__itemDeleteButton title="Delete">×</button>
+  </li>`
 
-//deleting items
-const itemDeleteHandler = (x) => {
-  x.addEventListener('click', (e) => {
-    e.currentTarget.parentElement.remove()
-    save()
-  })
-}
-document.querySelectorAll('.linklist__itemDeleteButton').forEach((x) => itemDeleteHandler(x))
+const listHtml = (links) => links.map(itemHtml).reverse().join('')
+const renderLinks = (links) => linklist.innerHTML = listHtml(links)
 
-//new link form
-const addNewItemFromLinkForm = () => {
-  addNewItem({loadUrl:newLink__url.value, loadTitle:newLink__title.value, loadIconUrl:newLink__icon.value, file:newLink__iconPick.files[0]})
-  newLink__title.value = ''
-  newLink__url.value   = ''
-  newLink__icon.value  = ''
-  newLink__iconPick.value = ''
-  manageToggle.checked = false
-}
-//add new item via save button
-newLink__save.addEventListener('click', addNewItemFromLinkForm)
+const isGroup = (el) => el.classList.contains('linklist__group')
+const groupList = (group) => group.querySelector('.linklist__groupList')
 
-//also add new item via return key
-manageToggle.addEventListener('change', (e) => {
-  if (e.currentTarget.checked) {
-    newLink__url.focus()
-    linkAdm.addEventListener('keydown', (e) => {
-      if (event.keyCode == 13) addNewItemFromLinkForm()
-    })
-  } else save()
+//data to be saved
+const getLinksFromHtml = (list = linklist) => [...list.children].map((el) => isGroup(el)
+  ? {"title":el.querySelector('.linklist__itemTitle').innerHTML,"open":el.classList.contains('open'),"links":getLinksFromHtml(groupList(el))}
+  : {"link":el.querySelector('.linklist__itemLink').href,"title":el.querySelector('.linklist__itemTitle').innerHTML}
+).reverse()
+
+// only what belongs into storage or a backup, older versions also stored icons
+const cleanLinks = (links) => links.map((item) => item.links
+  ? {"title":item.title,"open":!!item.open,"links":cleanLinks(item.links)}
+  : {"link":item.link,"title":item.title})
+
+// a group with a single link left dissolves into that link, an empty one disappears
+const tidyGroups = () => linklist.querySelectorAll('.linklist__group').forEach((group) => {
+  const items = groupList(group).children
+  if (items.length > 1) return
+  if (group == editTarget) reset(true)
+  group.replaceWith(...items)
 })
 
-//disable autocomplete on mobile devices
-if (window.innerWidth < 600) newLink__url.setAttribute( "autocomplete", "off" );
+// while managing, changes only live on the page: Save keeps them, Cancel goes back to linksBeforeManaging
+let linksBeforeManaging
+const save = async(evenWhileManaging) => {
+  tidyGroups()
+  if (manageToggle.checked && !evenWhileManaging) return
+  const links = getLinksFromHtml()
+  localStorage.links = JSON.stringify(links)
+  await depot.set('sp-links', links)
+}
 
-//loading links from storage or file
-const loadLinks = async(str) => {
-  let links = str? JSON.parse(str).links : await depot.get('sp-links')
-  // backward compatibility
-  if (!links) {
-    links = JSON.parse(localStorage.getItem('sp-links'))
-    localStorage.clear()
+// put two entries into a new group in place of the first one and let the user name it
+const makeGroup = (target, dragged) => {
+  target.insertAdjacentHTML('beforebegin', itemHtml({title: 'New Group', open: true, links: []}))
+  const group = target.previousElementSibling
+  groupList(group).append(target, dragged)
+  editItem(group)
+}
+
+//add a new item or replace the one being edited with the form's content
+const saveLinkForm = () => {
+  if (editTarget && isGroup(editTarget)) {
+    editTarget.querySelector('.linklist__itemTitle').innerHTML = escText(newLink__title.value.trim()) || 'Group'
+    reset()
+    save()
+    return
   }
-  //end backward compatibility
-  if (links) {
-    linklist.innerHTML = ''
-    links.forEach((link) => {
-      addNewItem({loadUrl:link.link, loadTitle:link.title, loadIconUrl:link.icon, doNotSave:true})
-    })
+  let url = newLink__url.value.trim()
+  // Save with an empty form just keeps the changes made while managing
+  if (!url && !editTarget) {
+    reset()
+    save()
+    return
+  }
+  if (url && !/^[a-z][\w+.-]*:\/\/|^(about|mailto|tel):/i.test(url)) url = 'https://' + url
+  try { url = new URL(url) } catch {
+    newLink__url.setCustomValidity('Please enter a valid URL')
+    newLink__url.reportValidity()
+    return
+  }
+  const html = itemHtml({
+    link: url.href,
+    title: escText(newLink__title.value.trim()) || noWWW(url.hostname) || url.href
+  })
+  if (editTarget) editTarget.outerHTML = html
+  else linklist.insertAdjacentHTML('afterbegin', html)
+  reset()
+  save()
+}
+newLink__save.addEventListener('click', saveLinkForm)
+newLink__url.addEventListener('input', () => newLink__url.setCustomValidity(''))
+
+//also save via return key
+linkAdm.addEventListener('keydown', (e) => {
+  if (e.key == 'Enter' && e.target.type == 'text') saveLinkForm()
+})
+
+// prepare the stage for modifying an entry, groups only get a new name
+const editItem = (item) => {
+  editTarget = item
+  const group = isGroup(item)
+  linkAdm.classList.toggle('renaming', group)
+  linkAdm__title.innerHTML = group ? 'Rename Group' : 'Modify Link'
+  newLink__title.value = item.querySelector('.linklist__itemTitle').textContent
+  newLink__url.value = group ? '' : item.querySelector('.linklist__itemLink').getAttribute('href')
+  if (group) newLink__title.select()
+  else newLink__url.focus()
+}
+
+//deleting, ungrouping, editing and expanding items
+linklist.addEventListener('click', (e) => {
+  const item = e.target.closest('.linklist__item')
+  if (e.target.matches('.linklist__itemDeleteButton')) {
+    if (item == editTarget) reset(true)
+    if (isGroup(item)) item.replaceWith(...groupList(item).children)
+    else item.remove()
+    save()
+  } else if (e.target.matches('.linklist__itemEditButton')) editItem(item)
+  else if (e.target.closest('.linklist__itemLink') && isGroup(e.target.closest('.linklist__itemLink').parentElement)) {
+    item.classList.toggle('open')
     save()
   }
+})
+
+// in manage mode links are only for dragging, not for opening
+const blockLinksWhileManaging = (e) => {
+  if (manageToggle.checked && e.target.closest('.linklist__itemLink')) e.preventDefault()
+}
+linklist.addEventListener('click', blockLinksWhileManaging)
+linklist.addEventListener('auxclick', blockLinksWhileManaging)
+
+manageToggle.addEventListener('change', (e) => {
+  if (e.currentTarget.checked) {
+    linksBeforeManaging = getLinksFromHtml()
+    newLink__url.focus()
+  } else {
+    // Cancel
+    reset(true)
+    renderLinks(linksBeforeManaging)
+  }
+})
+
+// paint the links mirrored in localStorage right away, then catch up with the data store
+let shownLinks = localStorage.links
+renderLinks(shownLinks ? JSON.parse(shownLinks) : defaultLinks)
+
+const loadLinks = async() => {
+  const links = await depot.get('sp-links')
+  const json = links && JSON.stringify(links)
+  if (json == shownLinks) return
+  renderLinks(links || defaultLinks)
+  if (json) localStorage.links = shownLinks = json
+  else localStorage.removeItem('links')
 }
 loadLinks()
 
-
-
-
+//import links from a backup file
+// imports are saved right away and become what Cancel goes back to
+const importLinks = (links) => {
+  renderLinks(cleanLinks(links))
+  save(true)
+  linksBeforeManaging = getLinksFromHtml()
+}
