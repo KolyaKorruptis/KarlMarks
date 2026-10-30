@@ -1,128 +1,119 @@
+// links are stored bottom to top as {link, title}, titles as HTML (escaped text)
+// older data and backups may also carry an icon per link, it is ignored and dropped on the next save
+const defaultLinks = [
+  {"link":"https://github.com/KolyaKorruptis/KarlMarks","title":"Karl Marks on Github"},
+  {"link":"https://www.bing.com/images/","title":"Bing Images"},
+  {"link":"https://www.google.com/","title":"Google"}
+]
+
+const escText = (str) => str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+const escAttr = (str) => str.replace(/&/g, '&amp;').replace(/"/g, '&quot;')
+const noWWW = (str) => str.replace("www.", "")
+
+// icons come from the browser's own favicon cache
+const favicon = (url) => `/_favicon/?pageUrl=${encodeURIComponent(url)}&size=32`
+
+const itemHtml = ({link, title}) => `
+  <li class=linklist__item>
+    <button class=linklist__itemEditButton title="Edit">✎</button>
+    <a class=linklist__itemLink href="${escAttr(link)}">
+      <img class=linklist__itemIcon src="${escAttr(favicon(link))}">
+      <span class=linklist__itemTitle>${title}</span>
+    </a>
+    <i draggable=true class=linklist__itemMoveHandle title="Reorder"></i>
+    <button class=linklist__itemDeleteButton title="Delete">×</button>
+  </li>`
+
+const renderLinks = (links) => linklist.innerHTML = links.map(itemHtml).reverse().join('')
+
 //data to be saved
 const getLinksFromHtml = () => {
   const arr = []
   linklist.querySelectorAll('.linklist__item').forEach((el) => {
-    arr.push ( {"link":el.querySelector('.linklist__itemLink').href,"title":el.querySelector('.linklist__itemTitle').innerHTML,"icon":el.querySelector('.linklist__itemIcon').src} )
+    arr.push ( {"link":el.querySelector('.linklist__itemLink').href,"title":el.querySelector('.linklist__itemTitle').innerHTML} )
   })
   return arr.reverse()
 }
 
 const save = async() => {
-  await depot.set('sp-links', getLinksFromHtml())
-  popupLinkTargets()
+  const links = getLinksFromHtml()
+  localStorage.links = JSON.stringify(links)
+  await depot.set('sp-links', links)
 }
-const fragmentFromString = (strHTML) => document.createRange().createContextualFragment(strHTML);
-const noWWW = (str) => str.replace("www.", "")
 
-//add new item from json or form
-const addNewItem = ({loadUrl,loadTitle,loadIconUrl,file,elToBeReplaced=null,doNotSave}) => {
-  const realUrl = new URL(loadUrl)
-  const realTitle = loadTitle || noWWW(realUrl.hostname)
-  let realIcon = loadIconUrl || `https://www.google.com/s2/favicons?sz=32&domain_url=${realUrl.host}`
-  const prependLink = () => {
-    const frag = fragmentFromString(`
-    <li class=linklist__item>
-      <button class=linklist__itemDeleteButton title="Delete this entry">×</button>
-      <a class=linklist__itemLink href="${realUrl}">
-        <img class=linklist__itemIcon src="${realIcon}">
-        <span class=linklist__itemTitle>${realTitle}</span>
-      </a>
-      <i draggable=true class=linklist__itemMoveHandle title="Drag this entry to another position"></i>
-    </li>`)
-    addDnDHandlers(frag.querySelector('li'))
-    itemDeleteHandler(frag.querySelector('.linklist__itemDeleteButton'))
-    if(elToBeReplaced) elToBeReplaced.replaceWith(frag)
-    else linklist.prepend(frag)
+//add a new item or replace the one being edited with the form's content
+const saveLinkForm = () => {
+  let url = newLink__url.value.trim()
+  if (url && !/^[a-z][\w+.-]*:\/\/|^(about|mailto|tel):/i.test(url)) url = 'https://' + url
+  try { url = new URL(url) } catch {
+    newLink__url.setCustomValidity('Please enter a valid URL')
+    newLink__url.reportValidity()
+    return
   }
-  // user selected a local image as icon
-  if (file) {
-    const promise = getLocalImageAsDataUri()
-    promise.then(dataUri => realIcon = dataUri).catch().finally(() => {
-      prependLink()
-      if(!doNotSave) save()
-    })
-  } else {
-    prependLink()
-    if(!doNotSave) save()
-  }
-}
-
-const getLocalImageAsDataUri = () => {
-  return new Promise(function(resolve) {
-    const file = newLink__iconPick.files[0]
-    const reader = new FileReader()
-    reader.addEventListener('load', function () {
-      const image = new Image()
-      image.crossOrigin = ''
-      image.addEventListener('load',() => {
-        const canvas = document.createElement('canvas')
-        canvas.width = 22
-        canvas.height = 22
-        const ratio = image.naturalWidth / image.naturalHeight
-        const width = canvas.width
-        const height = width / ratio
-        canvas.getContext('2d').drawImage(image, 0, 0, width, height)
-        resolve(canvas.toDataURL('image/png'))
-      })
-      image.src = reader.result
-    })
-    reader.readAsDataURL(file)
+  const html = itemHtml({
+    link: url.href,
+    title: escText(newLink__title.value.trim()) || noWWW(url.hostname) || url.href
   })
+  if (editTarget) editTarget.outerHTML = html
+  else linklist.insertAdjacentHTML('afterbegin', html)
+  reset()
+  save()
 }
+newLink__save.addEventListener('click', saveLinkForm)
+newLink__url.addEventListener('input', () => newLink__url.setCustomValidity(''))
 
-//deleting items
-const itemDeleteHandler = (x) => {
-  x.addEventListener('click', (e) => {
-    e.currentTarget.parentElement.remove()
-    save()
-  })
-}
-document.querySelectorAll('.linklist__itemDeleteButton').forEach((x) => itemDeleteHandler(x))
-
-//new link form
-const addNewItemFromLinkForm = () => {
-  addNewItem({loadUrl:newLink__url.value, loadTitle:newLink__title.value, loadIconUrl:newLink__icon.value, file:newLink__iconPick.files[0]})
-  newLink__title.value = ''
-  newLink__url.value   = ''
-  newLink__icon.value  = ''
-  newLink__iconPick.value = ''
-  manageToggle.checked = false
-}
-//add new item via save button
-newLink__save.addEventListener('click', addNewItemFromLinkForm)
-
-//also add new item via return key
-manageToggle.addEventListener('change', (e) => {
-  if (e.currentTarget.checked) {
-    newLink__url.focus()
-    linkAdm.addEventListener('keydown', (e) => {
-      if (event.keyCode == 13) addNewItemFromLinkForm()
-    })
-  } else save()
+//also save via return key
+linkAdm.addEventListener('keydown', (e) => {
+  if (e.key == 'Enter' && e.target.type == 'text') saveLinkForm()
 })
 
-//disable autocomplete on mobile devices
-if (window.innerWidth < 600) newLink__url.setAttribute( "autocomplete", "off" );
+// prepare the stage for modifying an entry
+const editItem = (item) => {
+  editTarget = item
+  linkAdm__title.innerHTML = 'Modify Link'
+  newLink__title.value = item.querySelector('.linklist__itemTitle').textContent
+  newLink__url.value = item.querySelector('.linklist__itemLink').getAttribute('href')
+  newLink__url.focus()
+}
 
-//loading links from storage or file
-const loadLinks = async(str) => {
-  let links = str? JSON.parse(str).links : await depot.get('sp-links')
-  // backward compatibility
-  if (!links) {
-    links = JSON.parse(localStorage.getItem('sp-links'))
-    localStorage.clear()
-  }
-  //end backward compatibility
-  if (links) {
-    linklist.innerHTML = ''
-    links.forEach((link) => {
-      addNewItem({loadUrl:link.link, loadTitle:link.title, loadIconUrl:link.icon, doNotSave:true})
-    })
+//deleting and editing items
+linklist.addEventListener('click', (e) => {
+  const item = e.target.closest('.linklist__item')
+  if (e.target.matches('.linklist__itemDeleteButton')) {
+    if (item == editTarget) reset(true)
+    item.remove()
     save()
-  }
+  } else if (e.target.matches('.linklist__itemEditButton')) editItem(item)
+})
+
+// in manage mode links are only for dragging, not for opening
+const blockLinksWhileManaging = (e) => {
+  if (manageToggle.checked && e.target.closest('.linklist__itemLink')) e.preventDefault()
+}
+linklist.addEventListener('click', blockLinksWhileManaging)
+linklist.addEventListener('auxclick', blockLinksWhileManaging)
+
+manageToggle.addEventListener('change', (e) => {
+  if (e.currentTarget.checked) newLink__url.focus()
+  else reset(true)
+})
+
+// paint the links mirrored in localStorage right away, then catch up with the data store
+let shownLinks = localStorage.links
+renderLinks(shownLinks ? JSON.parse(shownLinks) : defaultLinks)
+
+const loadLinks = async() => {
+  const links = await depot.get('sp-links')
+  const json = links && JSON.stringify(links)
+  if (json == shownLinks) return
+  renderLinks(links || defaultLinks)
+  if (json) localStorage.links = shownLinks = json
+  else localStorage.removeItem('links')
 }
 loadLinks()
 
-
-
-
+//import links from a backup file
+const importLinks = (links) => {
+  renderLinks(links)
+  save()
+}
