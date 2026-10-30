@@ -8,6 +8,7 @@ It has drag & drop bookmarks and dark/light mode support. You can sync your book
   - 2 separate data stores: local / synced
   - no dependencies, no frameworks, loads instantly
   - create, sort, edit and delete your bookmarks
+  - collapsible, nameable groups: drop one bookmark onto another
   - favicons from the browser's cache
   - backup & import in JSON format
 

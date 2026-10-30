@@ -8,7 +8,7 @@ LABEL,BUTTON,SUMMARY{cursor:pointer}
 [hidden]{display:none!important;}
 main{width:clamp(320px,500px,100vw);margin:auto;padding: 1rem;background:var(--bga);border-radius:1rem;box-shadow: 0 0 1px var(--tc),0 0 0 1rem var(--bd),0 0 2rem var(--bg2),0 0 5px #111 inset;position: relative;}
 @media (max-width:767px){main{margin-top:0}#settings{margin-top:2rem}}
-/* general flex class */ #linklist,.flex,.linklist__item{display:flex;justify-content:space-between}
+/* general flex class */ #linklist,.flex,.linklist__item,.linklist__groupList{display:flex;justify-content:space-between}
 /* general hover effect */ .delButton:hover,#backupButton:hover,#importButton:hover,#manageToggle__label:hover,#newLink__save:hover,#settingsButton:hover,.linklist__itemDeleteButton:hover,.linklist__itemEditButton:hover,.linklist__itemMoveHandle:hover{opacity:1;filter:brightness(1.2) contrast(200%) drop-shadow(0 0 5px var(--hc))}
 #manageToggle:checked~#linklist :is(.linklist__itemDeleteButton,.linklist__itemEditButton){display:inline-block}
 /* manage mode: title and grab bar can be dragged to reorder */ #manageToggle:checked~#linklist .linklist__itemMoveHandle{display:block}
@@ -21,12 +21,22 @@ main{width:clamp(320px,500px,100vw);margin:auto;padding: 1rem;background:var(--b
 .linklist__itemMoveHandle{display:none;flex:1;min-width:2rem;height:12px;cursor:grab;background-image:radial-gradient(gray 30%,transparent 40%);background-size: 3px 3px;}
 .linklist__itemMoveHandle:active,#manageToggle:checked~#linklist .linklist__itemLink:active{cursor:grabbing}
 .linklist__itemIcon{height:22px;width:22px;object-fit:cover;user-select:none}
-#linklist {padding:0;margin:0;list-style:none;flex-direction:column;row-gap:.3rem}
+#linklist,.linklist__groupList{padding:0;margin:0;list-style:none;flex-direction:column;row-gap:.3rem}
 .linklist__item{white-space:nowrap;align-items:center;border-top:1px solid transparent;line-height:1.5rem;column-gap:.5rem}
 .linklist__itemTitle { white-space: normal;line-height: 1.1; }
 .linklist__item:last-child{border-bottom:none}
-.linklist__item.over{border-top:1px solid var(--tc)}
-.linklist__item.over *{filter:brightness(1.2)}
+/* drop indicators: a line above or below, or a highlight for grouping */ .linklist__item.over-before{box-shadow:0 -2px 0 var(--tc)}
+.linklist__item.over-after{box-shadow:0 2px 0 var(--tc)}
+.linklist__item.over-into{background:var(--bd);border-radius:4px}
+.linklist__item.dragging{opacity:.35}
+/* groups: header row like a link, entries indented below */ .linklist__group{flex-wrap:wrap}
+/* opening and closing slides via height:auto, interpolate-size makes that animatable */ .linklist__groupList{interpolate-size:allow-keywords;flex-basis:100%;padding-left:1.5rem;box-sizing:border-box;margin-top:.3rem;overflow:clip;overflow-clip-margin:3px;transition:height .2s ease,margin-top .2s ease,opacity .2s ease,visibility .2s}
+.linklist__group:not(.open)>.linklist__groupList{height:0;margin-top:0;opacity:0;visibility:hidden}
+.linklist__group>.linklist__itemLink{cursor:pointer;user-select:none}
+.linklist__groupArrow{width:22px;text-align:center;font-style:normal}
+.linklist__groupArrow:before{content:'';display:inline-block;border:.3em solid transparent;border-right:0;border-left:.45em solid var(--tc);transition:transform .2s ease}
+.linklist__group.open>.linklist__itemLink .linklist__groupArrow:before{transform:rotate(90deg)}
+#linkAdm.renaming #newLink__url{display:none}
 .linklist__itemLink{border-radius:20px 0 0 20px;color:var(--tc);text-decoration:none;display:flex;align-items:center;column-gap:.5rem;width:100%}
 .linklist__itemLink:hover{background:linear-gradient(90deg,var(--bd) 0,rgba(0,0,0,0) 100%)}
 [draggable]{user-select:none}

@@ -9,6 +9,7 @@ const reset = (keepManageOpen) => {
   newLink__url.value = ''
   newLink__url.setCustomValidity('')
   linkAdm__title.innerHTML = 'Add New Link'
+  linkAdm.classList.remove('renaming')
   editTarget = null
   settings.removeAttribute('open')
   if (!keepManageOpen) manageToggle.checked = false

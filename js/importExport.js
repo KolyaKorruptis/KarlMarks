@@ -3,7 +3,7 @@
 const getBackup = async() => {
   const el = document.createElement('a')
   // without icons that older versions may have left in storage
-  const links = JSON.stringify((await depot.get('sp-links') || []).map(({link, title}) => ({link, title})))
+  const links = JSON.stringify(cleanLinks(await depot.get('sp-links') || []))
   const settings = JSON.stringify(await depot.get('sp-settings')) || '{}'
   el.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(`{"links":${links},"settings":${settings}}`))
   el.setAttribute('download', 'KarlMarks.json')
