@@ -1,6 +1,6 @@
 // Screenshots: loads a copy of the extension into Chromium with sample links.
 // `npm run screenshots` saves the README images screenshots/normal.png and screenshots/manage.png,
-// `npm run screenshots -- --store` saves 1280x800 images for the Chrome Web Store to .Google-Store-Images/ (not in git).
+// `npm run screenshots -- --store` saves 1280x800 images (dark with groups, light, manage mode, settings) for the Chrome Web Store to .Google-Store-Images/ (not in git).
 // The sample sites are visited first so the browser's favicon cache knows their icons, that needs network access.
 // CHROMIUM_PATH=/path/to/chrome uses another Chromium build (branded Chrome ignores --load-extension).
 import { chromium } from 'playwright-core'
@@ -74,6 +74,8 @@ if (store) {
   await page.emulateMedia({ colorScheme: 'dark' })
   await page.click('#manageToggle__label')
   await shoot('store-3-manage.png')
+  await page.click('#settingsButton')
+  await shoot('store-4-settings.png')
 } else {
   await shoot('normal.png')
   await page.click('#manageToggle__label')
