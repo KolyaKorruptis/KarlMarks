@@ -25,6 +25,7 @@ npm install
 npx playwright-core install chromium   # once
 npm test
 npm run screenshots   # regenerates screenshots/, needs network access for the favicons
+npm run screenshots -- --store   # 1280x800 images for the Chrome Web Store, saved to .Google-Store-Images/
 ```
 
 When packaging for the Chrome Web Store, zip only `manifest.json`, `index.html`, `css/`, `js/` and `icons/`.
