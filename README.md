@@ -16,3 +16,14 @@ It has drag & drop bookmarks and dark/light mode support. You can sync your book
 
 ## Screenshot
 ![Screenshot Dark Mode](https://i.imgur.com/fjcPFm3.png)
+
+## Development
+The extension itself has no dependencies. The browser test uses `playwright-core`:
+
+```
+npm install
+npx playwright-core install chromium   # once
+npm test
+```
+
+When packaging for the Chrome Web Store, zip only `manifest.json`, `index.html`, `css/`, `js/` and `icons/`.
