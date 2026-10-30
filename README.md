@@ -12,10 +12,10 @@ It has drag & drop bookmarks and dark/light mode support. You can sync your book
   - favicons from the browser's cache
   - backup & import in JSON format
 
-## [Install from Chrome Webstore](https://chrome.google.com/webstore/detail/karl-marks/odkohchphnbfhpnpidbfgcmfmomeaaeo)
+## [Install from Chrome Webstore](https://chromewebstore.google.com/detail/karl-marks/odkohchphnbfhpnpidbfgcmfmomeaaeo)
 
-## Screenshot
-![Screenshot Dark Mode](https://i.imgur.com/fjcPFm3.png)
+## Screenshots
+<img src="screenshots/normal.png" alt="Karl Marks in dark mode with bookmarks and an expanded group" width="400"> <img src="screenshots/manage.png" alt="Manage mode with edit, reorder and delete controls" width="400">
 
 ## Development
 The extension itself has no dependencies. The browser test uses `playwright-core`:
@@ -24,6 +24,7 @@ The extension itself has no dependencies. The browser test uses `playwright-core
 npm install
 npx playwright-core install chromium   # once
 npm test
+npm run screenshots   # regenerates screenshots/, needs network access for the favicons
 ```
 
 When packaging for the Chrome Web Store, zip only `manifest.json`, `index.html`, `css/`, `js/` and `icons/`.

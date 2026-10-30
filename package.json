@@ -3,7 +3,8 @@
   "private": true,
   "description": "Development tooling only, the extension itself has no dependencies",
   "scripts": {
-    "test": "node tests/extension.test.mjs"
+    "test": "node tests/extension.test.mjs",
+    "screenshots": "node tools/screenshots.mjs"
   },
   "devDependencies": {
     "playwright-core": "1.64.1"
