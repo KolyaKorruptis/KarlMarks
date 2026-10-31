@@ -48,7 +48,7 @@ const stored = () => page.evaluate(() => depot.get('sp-links'))
 const writes = () => page.evaluate(() => window.__writes)
 
 // first run
-check('defaults rendered', JSON.stringify(await titles()) == JSON.stringify(['Google', 'Bing Images', 'Karl Marks on Github']), JSON.stringify(await titles()))
+check('defaults rendered', JSON.stringify(await titles()) == JSON.stringify(['Mastodon.social', 'DuckDuckGo', 'Karl Marks on Github']), JSON.stringify(await titles()))
 check('no writes on first load', (await writes()).length == 0, JSON.stringify(await writes()))
 check('sync storage empty on first load', Object.keys(await syncData()).length == 0)
 check('theme defaults to system', await page.evaluate(() => document.documentElement.dataset.theme) == 'system')
@@ -95,7 +95,7 @@ await page.press('#newLink__title', 'Enter')
 await page.waitForTimeout(300)
 t = await titles()
 check('edited in place, no duplicate', t.length == 5 && t[1] == 'Example edited', JSON.stringify(t))
-check('form back in add mode', await page.textContent('#linkAdm__title') == 'Add New Link')
+check('form back in add mode', await page.textContent('#linkAdm__title') == 'Add a new link')
 
 // edit and keep the unicode title unchanged -> still the same text
 await page.click('#manageToggle__label')
@@ -133,7 +133,7 @@ check('Save with empty form stores and closes manage', (await stored()).length =
   await page.click('#manageToggle__label'); await page.waitForTimeout(300)
   check('Cancel restores order, deletes and groups', JSON.stringify(await titles()) == JSON.stringify(before) && !(await page.$('.linklist__group')), JSON.stringify(await titles()))
   check('Cancel leaves storage untouched', JSON.stringify(await stored()) == storedBefore && (await writes()).length == writesBefore)
-  check('form reset after Cancel', await page.textContent('#linkAdm__title') == 'Add New Link')
+  check('form reset after Cancel', await page.textContent('#linkAdm__title') == 'Add a new link')
 }
 
 // drag reorder
@@ -189,7 +189,7 @@ check('no icon inputs left', (await page.$$('#newLink__icon, #newLink__iconPick'
   await page.keyboard.press('Enter')
   await page.waitForTimeout(300)
   check('group renamed', await S() == '[{"group":"Letters","open":true,"items":["A","B"]},"C","D"]', await S())
-  check('url field back after rename', await page.textContent('#linkAdm__title') == 'Add New Link')
+  check('url field back after rename', await page.textContent('#linkAdm__title') == 'Add a new link')
   let st = await stored()
   check('group stored', JSON.stringify(st) == '[{"link":"https://d.test/","title":"D"},{"link":"https://c.test/","title":"C"},{"title":"Letters","open":true,"links":[{"link":"https://b.test/","title":"B"},{"link":"https://a.test/","title":"A"}]}]', JSON.stringify(st))
 
@@ -357,7 +357,7 @@ check('backup has no icons even if storage still has them', dl.links.every(l => 
 // local data store (settings still open)
 await page.click('#syncToggle')
 await page.waitForTimeout(1200)
-check('switched to local, defaults shown', JSON.stringify(await titles()) == JSON.stringify(['Google', 'Bing Images', 'Karl Marks on Github']), JSON.stringify(await titles()))
+check('switched to local, defaults shown', JSON.stringify(await titles()) == JSON.stringify(['Mastodon.social', 'DuckDuckGo', 'Karl Marks on Github']), JSON.stringify(await titles()))
 check('toggle shows local', !(await page.isChecked('#syncToggle')))
 await page.click('#manageToggle__label')
 await page.fill('#newLink__url', 'https://local.test/')

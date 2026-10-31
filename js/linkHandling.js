@@ -3,8 +3,8 @@
 // older data and backups may also carry an icon per link, it is ignored and dropped on the next save
 const defaultLinks = [
   {"link":"https://github.com/KolyaKorruptis/KarlMarks","title":"Karl Marks on Github"},
-  {"link":"https://www.bing.com/images/","title":"Bing Images"},
-  {"link":"https://www.google.com/","title":"Google"}
+  {"link":"https://duckduckgo.com/","title":"DuckDuckGo"},
+  {"link":"https://mastodon.social/","title":"Mastodon.social"}
 ]
 
 const escText = (str) => str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
