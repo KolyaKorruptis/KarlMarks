@@ -23,10 +23,10 @@
       <button class=closeSettings id=closeSettings title="Close settings view">✕</button>
       <h2 class=settings__title>Settings</h2>
       <h4 class=settings__subtitle>Theme</h4>
-      <div class=flex>
-      <label class=settings__colorMode>Dark: <input class=settings__colorMode id=dark value=dark name=colorMode type=radio /></label>
-      <label class=settings__colorMode>Light: <input class=settings__colorMode id=light value=light name=colorMode type=radio /></label>
-      <label class=settings__colorMode title="Uses the preference you have set in your operating system (Windows, Android, iOS)">Match System: <input class=settings__colorMode id=system value=system name=colorMode type=radio checked=checked /></label>
+      <div class=themeToggle>
+        <input class=settings__colorMode id=dark value=dark name=colorMode type=radio /><label for=dark>Dark</label>
+        <input class=settings__colorMode id=light value=light name=colorMode type=radio /><label for=light>Light</label>
+        <input class=settings__colorMode id=system value=system name=colorMode type=radio checked=checked /><label for=system title="Uses the preference you have set in your operating system (Windows, Android, iOS)">System</label>
       </div>
       <h4 class=settings__subtitle>Select Data Store</h4>
       <label class=settings__sync title='Local and Synced data stores are separate. "Sync" is the default setting that synchronizes your bookmarks and settings between browsers. "Local" gives you a separate local link list and settings, which may be useful eg at work.'>Select between local or synchronized data store: <input id=syncToggle type=checkbox checked /></label>
