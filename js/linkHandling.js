@@ -78,6 +78,14 @@ const makeGroup = (target, dragged) => {
   editItem(group)
 }
 
+// what the url field becomes on save: https:// added when the scheme is missing, null when invalid
+const urlFromForm = () => {
+  let url = newLink__url.value.trim()
+  if (url && !/^[a-z][\w+.-]*:\/\/|^(about|mailto|tel):/i.test(url)) url = 'https://' + url
+  try { return new URL(url) } catch { return null }
+}
+const defaultTitle = (url) => noWWW(url.hostname) || url.href
+
 //add a new item or replace the one being edited with the form's content
 const saveLinkForm = () => {
   if (editTarget && isGroup(editTarget)) {
@@ -86,22 +94,21 @@ const saveLinkForm = () => {
     save()
     return
   }
-  let url = newLink__url.value.trim()
   // Save with an empty form just keeps the changes made while managing
-  if (!url && !editTarget) {
+  if (!newLink__url.value.trim() && !editTarget) {
     reset()
     save()
     return
   }
-  if (url && !/^[a-z][\w+.-]*:\/\/|^(about|mailto|tel):/i.test(url)) url = 'https://' + url
-  try { url = new URL(url) } catch {
+  const url = urlFromForm()
+  if (!url) {
     newLink__url.setCustomValidity('Please enter a valid URL')
     newLink__url.reportValidity()
     return
   }
   const html = itemHtml({
     link: url.href,
-    title: escText(newLink__title.value.trim()) || noWWW(url.hostname) || url.href
+    title: escText(newLink__title.value.trim()) || defaultTitle(url)
   })
   if (editTarget) editTarget.outerHTML = html
   else linklist.insertAdjacentHTML('afterbegin', html)
@@ -109,7 +116,14 @@ const saveLinkForm = () => {
   save()
 }
 newLink__save.addEventListener('click', saveLinkForm)
-newLink__url.addEventListener('input', () => newLink__url.setCustomValidity(''))
+// fill in the title that will be used, until the user writes their own
+let autoTitle = ''
+newLink__url.addEventListener('input', () => {
+  newLink__url.setCustomValidity('')
+  if (newLink__title.value && newLink__title.value != autoTitle) return
+  const url = urlFromForm()
+  newLink__title.value = autoTitle = url ? defaultTitle(url) : ''
+})
 
 //also save via return key
 linkAdm.addEventListener('keydown', (e) => {
@@ -124,6 +138,8 @@ const editItem = (item) => {
   linkAdm__title.innerHTML = group ? 'Rename Group' : 'Modify Link'
   newLink__title.value = item.querySelector('.linklist__itemTitle').textContent
   newLink__url.value = group ? '' : item.querySelector('.linklist__itemLink').getAttribute('href')
+  const url = !group && urlFromForm()
+  autoTitle = url ? defaultTitle(url) : ''
   if (group) newLink__title.select()
   else newLink__url.focus()
 }

@@ -73,6 +73,20 @@ await page.waitForTimeout(200)
 check('invalid url rejected', (await titles()).length == 4 && await page.evaluate(() => newLink__url.validationMessage) != '')
 check('no uncaught errors so far', errors.length == 0, JSON.stringify(errors))
 
+// the title field shows the title that will be used
+const titleField = () => page.inputValue('#newLink__title')
+await page.fill('#newLink__url', '')
+await page.type('#newLink__url', 'www.auto.test/x')
+check('title filled while typing', await titleField() == 'auto.test', await titleField())
+await page.fill('#newLink__title', 'Mine')
+await page.fill('#newLink__url', 'other.test')
+check('own title is kept', await titleField() == 'Mine', await titleField())
+await page.fill('#newLink__title', '')
+await page.fill('#newLink__url', 'third.test')
+check('emptied title fills again', await titleField() == 'third.test', await titleField())
+await page.fill('#newLink__url', '')
+check('title cleared with the url', await titleField() == '', await titleField())
+
 // unicode + html in title
 await page.fill('#newLink__url', 'https://unicode.test/päth')
 await page.fill('#newLink__title', 'Ünïcødé € 日本 😀 <b>bold</b> & co')
@@ -100,6 +114,8 @@ check('form back in add mode', await page.textContent('#linkAdm__title') == 'Add
 // edit and keep the unicode title unchanged -> still the same text
 await page.click('#manageToggle__label')
 await page.click('.linklist__item:nth-child(1) .linklist__itemEditButton')
+await page.fill('#newLink__url', 'https://unicode.test/other')
+check('editing the url keeps a custom title', (await titleField()).startsWith('Ünïcødé'), await titleField())
 await page.press('#newLink__url', 'Enter')
 await page.waitForTimeout(300)
 t = await titles()
