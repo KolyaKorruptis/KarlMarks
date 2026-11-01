@@ -48,7 +48,7 @@ const stored = () => page.evaluate(() => depot.get('sp-links'))
 const writes = () => page.evaluate(() => window.__writes)
 
 // first run
-check('defaults rendered', JSON.stringify(await titles()) == JSON.stringify(['Google', 'Bing Images', 'Karl Marks on Github']), JSON.stringify(await titles()))
+check('defaults rendered', JSON.stringify(await titles()) == JSON.stringify(['Mastodon.social', 'DuckDuckGo', 'Karl Marks on Github']), JSON.stringify(await titles()))
 check('no writes on first load', (await writes()).length == 0, JSON.stringify(await writes()))
 check('sync storage empty on first load', Object.keys(await syncData()).length == 0)
 check('theme defaults to system', await page.evaluate(() => document.documentElement.dataset.theme) == 'system')
@@ -72,6 +72,20 @@ await page.press('#newLink__url', 'Enter')
 await page.waitForTimeout(200)
 check('invalid url rejected', (await titles()).length == 4 && await page.evaluate(() => newLink__url.validationMessage) != '')
 check('no uncaught errors so far', errors.length == 0, JSON.stringify(errors))
+
+// the title field shows the title that will be used
+const titleField = () => page.inputValue('#newLink__title')
+await page.fill('#newLink__url', '')
+await page.type('#newLink__url', 'www.auto.test/x')
+check('title filled while typing', await titleField() == 'auto.test', await titleField())
+await page.fill('#newLink__title', 'Mine')
+await page.fill('#newLink__url', 'other.test')
+check('own title is kept', await titleField() == 'Mine', await titleField())
+await page.fill('#newLink__title', '')
+await page.fill('#newLink__url', 'third.test')
+check('emptied title fills again', await titleField() == 'third.test', await titleField())
+await page.fill('#newLink__url', '')
+check('title cleared with the url', await titleField() == '', await titleField())
 
 // unicode + html in title
 await page.fill('#newLink__url', 'https://unicode.test/päth')
@@ -100,6 +114,8 @@ check('form back in add mode', await page.textContent('#linkAdm__title') == 'Add
 // edit and keep the unicode title unchanged -> still the same text
 await page.click('#manageToggle__label')
 await page.click('.linklist__item:nth-child(1) .linklist__itemEditButton')
+await page.fill('#newLink__url', 'https://unicode.test/other')
+check('editing the url keeps a custom title', (await titleField()).startsWith('Ünïcødé'), await titleField())
 await page.press('#newLink__url', 'Enter')
 await page.waitForTimeout(300)
 t = await titles()
@@ -190,7 +206,9 @@ check('no icon inputs left', (await page.$$('#newLink__icon, #newLink__iconPick'
   await page.waitForTimeout(300)
   check('group renamed', await S() == '[{"group":"Letters","open":true,"items":["A","B"]},"C","D"]', await S())
   check('url field back after rename', await page.textContent('#linkAdm__title') == 'Add New Link')
-  let st = await stored()
+  // the sync write can take a moment under load
+  let st
+  for (let i = 0; i < 30 && !(st = await stored()).some(l => l.links); i++) await page.waitForTimeout(100)
   check('group stored', JSON.stringify(st) == '[{"link":"https://d.test/","title":"D"},{"link":"https://c.test/","title":"C"},{"title":"Letters","open":true,"links":[{"link":"https://b.test/","title":"B"},{"link":"https://a.test/","title":"A"}]}]', JSON.stringify(st))
 
   // collapse in normal mode, state saved and survives reload
@@ -291,7 +309,7 @@ check('order kept after reload', JSON.stringify(await titles()) == JSON.stringif
 
 // theme
 await page.click('#manageToggle__label'); await page.waitForTimeout(300); await page.click('#settingsButton')
-await page.click('#light')
+await page.click('label[for=light]')
 await page.waitForTimeout(300)
 const bg = () => page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--bg').trim())
 check('light theme applied', await bg() == '#c4c1bc' && await page.evaluate(() => localStorage.colorMode) == 'light')
@@ -301,12 +319,19 @@ await page.waitForTimeout(400)
 check('light radio checked after reload', await page.isChecked('#light'))
 check('colorMode stored in sync settings', (await page.evaluate(() => depot.get('sp-settings'))).colorMode == 'light')
 await page.emulateMedia({ colorScheme: 'light' })
-await page.click('#manageToggle__label'); await page.waitForTimeout(300); await page.click('#settingsButton'); await page.click('#dark'); await page.waitForTimeout(200)
+await page.click('#manageToggle__label'); await page.waitForTimeout(300); await page.click('#settingsButton'); await page.click('label[for=dark]'); await page.waitForTimeout(200)
 check('dark overrides system light', await bg() == '#262626')
-await page.click('#system'); await page.waitForTimeout(200)
+await page.click('label[for=system]'); await page.waitForTimeout(200)
 check('system + light OS = light', await bg() == '#c4c1bc')
 await page.emulateMedia({ colorScheme: 'dark' })
 check('system + dark OS = dark', await bg() == '#262626')
+const knob = () => page.$eval('.themeToggle', t => getComputedStyle(t, '::before').transform)
+await page.focus('#system'); await page.keyboard.press('ArrowLeft'); await page.waitForTimeout(300)
+check('arrow keys switch the theme', await page.isChecked('#light') && await bg() == '#c4c1bc')
+const lightKnob = await knob()
+await page.click('label[for=dark]'); await page.waitForTimeout(300)
+check('knob follows the checked option', lightKnob != 'none' && await knob() == 'none', lightKnob)
+await page.click('label[for=system]'); await page.waitForTimeout(200)
 await page.click('#closeSettings'); await page.click('#manageToggle__label')
 
 // stale chunks: grow then shrink
@@ -357,7 +382,7 @@ check('backup has no icons even if storage still has them', dl.links.every(l => 
 // local data store (settings still open)
 await page.click('#syncToggle')
 await page.waitForTimeout(1200)
-check('switched to local, defaults shown', JSON.stringify(await titles()) == JSON.stringify(['Google', 'Bing Images', 'Karl Marks on Github']), JSON.stringify(await titles()))
+check('switched to local, defaults shown', JSON.stringify(await titles()) == JSON.stringify(['Mastodon.social', 'DuckDuckGo', 'Karl Marks on Github']), JSON.stringify(await titles()))
 check('toggle shows local', !(await page.isChecked('#syncToggle')))
 await page.click('#manageToggle__label')
 await page.fill('#newLink__url', 'https://local.test/')
@@ -365,6 +390,24 @@ await page.press('#newLink__url', 'Enter')
 await page.waitForTimeout(300)
 check('local save', (await page.evaluate(() => chrome.storage.local.get('sp-links')))['sp-links']?.length == 4)
 check('sync untouched', (await page.evaluate(() => depot.get('sp-links', 'sync'))).length == 2)
+
+// auto titles that would repeat an existing title get numbered
+{
+  await page.evaluate(async () => { await depot.set('sp-links', [{ link: 'https://duckduckgo.com/', title: 'DuckDuckGo.com' }, { link: 'https://en.wikipedia.org/wiki/Scott_Bakula', title: 'en.wikipedia.org (2)' }, { link: 'https://en.wikipedia.org/wiki/Quantum_Leap', title: 'en.wikipedia.org' }]); localStorage.removeItem('links') })
+  await page.reload(); await page.waitForTimeout(500)
+  await page.click('#manageToggle__label'); await page.waitForTimeout(300)
+  const auto = async (url) => { await page.fill('#newLink__url', url); return page.inputValue('#newLink__title') }
+  let v
+  check('free domain stays plain', (v = await auto('example.com/docs')) == 'example.com', v)
+  check('taken domain gets the next free number', (v = await auto('https://en.wikipedia.org/wiki/Tony_Awards')) == 'en.wikipedia.org (3)', v)
+  check('compared ignoring case', (v = await auto('duckduckgo.com/?q=x')) == 'duckduckgo.com (2)', v)
+  await page.fill('#newLink__url', 'en.wikipedia.org/wiki/Tony_Awards'); await page.press('#newLink__url', 'Enter'); await page.waitForTimeout(300)
+  check('saved with the numbered title', (await titles())[0] == 'en.wikipedia.org (3)', JSON.stringify(await titles()))
+  await page.click('#manageToggle__label'); await page.waitForTimeout(300)
+  await page.click('#linklist > li:nth-child(2) .linklist__itemEditButton')
+  check('editing a link does not count its own title', (v = await auto('https://en.wikipedia.org/wiki/Quantum_Leap')) == 'en.wikipedia.org', v)
+  await page.click('#manageToggle__label'); await page.waitForTimeout(300)
+}
 
 // popup mode
 const popup = await ctx.newPage()
