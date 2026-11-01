@@ -1,6 +1,6 @@
-:root{--bg:#262626;--bga:#262626e6;--bg2:#000;--tc:#eee;--bd:#444;--bb:#d51a7e;--ab:#eee}
-:root[data-theme=light]{--bg:#c4c1bc;--bga:#c4c1bc;--bg2:#aba6a0;--tc:#333;--bd:#d4d4d4;--bb:#1a65d5}
-@media (prefers-color-scheme:light){:root[data-theme=system]{--bg:#c4c1bc;--bga:#c4c1bc;--bg2:#aba6a0;--tc:#333;--bd:#d4d4d4;--bb:#1a65d5}}
+:root{--bg:#262626;--bga:#262626e6;--bg2:#000;--tc:#eee;--bd:#444;--bb:#d51a7e;--ab:#eee;--dh:#a0a0a0}
+:root[data-theme=light]{--bg:#c4c1bc;--bga:#c4c1bc;--bg2:#aba6a0;--tc:#333;--bd:#d4d4d4;--bb:#1a65d5;--dh:#606060}
+@media (prefers-color-scheme:light){:root[data-theme=system]{--bg:#c4c1bc;--bga:#c4c1bc;--bg2:#aba6a0;--tc:#333;--bd:#d4d4d4;--bb:#1a65d5;--dh:#606060}}
 body,html{height:100%;font-size:clamp(16px,4vw,18px);margin:0}
 body{background:radial-gradient(var(--bg2) 15%,transparent 16%) 0 0,radial-gradient(var(--bg2) 15%,transparent 16%) 8px 8px,radial-gradient(rgba(255,255,255,.1) 15%,transparent 20%) 0 1px,radial-gradient(rgba(255,255,255,.1) 15%,transparent 20%) 8px 9px,var(--bg);background-size:16px 16px;background-attachment:fixed;font-family:system-ui;color:var(--tc);display:flex}
 input:focus{outline:0}
@@ -11,8 +11,9 @@ main{width:clamp(320px,500px,100vw);margin:auto;padding: 1rem;background:var(--b
 #linklist,.flex,.linklist__item,.linklist__groupList{display:flex;justify-content:space-between}
 #manageToggle__label:hover,#newLink__save:hover,#settingsButton:hover,.delButton:hover,#backupButton:hover,#importButton:hover,.linklist__itemDeleteButton:hover,.linklist__itemEditButton:hover{opacity:1;filter:brightness(1.25)}
 #manageToggle:checked~#linklist :is(.linklist__itemDeleteButton,.linklist__itemEditButton){display:inline-grid}
-#manageToggle:checked~#linklist .linklist__itemLink { opacity: .5; }
+#manageToggle:checked~#linklist .linklist__itemLink { opacity: .6; }
 #manageToggle:checked~#linklist .linklist__itemMoveHandle{display:flex}
+#manageToggle:checked~#linklist .linklist__itemIcon{display:none}
 #manageToggle:checked~#linklist .linklist__itemLink{width:auto;cursor:grab;background:none}
 #manageToggle:checked~#linkAdm{max-height:24rem}
 #manageToggle:checked~#manageToggle__label{filter: saturate(0);}
@@ -20,12 +21,13 @@ main{width:clamp(320px,500px,100vw);margin:auto;padding: 1rem;background:var(--b
 #manageToggle__label:before{content:'Manage'}
 .linklist__itemDeleteButton,.linklist__itemEditButton{display:none;place-items:center;flex:none;box-sizing:border-box;width:22px;height:22px;padding:0;border:none;border-radius:50%;background:var(--bd);color:var(--tc)}
 .linklist__itemDeleteButton:before,.linklist__itemEditButton:before{content:'';display:block;width:12px;height:12px;background:currentColor;-webkit-mask:var(--icon) no-repeat center/contain;mask:var(--icon) no-repeat center/contain}
-.linklist__itemEditButton{--icon:url(/icons/pencil.svg)}
+.linklist__itemEditButton{--icon:url(/icons/pencil.svg);border-radius:0;place-items:start end}
+.linklist__itemEditButton:before{width:16px;height:16px}
 .linklist__itemDeleteButton{--icon:url(/icons/x.svg)}
 .linklist__itemMoveHandle{display:none;flex:1;min-width:2rem;height:17px;cursor:grab;--dot:gray;background-image:radial-gradient(var(--dot) 30%,transparent 40%);background-size: 3px 3px;justify-content:flex-end;align-items:center;container-type:inline-size}
 .linklist__itemMoveHandle:before{content:'DRAG ME';margin-right:1em;color:var(--bg);font:normal 700 1rem/17px system-ui;white-space:nowrap;visibility:hidden;letter-spacing: 2px}
 .linklist__itemMoveHandle:hover:before{visibility:visible}
-.linklist__itemMoveHandle:hover{--dot:#a0a0a0}
+.linklist__itemMoveHandle:hover{--dot:var(--dh)}
 @container (max-width:6rem){.linklist__itemMoveHandle:before{display:none}}
 .linklist__itemMoveHandle:active,#manageToggle:checked~#linklist .linklist__itemLink:active{cursor:grabbing}
 .linklist__itemIcon{height:22px;width:22px;object-fit:cover;user-select:none}
