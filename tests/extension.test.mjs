@@ -190,7 +190,9 @@ check('no icon inputs left', (await page.$$('#newLink__icon, #newLink__iconPick'
   await page.waitForTimeout(300)
   check('group renamed', await S() == '[{"group":"Letters","open":true,"items":["A","B"]},"C","D"]', await S())
   check('url field back after rename', await page.textContent('#linkAdm__title') == 'Add a new link')
-  let st = await stored()
+  // the sync write can take a moment under load
+  let st
+  for (let i = 0; i < 30 && !(st = await stored()).some(l => l.links); i++) await page.waitForTimeout(100)
   check('group stored', JSON.stringify(st) == '[{"link":"https://d.test/","title":"D"},{"link":"https://c.test/","title":"C"},{"title":"Letters","open":true,"links":[{"link":"https://b.test/","title":"B"},{"link":"https://a.test/","title":"A"}]}]', JSON.stringify(st))
 
   // collapse in normal mode, state saved and survives reload

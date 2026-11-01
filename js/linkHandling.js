@@ -16,23 +16,23 @@ const favicon = (url) => `/_favicon/?pageUrl=${encodeURIComponent(url)}&size=32`
 
 const itemHtml = ({link, title, open, links}) => links ? `
   <li class="linklist__item linklist__group${open ? ' open' : ''}">
-    <button class=linklist__itemEditButton title="Rename">✎</button>
+    <button class=linklist__itemEditButton title="Rename"></button>
     <span class=linklist__itemLink draggable=true>
       <i class=linklist__groupArrow></i>
       <span class=linklist__itemTitle>${title}</span>
     </span>
     <i draggable=true class=linklist__itemMoveHandle title="Reorder"></i>
-    <button class=linklist__itemDeleteButton title="Ungroup">×</button>
+    <button class=linklist__itemDeleteButton title="Ungroup"></button>
     <ul class=linklist__groupList>${listHtml(links)}</ul>
   </li>` : `
   <li class=linklist__item>
-    <button class=linklist__itemEditButton title="Edit">✎</button>
+    <button class=linklist__itemEditButton title="Edit"></button>
     <a class=linklist__itemLink href="${escAttr(link)}">
       <img class=linklist__itemIcon src="${escAttr(favicon(link))}">
       <span class=linklist__itemTitle>${title}</span>
     </a>
     <i draggable=true class=linklist__itemMoveHandle title="Reorder"></i>
-    <button class=linklist__itemDeleteButton title="Delete">×</button>
+    <button class=linklist__itemDeleteButton title="Delete"></button>
   </li>`
 
 const listHtml = (links) => links.map(itemHtml).reverse().join('')
