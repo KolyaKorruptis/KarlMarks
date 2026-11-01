@@ -84,7 +84,14 @@ const urlFromForm = () => {
   if (url && !/^[a-z][\w+.-]*:\/\/|^(about|mailto|tel):/i.test(url)) url = 'https://' + url
   try { return new URL(url) } catch { return null }
 }
-const defaultTitle = (url) => noWWW(url.hostname) || url.href
+// the domain, numbered when a link with that title is already in the list
+const defaultTitle = (url) => {
+  const taken = new Set([...linklist.querySelectorAll('.linklist__itemTitle')].filter((el) => !editTarget?.contains(el)).map((el) => el.textContent.toLowerCase()))
+  const base = noWWW(url.hostname) || url.href
+  let title = base
+  for (let n = 2; taken.has(title.toLowerCase()); n++) title = `${base} (${n})`
+  return title
+}
 
 //add a new item or replace the one being edited with the form's content
 const saveLinkForm = () => {

@@ -391,6 +391,24 @@ await page.waitForTimeout(300)
 check('local save', (await page.evaluate(() => chrome.storage.local.get('sp-links')))['sp-links']?.length == 4)
 check('sync untouched', (await page.evaluate(() => depot.get('sp-links', 'sync'))).length == 2)
 
+// auto titles that would repeat an existing title get numbered
+{
+  await page.evaluate(async () => { await depot.set('sp-links', [{ link: 'https://duckduckgo.com/', title: 'DuckDuckGo.com' }, { link: 'https://en.wikipedia.org/wiki/Scott_Bakula', title: 'en.wikipedia.org (2)' }, { link: 'https://en.wikipedia.org/wiki/Quantum_Leap', title: 'en.wikipedia.org' }]); localStorage.removeItem('links') })
+  await page.reload(); await page.waitForTimeout(500)
+  await page.click('#manageToggle__label'); await page.waitForTimeout(300)
+  const auto = async (url) => { await page.fill('#newLink__url', url); return page.inputValue('#newLink__title') }
+  let v
+  check('free domain stays plain', (v = await auto('example.com/docs')) == 'example.com', v)
+  check('taken domain gets the next free number', (v = await auto('https://en.wikipedia.org/wiki/Tony_Awards')) == 'en.wikipedia.org (3)', v)
+  check('compared ignoring case', (v = await auto('duckduckgo.com/?q=x')) == 'duckduckgo.com (2)', v)
+  await page.fill('#newLink__url', 'en.wikipedia.org/wiki/Tony_Awards'); await page.press('#newLink__url', 'Enter'); await page.waitForTimeout(300)
+  check('saved with the numbered title', (await titles())[0] == 'en.wikipedia.org (3)', JSON.stringify(await titles()))
+  await page.click('#manageToggle__label'); await page.waitForTimeout(300)
+  await page.click('#linklist > li:nth-child(2) .linklist__itemEditButton')
+  check('editing a link does not count its own title', (v = await auto('https://en.wikipedia.org/wiki/Quantum_Leap')) == 'en.wikipedia.org', v)
+  await page.click('#manageToggle__label'); await page.waitForTimeout(300)
+}
+
 // popup mode
 const popup = await ctx.newPage()
 popup.on('pageerror', e => errors.push(e.message))
