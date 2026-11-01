@@ -95,7 +95,7 @@ await page.press('#newLink__title', 'Enter')
 await page.waitForTimeout(300)
 t = await titles()
 check('edited in place, no duplicate', t.length == 5 && t[1] == 'Example edited', JSON.stringify(t))
-check('form back in add mode', await page.textContent('#linkAdm__title') == 'Add a new link')
+check('form back in add mode', await page.textContent('#linkAdm__title') == 'Add New Link')
 
 // edit and keep the unicode title unchanged -> still the same text
 await page.click('#manageToggle__label')
@@ -133,7 +133,7 @@ check('Save with empty form stores and closes manage', (await stored()).length =
   await page.click('#manageToggle__label'); await page.waitForTimeout(300)
   check('Cancel restores order, deletes and groups', JSON.stringify(await titles()) == JSON.stringify(before) && !(await page.$('.linklist__group')), JSON.stringify(await titles()))
   check('Cancel leaves storage untouched', JSON.stringify(await stored()) == storedBefore && (await writes()).length == writesBefore)
-  check('form reset after Cancel', await page.textContent('#linkAdm__title') == 'Add a new link')
+  check('form reset after Cancel', await page.textContent('#linkAdm__title') == 'Add New Link')
 }
 
 // drag reorder
@@ -189,7 +189,7 @@ check('no icon inputs left', (await page.$$('#newLink__icon, #newLink__iconPick'
   await page.keyboard.press('Enter')
   await page.waitForTimeout(300)
   check('group renamed', await S() == '[{"group":"Letters","open":true,"items":["A","B"]},"C","D"]', await S())
-  check('url field back after rename', await page.textContent('#linkAdm__title') == 'Add a new link')
+  check('url field back after rename', await page.textContent('#linkAdm__title') == 'Add New Link')
   // the sync write can take a moment under load
   let st
   for (let i = 0; i < 30 && !(st = await stored()).some(l => l.links); i++) await page.waitForTimeout(100)

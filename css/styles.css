@@ -9,10 +9,10 @@ LABEL,BUTTON,SUMMARY{cursor:pointer}
 main{width:clamp(320px,500px,100vw);margin:auto;padding: 1rem;background:var(--bga);border-radius:1rem;box-shadow: 0 0 1px var(--tc),0 0 0 1rem var(--bd),0 0 2rem var(--bg2),0 0 5px #111 inset;position: relative;}
 @media (max-width:767px){main{margin-top:0}#settings{margin-top:2rem}}
 #linklist,.flex,.linklist__item,.linklist__groupList{display:flex;justify-content:space-between}
-#manageToggle__label:hover,#newLink__save:hover,#settingsButton:hover,.linklist__itemMoveHandle:hover,.delButton:hover,#backupButton:hover,#importButton:hover,.linklist__itemDeleteButton:hover,.linklist__itemEditButton:hover{opacity:1;filter:brightness(1.25)}
+#manageToggle__label:hover,#newLink__save:hover,#settingsButton:hover,.delButton:hover,#backupButton:hover,#importButton:hover,.linklist__itemDeleteButton:hover,.linklist__itemEditButton:hover{opacity:1;filter:brightness(1.25)}
 #manageToggle:checked~#linklist :is(.linklist__itemDeleteButton,.linklist__itemEditButton){display:inline-grid}
 #manageToggle:checked~#linklist .linklist__itemLink { opacity: .5; }
-#manageToggle:checked~#linklist .linklist__itemMoveHandle{display:block}
+#manageToggle:checked~#linklist .linklist__itemMoveHandle{display:flex}
 #manageToggle:checked~#linklist .linklist__itemLink{width:auto;cursor:grab;background:none}
 #manageToggle:checked~#linkAdm{max-height:24rem}
 #manageToggle:checked~#manageToggle__label{filter: saturate(0);}
@@ -22,7 +22,11 @@ main{width:clamp(320px,500px,100vw);margin:auto;padding: 1rem;background:var(--b
 .linklist__itemDeleteButton:before,.linklist__itemEditButton:before{content:'';display:block;width:12px;height:12px;background:currentColor;-webkit-mask:var(--icon) no-repeat center/contain;mask:var(--icon) no-repeat center/contain}
 .linklist__itemEditButton{--icon:url(/icons/pencil.svg)}
 .linklist__itemDeleteButton{--icon:url(/icons/x.svg)}
-.linklist__itemMoveHandle{display:none;flex:1;min-width:2rem;height:17px;cursor:grab;background-image:radial-gradient(gray 30%,transparent 40%);background-size: 3px 3px;}
+.linklist__itemMoveHandle{display:none;flex:1;min-width:2rem;height:17px;cursor:grab;--dot:gray;background-image:radial-gradient(var(--dot) 30%,transparent 40%);background-size: 3px 3px;justify-content:flex-end;align-items:center;container-type:inline-size}
+.linklist__itemMoveHandle:before{content:'DRAG ME';margin-right:1em;color:var(--bg);font:normal 700 1rem/17px system-ui;white-space:nowrap;visibility:hidden;letter-spacing: 2px}
+.linklist__itemMoveHandle:hover:before{visibility:visible}
+.linklist__itemMoveHandle:hover{--dot:#a0a0a0}
+@container (max-width:6rem){.linklist__itemMoveHandle:before{display:none}}
 .linklist__itemMoveHandle:active,#manageToggle:checked~#linklist .linklist__itemLink:active{cursor:grabbing}
 .linklist__itemIcon{height:22px;width:22px;object-fit:cover;user-select:none}
 #linklist,.linklist__groupList{padding:0;margin:0;list-style:none;flex-direction:column;row-gap:.3rem}

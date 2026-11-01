@@ -21,7 +21,7 @@ const itemHtml = ({link, title, open, links}) => links ? `
       <i class=linklist__groupArrow></i>
       <span class=linklist__itemTitle>${title}</span>
     </span>
-    <i draggable=true class=linklist__itemMoveHandle title="Reorder"></i>
+    <i draggable=true class=linklist__itemMoveHandle></i>
     <button class=linklist__itemDeleteButton title="Ungroup"></button>
     <ul class=linklist__groupList>${listHtml(links)}</ul>
   </li>` : `
@@ -31,7 +31,7 @@ const itemHtml = ({link, title, open, links}) => links ? `
       <img class=linklist__itemIcon src="${escAttr(favicon(link))}">
       <span class=linklist__itemTitle>${title}</span>
     </a>
-    <i draggable=true class=linklist__itemMoveHandle title="Reorder"></i>
+    <i draggable=true class=linklist__itemMoveHandle></i>
     <button class=linklist__itemDeleteButton title="Delete"></button>
   </li>`
 
