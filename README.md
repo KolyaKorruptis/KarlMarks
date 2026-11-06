@@ -12,9 +12,9 @@ It loads extremely fast, you can drag & drop bookmarks in groups or the list. Yo
   - favicons from browser cache
   - backup & import in JSON format
 
-## [Install from Chrome Webstore](https://chromewebstore.google.com/detail/karl-marks/odkohchphnbfhpnpidbfgcmfmomeaaeo)
+## [<img src=".github/chrome-web-store.svg" height=28 alt=""> Install from Chrome Webstore](https://chromewebstore.google.com/detail/karl-marks/odkohchphnbfhpnpidbfgcmfmomeaaeo)
 
-## Install from GitHub
+## Alternatively install from GitHub
 For Chromium builds without the Chrome Web Store, e.g. ungoogled-chromium:
 1. Download [KarlMarks.crx](https://github.com/KolyaKorruptis/KarlMarks/releases/latest/download/KarlMarks.crx) from the latest release.
 2. Drag the file onto `chrome://extensions` and confirm the install.
