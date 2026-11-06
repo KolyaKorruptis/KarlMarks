@@ -4,7 +4,8 @@
   "description": "Development tooling only, the extension itself has no dependencies",
   "scripts": {
     "test": "node tests/extension.test.mjs",
-    "screenshots": "node tools/screenshots.mjs"
+    "screenshots": "node tools/screenshots.mjs",
+    "build": "node tools/build.mjs"
   },
   "devDependencies": {
     "playwright-core": "1.64.1"
