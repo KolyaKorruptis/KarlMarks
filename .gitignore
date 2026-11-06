@@ -1,2 +1,4 @@
 .Google-Store-Images/
 node_modules/
+dist/
+*.pem
