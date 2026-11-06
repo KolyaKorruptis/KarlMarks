@@ -16,8 +16,8 @@ It loads extremely fast, you can drag & drop bookmarks in groups or the list. Yo
 
 ## Install from GitHub
 For Chromium builds without the Chrome Web Store, e.g. ungoogled-chromium:
-1. Set `chrome://flags/#extension-mime-request-handling` to **Always prompt for install**.
-2. Open [KarlMarks.crx](https://github.com/KolyaKorruptis/KarlMarks/releases/latest/download/KarlMarks.crx) from the latest release and confirm the install.
+1. Download [KarlMarks.crx](https://github.com/KolyaKorruptis/KarlMarks/releases/latest/download/KarlMarks.crx) from the latest release.
+2. Drag the file onto `chrome://extensions` and confirm the install.
 3. For updates, use [chromium-web-store](https://github.com/NeverDecaf/chromium-web-store), it also checks extensions installed from outside the store.
 
 The GitHub version is a separate extension from the store version, with its own bookmarks and settings. To move over, use Backup in one and Import in the other.
