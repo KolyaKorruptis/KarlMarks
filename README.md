@@ -12,7 +12,7 @@ It loads extremely fast, you can drag & drop bookmarks in groups or the list. Yo
   - favicons from browser cache
   - backup & import in JSON format
 
-## [<img src=".github/chrome-web-store.svg" height=28 alt=""> Install from Chrome Webstore](https://chromewebstore.google.com/detail/karl-marks/odkohchphnbfhpnpidbfgcmfmomeaaeo)
+## [<img src=".github/chrome-web-store.svg" height=28 align=top alt="Chrome Web Store">](https://chromewebstore.google.com/detail/karl-marks/odkohchphnbfhpnpidbfgcmfmomeaaeo) [Install from Chrome Webstore](https://chromewebstore.google.com/detail/karl-marks/odkohchphnbfhpnpidbfgcmfmomeaaeo)
 
 ## Alternatively install from GitHub
 For Chromium builds without the Chrome Web Store, e.g. ungoogled-chromium:
