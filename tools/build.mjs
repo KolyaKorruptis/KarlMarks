@@ -1,9 +1,9 @@
 // `npm run build` packs the extension into dist/ and updates updates.xml:
 //   dist/KarlMarks-x.y.z.zip  for the Chrome Web Store, without update_url (the store updates it)
 //   dist/KarlMarks.crx        signed GitHub build, updates itself through updates.xml on master
-// The signing key stays outside the repo and fixes the GitHub build's extension ID, losing it means
-// GitHub installs get no more updates. KARLMARKS_KEY=/path/key.pem overrides the default location,
-// CHROMIUM_PATH=/path/to/chrome another Chromium for packing.
+// The signing key ~/.config/karlmarks/karlmarks.pem stays outside the repo and fixes the GitHub build's
+// extension ID, losing it means GitHub installs get no more updates.
+// CHROMIUM_PATH=/path/to/chrome uses another Chromium for packing.
 import { chromium } from 'playwright-core'
 import { execFileSync } from 'child_process'
 import crypto from 'crypto'
@@ -14,7 +14,7 @@ import path from 'path'
 const repo = 'KolyaKorruptis/KarlMarks'
 const root = path.join(path.dirname(new URL(import.meta.url).pathname), '..')
 const files = ['manifest.json', 'index.html', 'css', 'js', 'icons']
-const key = process.env.KARLMARKS_KEY || path.join(os.homedir(), '.config/karlmarks/karlmarks.pem')
+const key = path.join(os.homedir(), '.config/karlmarks/karlmarks.pem')
 const manifest = JSON.parse(fs.readFileSync(path.join(root, 'manifest.json')))
 const version = manifest.version
 if (manifest.update_url) throw new Error('manifest.json must not have an update_url, the store package is built from it')

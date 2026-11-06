@@ -42,4 +42,4 @@ npm run screenshots -- --store   # 1280x800 images for the Chrome Web Store, sav
 3. Commit `manifest.json` and `updates.xml`, push, and create the release `vx.y.z` with `dist/KarlMarks.crx` as its only asset.
 4. Upload `dist/KarlMarks-x.y.z.zip` to the Chrome Web Store, it doesn't go into the release.
 
-The crx is signed with `~/.config/karlmarks/karlmarks.pem` (`KARLMARKS_KEY=/path/key.pem` to use another). The key fixes the GitHub version's extension ID: keep a backup, without it GitHub installs get no more updates. Without the key, `npm run build` only makes the store zip.
+The crx is signed with `~/.config/karlmarks/karlmarks.pem`. The key fixes the GitHub version's extension ID: keep a backup, without it GitHub installs get no more updates. Without the key, `npm run build` only makes the store zip.
