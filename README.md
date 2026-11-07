@@ -20,7 +20,7 @@ First install the [chromium-web-store](https://github.com/NeverDecaf/chromium-we
 Then you can either install the extension from the [Chrome Webstore](https://chromewebstore.google.com/detail/karl-marks/odkohchphnbfhpnpidbfgcmfmomeaaeo).<br>
 Or forgo Google and [download KarlMarks.crx](https://github.com/KolyaKorruptis/KarlMarks/releases/latest/download/KarlMarks.crx) from the latest Github release instead. Then drag it onto the `chrome://extensions` page to install.<br>
 
-The GitHub version is a separate extension from the store version, with its own bookmarks and settings. Use the  Backup- and Import-functions in the extension settings to move your bookmarks over.
+The GitHub version is a separate extension from the store version, with its own bookmarks and settings. Use the  Backup and Import functions in the extension settings to move your bookmarks over.
 
 ## Screenshots
 <img src="screenshots/normal.png" alt="Karl Marks in dark mode with bookmarks and an expanded group" width="400"> <img src="screenshots/manage.png" alt="Manage mode with edit, reorder and delete controls" width="400">
