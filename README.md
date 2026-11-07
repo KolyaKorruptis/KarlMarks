@@ -3,6 +3,9 @@
 Karl Marks is a Chrome browser extension that provides a custom new-tab-page for your most common bookmarks.
 
 It loads extremely fast, you can drag & drop bookmarks into groups or on the list. You can sync your bookmarks and settings or keep things local. Karl Marks is open source and respects your privacy.
+
+## [<img src=".github/chrome-web-store.svg" height=28 align=top alt="Chrome Web Store">](https://chromewebstore.google.com/detail/karl-marks/odkohchphnbfhpnpidbfgcmfmomeaaeo) [Install from Chrome Webstore](https://chromewebstore.google.com/detail/karl-marks/odkohchphnbfhpnpidbfgcmfmomeaaeo)
+
  ## Features
   - Themes: bright / dark / match system
   - 2 separate data stores: local / synced
@@ -12,7 +15,8 @@ It loads extremely fast, you can drag & drop bookmarks into groups or on the lis
   - favicons from browser cache
   - backup & import in JSON format
 
-## [<img src=".github/chrome-web-store.svg" height=28 align=top alt="Chrome Web Store">](https://chromewebstore.google.com/detail/karl-marks/odkohchphnbfhpnpidbfgcmfmomeaaeo) [Install from Chrome Webstore](https://chromewebstore.google.com/detail/karl-marks/odkohchphnbfhpnpidbfgcmfmomeaaeo)
+## Screenshots
+<img src="screenshots/normal.png" alt="Karl Marks in dark mode with bookmarks and an expanded group" width="400"> <img src="screenshots/manage.png" alt="Manage mode with edit, reorder and delete controls" width="400">
 
 ## Alternatively install from GitHub
 To get extension updates in Chromium builds like [ungoogled-chromium](https://github.com/KolyaKorruptis/chromium-py-updater):<br>
@@ -21,9 +25,6 @@ Then you can either install the extension from the [Chrome Webstore](https://chr
 Or forgo Google and [download KarlMarks.crx](https://github.com/KolyaKorruptis/KarlMarks/releases/latest/download/KarlMarks.crx) from the latest Github release instead. Then drag it onto the `chrome://extensions` page to install.<br>
 
 The GitHub version is a separate extension from the store version, with its own bookmarks and settings. Use the  Backup and Import functions in the extension settings to move your bookmarks over.
-
-## Screenshots
-<img src="screenshots/normal.png" alt="Karl Marks in dark mode with bookmarks and an expanded group" width="400"> <img src="screenshots/manage.png" alt="Manage mode with edit, reorder and delete controls" width="400">
 
 ## Development
 The extension itself has no dependencies. The browser test uses `playwright-core`:
