@@ -2,7 +2,7 @@
 
 Karl Marks is a Chrome browser extension that provides a custom new-tab-page for your most common bookmarks.
 
-It loads extremely fast, you can drag & drop bookmarks in groups or the list. You can sync your bookmarks and settings or keep things local. Karl Marks is open source and respects your privacy.
+It loads extremely fast, you can drag & drop bookmarks into groups or on the list. You can sync your bookmarks and settings or keep things local. Karl Marks is open source and respects your privacy.
  ## Features
   - Themes: bright / dark / match system
   - 2 separate data stores: local / synced
