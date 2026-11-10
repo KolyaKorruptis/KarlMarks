@@ -137,9 +137,15 @@ linkAdm.addEventListener('keydown', (e) => {
   if (e.key == 'Enter' && e.target.type == 'text') saveLinkForm()
 })
 
+// a white glow around an input that just got an entry's value, fading out
+const flash = (input) => input.animate([{boxShadow:'0 0 14px #fff'},{}], {duration:1500, easing:'ease-out'})
+
 // prepare the stage for modifying an entry, groups only get a new name
+// the entry being modified stays highlighted in the list until the form is done with it
 const editItem = (item) => {
+  editTarget?.classList.remove('editing')
   editTarget = item
+  item.classList.add('editing')
   const group = isGroup(item)
   linkAdm.classList.toggle('renaming', group)
   linkAdm__title.innerHTML = group ? 'Rename Group' : 'Modify Link'
@@ -147,6 +153,8 @@ const editItem = (item) => {
   newLink__url.value = group ? '' : item.querySelector('.linklist__itemLink').getAttribute('href')
   const url = !group && urlFromForm()
   autoTitle = url ? defaultTitle(url) : ''
+  fadeInputs()
+  for (const input of [newLink__url, newLink__title]) if (input.value) flash(input)
   if (group) newLink__title.select()
   else newLink__url.focus()
 }
@@ -159,7 +167,11 @@ linklist.addEventListener('click', (e) => {
     if (isGroup(item)) item.replaceWith(...groupList(item).children)
     else item.remove()
     save()
-  } else if (e.target.matches('.linklist__itemEditButton')) editItem(item)
+  } else if (e.target.matches('.linklist__itemEditButton')) {
+    // the pen of the entry being modified puts it back down
+    if (item == editTarget) reset(true)
+    else editItem(item)
+  }
   else if (e.target.closest('.linklist__itemLink') && isGroup(e.target.closest('.linklist__itemLink').parentElement)) {
     item.classList.toggle('open')
     save()
