@@ -29,7 +29,7 @@ const ctx = await chromium.launchPersistentContext(path.join(scratch, 'profile')
 const links = [
   { link: 'https://www.youtube.com/', title: 'YouTube' },
   { title: 'Reading', open: false, links: [{ link: 'https://news.ycombinator.com/', title: 'Hacker News' }, { link: 'https://www.theguardian.com/', title: 'The Guardian' }] },
-  { title: 'Dev', open: true, links: [{ link: 'https://codeberg.org/', title: 'Codeberg' }, { link: 'https://stackoverflow.com/', title: 'Stack Overflow' }, { link: 'https://developer.mozilla.org/', title: 'MDN Web Docs' }] },
+  { title: 'Dev', open: true, links: [{ link: 'https://codeberg.org/', title: 'Codeberg' }, { link: 'https://web.dev/', title: 'web.dev' }, { link: 'https://developer.mozilla.org/', title: 'MDN Web Docs' }] },
   { link: 'https://www.wikipedia.org/', title: 'Wikipedia' },
   { link: 'https://mastodon.social/', title: 'Mastodon' },
   { link: 'https://github.com/', title: 'GitHub' },
@@ -53,7 +53,9 @@ await page.reload()
 await page.waitForTimeout(1000)
 
 // the box plus a margin of the dotted background, for the store the whole page
-const shoot = async (name) => {
+// height makes the README image that tall around the centered box, so both README images match
+const mainBox = () => page.$eval('main', (m) => { const r = m.getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height } })
+const shoot = async (name, height) => {
   await page.mouse.move(0, 0)
   await page.waitForTimeout(300)
   if (store) {
@@ -61,9 +63,10 @@ const shoot = async (name) => {
     console.log('saved', path.join(path.basename(out), name))
     return
   }
-  const box = await page.$eval('main', (m) => { const r = m.getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height } })
+  const box = await mainBox()
   const margin = 48
-  await page.screenshot({ path: path.join(out, name), clip: { x: box.x - margin, y: box.y - margin, width: box.width + 2 * margin, height: box.height + 2 * margin } })
+  const h = (height || box.height) + 2 * margin
+  await page.screenshot({ path: path.join(out, name), clip: { x: box.x - margin, y: box.y + box.height / 2 - h / 2, width: box.width + 2 * margin, height: h } })
   console.log('saved', path.join('screenshots', name))
 }
 fs.mkdirSync(out, { recursive: true })
@@ -77,10 +80,16 @@ if (store) {
   await page.click('#settingsButton')
   await shoot('store-4-settings.png')
 } else {
-  await shoot('normal.png')
+  // manage mode is the taller one, normal gets its height
   await page.click('#manageToggle__label')
   await page.waitForTimeout(500)
-  await shoot('manage.png')
+  const height = (await mainBox()).height
+  await page.click('#manageToggle__label')
+  await page.waitForTimeout(500)
+  await shoot('normal.png', height)
+  await page.click('#manageToggle__label')
+  await page.waitForTimeout(500)
+  await shoot('manage.png', height)
 }
 
 await ctx.close()
