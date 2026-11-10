@@ -16,7 +16,7 @@ It loads extremely fast, you can drag & drop bookmarks into groups or on the lis
   - backup & import in JSON format
 
 ## Screenshots
-<img src="screenshots/normal.png" alt="Karl Marks in dark mode with bookmarks and an expanded group" width="400"> <img src="screenshots/manage.png" alt="Manage mode with edit, reorder and delete controls" width="400">
+<kbd><img src="screenshots/normal.png" alt="Karl Marks in dark mode with bookmarks and an expanded group" width="400"></kbd> <kbd><img src="screenshots/manage.png" alt="Manage mode with edit, reorder and delete controls" width="400"></kbd>
 
 ## Alternatively install from GitHub
 To get extension updates in Chromium builds like [ungoogled-chromium](https://github.com/KolyaKorruptis/chromium-py-updater):<br>
