@@ -138,7 +138,7 @@ linkAdm.addEventListener('keydown', (e) => {
 })
 
 // a white glow around an input that just got an entry's value, fading out
-const flash = (input) => input.animate([{boxShadow:'0 0 14px #fff'},{}], {duration:1500, easing:'ease-out'})
+const flash = (input) => input.animate([{boxShadow:'0 0 14px var(--fl)'},{}], {duration:1500, easing:'ease-out'})
 
 // prepare the stage for modifying an entry, groups only get a new name
 // the entry being modified stays highlighted in the list until the form is done with it
